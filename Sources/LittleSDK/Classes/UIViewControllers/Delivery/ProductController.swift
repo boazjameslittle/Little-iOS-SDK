@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 import SDWebImage
 
 public class ProductController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -189,22 +188,10 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                                     myMenuID = ""
                                     cartItems.append(CartItems(itemID: sortedArr[index!].menuID, addonID: nil, number: 1))
                                     printVal(object: cartItems)
-                            
-                                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                                    view.loadPopup(title: "\(sortedArr[index!].foodName ?? "")", message: "\nTap proceed to add \(sortedArr[index!].foodName ?? "") to cart and proceed to checkout.\n", image: sortedArr[index!].foodImage ?? "", action: "")
-                                    view.proceedAction = {
-                                        SwiftMessages.hide()
+                                    
+                                    showWarningAlert(message: "Tap proceed to add \(sortedArr[index!].foodName ?? "") to cart and proceed to checkout.", actionButtonText: "Proceed".localized, image: sortedArr[index!].foodImage ?? "") {
                                         self.proceedToCheckout()
                                     }
-                                    view.cancelAction = {
-                                        SwiftMessages.hide()
-                                    }
-                                    view.configureDropShadow()
-                                    var config = SwiftMessages.defaultConfig
-                                    config.duration = .forever
-                                    config.presentationStyle = .bottom
-                                    config.dimMode = .gray(interactive: false)
-                                    SwiftMessages.show(config: config, view: view)
                                     
                                 }
                         }
@@ -565,21 +552,9 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                 
                 if myMenuID != "" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "\(menuArr[menuIDindex].foodName ?? "")", message: "\nTap proceed to add \(menuArr[menuIDindex].foodName ?? "") to cart and proceed to checkout.\n", image: menuArr[menuIDindex].foodImage ?? "", action: "")
-                    view.proceedAction = {
-                        SwiftMessages.hide()
-                        self.proceedToCheckout()
-                    }
-                    view.cancelAction = {
-                        SwiftMessages.hide()
-                    }
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
+                    let message = "Tap proceed to add \(menuArr[menuIDindex].foodName ?? "") to cart and proceed to checkout."
+                    
+                    showWarningAlert(message: message, actionButtonText: "Proceed".localized, image: menuArr[menuIDindex].foodImage ?? "")
                     
                 }
                 
@@ -803,19 +778,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                 popoverExtraItems(index: indexPath.item)
             }
         } else {
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-            view.loadPopup(title: selectedRestaurant?.restaurantName ?? "", message: "\nYou cannot add \(sortedArr[indexPath.item].foodName ?? "the selected item") to cart as \(selectedRestaurant?.restaurantName ?? "this restaurant/shop") is closed. Kindly try again later or check out other Restaurants/Shops\n", image: sortedArr[indexPath.item].foodImage ?? "", action: "")
-            view.proceedAction = {
-                SwiftMessages.hide()
-            }
-            view.btnProceed.setTitle("Okay", for: .normal)
-            view.btnDismiss.isHidden = true
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
+            let message = "You cannot add \(sortedArr[indexPath.item].foodName ?? "the selected item") to cart as \(selectedRestaurant?.restaurantName ?? "this restaurant/shop") is closed. Kindly try again later or check out other Restaurants/Shops"
+            showWarningAlert(title: selectedRestaurant?.restaurantName ?? "", message: message)
         }
         
         

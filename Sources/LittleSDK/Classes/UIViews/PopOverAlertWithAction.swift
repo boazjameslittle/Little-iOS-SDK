@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import SwiftMessages
 import SDWebImage
 
-class PopOverAlertWithAction: MessageView {
+//class PopOverAlertWithAction: MessageView {
+class PopOverAlertWithAction: UIView {
 
     @IBOutlet weak var btnDismiss: UIButton!
     @IBOutlet weak var btnProceed: UIButton!

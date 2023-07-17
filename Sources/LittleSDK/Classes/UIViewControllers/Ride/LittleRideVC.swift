@@ -13,7 +13,6 @@ import MessageUI
 import UserNotifications
 import LocalAuthentication
 import StoreKit
-import SwiftMessages
 import Alamofire
 
 public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -745,28 +744,15 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         stopMakeRequestStatusUpdate()
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nAre you sure you want to cancel ride?\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
+        showWarningAlertWithCancelAction(title: "Cancel Request".localized, message: "Are you sure you want to cancel ride?".localized, actionButtonText: "Cancel Request".localized) {
+            self.isContinueRequest = true
+            self.MakeRequestStatus()
+        } cancelAction: {
             self.cardViewController.requestingLoadingView.createLoadingDanger()
             self.cardViewController.lblRequestingText.textColor = self.littleRed
             self.cardViewController.lblRequestingText.text = "Cancelling ride request..."
             self.cancelRequest()
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-            self.isContinueRequest = true
-            self.MakeRequestStatus()
-        }
-        view.btnProceed.setTitle("Cancel Request", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
-        
     }
     
     @objc func proceedToLoadApp() {
@@ -980,22 +966,16 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func allowLocationAccessMessage() {
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help find the nearest cab to you. You can also type your location in pick-up location.\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-           guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                    printVal(object: "Settings opened: \(success)") // Prints true
-                })
-            }
-        }
-        view.cancelAction = {
-            SwiftMessages.hide()
+        showWarningAlertWithCancelAction(title: "Allow location access".localized, message: "nLocation Services Disabled. Please enable location services in settings to help find the nearest cab to you. You can also type your location in pick-up location.".localized, actionButtonText: "Allow location access".localized, dismissText: "Type location manually".localized) {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                 return
+             }
+             if UIApplication.shared.canOpenURL(settingsUrl) {
+                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                     printVal(object: "Settings opened: \(success)") // Prints true
+                 })
+             }
+        } cancelAction: {
             self.buttpressed = "manualpickup"
             self.am.saveFromSearch(data: true)
             self.isToReload = false
@@ -1017,14 +997,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 }
             }
         }
-        view.btnProceed.setTitle("Allow location access", for: .normal)
-        view.btnDismiss.setTitle("Type location manually", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -1032,10 +1004,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         self.removeLoadingPage()
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nYou appear to be offline. Kindly check your Internet connection and try again.\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(message: "You appear to be offline. Kindly check your Internet connection and try again.".localized, dismissOnTap: false, actionButtonText: "Open Settings".localized, showCancel: false) {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
@@ -1045,14 +1014,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 })
             }
         }
-        view.btnProceed.setTitle("Open Settings", for: .normal)
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -2642,30 +2603,13 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if !promoVerified {
             
-            let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopoverEnterText", bundle: sdkBundle!)
-            view.loadPopup(title: "Add Promo", message: "\nType the promocode you want to use below and verify.\n", image: "", placeholderText: "Type Promo Code", type: "")
-            view.proceedAction = {
-               SwiftMessages.hide()
-                if view.txtPopupText.text != "" {
-                   self.cardViewController.txtPromo.text = view.txtPopupText.text!
-                   self.promoText = view.txtPopupText.text!
-                   self.cardViewController.requestingLoadingView.isHidden = false
-                   self.cardViewController.requestingLoadingView.createLoadingNormal()
-                   self.verifyPromoCode()
-               } else {
-                   self.showAlerts(title: "",message: "Promo Code required.")
-               }
+            showWarningAlertWithTextfield(title: "Add Promo".localized, message: "Type the promocode you want to use below and verify.".localized, actionButtonText: "Verify Promo".localized, placeholderText: "Promo Code".localized) { text in
+                self.cardViewController.txtPromo.text = text
+                self.promoText = text
+                self.cardViewController.requestingLoadingView.isHidden = false
+                self.cardViewController.requestingLoadingView.createLoadingNormal()
+                self.verifyPromoCode()
             }
-            view.cancelAction = {
-               SwiftMessages.hide()
-            }
-            view.btnProceed.setTitle("Verify Promo", for: .normal)
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
             
         } else {
             promoVerified = false
@@ -2837,19 +2781,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     @objc func btnShowCarDetailsPressed(_ sender: UIButton) {
         let index = sender.tag
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: CarTypes[index], message: "\n\(carBannerText[index])\n", image: carBannerImage[index], action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Dismiss", for: .normal)
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
+        showWarningAlert(message: carBannerText[index], image: carBannerImage[index])
 
     }
     
@@ -3809,21 +3741,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             cardViewController.txtPromo.text = ""
             
             if am.getPROMOIMAGEURL() != "" {
-                
-                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
-                view.proceedAction = {
-                    SwiftMessages.hide()
-                }
-                view.btnProceed.setTitle("Dismiss", for: .normal)
-                view.btnDismiss.isHidden = true
-                view.configureDropShadow()
-                var config = SwiftMessages.defaultConfig
-                config.duration = .forever
-                config.presentationStyle = .bottom
-                config.dimMode = .gray(interactive: false)
-                SwiftMessages.show(config: config, view: view)
-                
+                showWarningAlert(title: am.getPROMOTITLE() ?? "", message: am.getPROMOTEXT() ?? "", image: am.getPROMOIMAGEURL())
             } else {
                 
                 cardViewController.requestingLoadingView.isHidden = true

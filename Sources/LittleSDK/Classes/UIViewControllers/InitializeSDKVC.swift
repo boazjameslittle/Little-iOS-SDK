@@ -7,7 +7,6 @@
 
 import UIKit
 import Alamofire
-import SwiftMessages
 import NVActivityIndicatorView
 
 public class InitializeSDKVC: UIViewController {
@@ -115,22 +114,9 @@ public class InitializeSDKVC: UIViewController {
     
     func showMissingParameter(param: String) {
         
-        let bundle = Bundle.module
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
-        view.loadPopup(title: "", message: "\nError encountered accessing Little SDK. You are missing a required parameter '\(param)'\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(message: "Error encountered accessing Little SDK. You are missing a required parameter '\(param)'", dismissOnTap: false, actionButtonText: "Exit SDK".localized, showCancel: false) {
             self.navigationController?.popViewController(animated: true)
         }
-        view.btnDismiss.isHidden = true
-        view.btnProceed.setTitle("Exit SDK", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -248,22 +234,9 @@ public class InitializeSDKVC: UIViewController {
     }
     
     private func showError() {
-        let bundle = Bundle.module
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
-        view.loadPopup(title: "", message: "\nError encountered accessing Little SDK\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(message: "Error encountered accessing Little.", dismissOnTap: false, actionButtonText: "Exit".localized, showCancel: false) {
             self.navigationController?.popViewController(animated: true)
         }
-        view.btnDismiss.isHidden = true
-        view.btnProceed.setTitle("Exit SDK", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
     }
     
     @objc func backHome() {

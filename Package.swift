@@ -18,7 +18,6 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(name: "SwiftMessages", url: "https://github.com/SwiftKickMobile/SwiftMessages", from: "6.0.0"),
         .package(name: "NVActivityIndicatorView", url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
         .package(name: "UIView-Shimmer", url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
         .package(name: "EasyNotificationBadge", url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),
@@ -34,7 +33,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
+            dependencies: ["NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
             path: "Sources/LittleSDK",
             resources: [
                 .process("Assets/sparkle.wav"),

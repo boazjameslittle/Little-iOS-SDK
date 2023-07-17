@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import SwiftMessages
 import SDWebImage
 import UIView_Shimmer
 
@@ -299,10 +298,10 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                             self.view.addSubview(popOverVC.view)
                             popOverVC.didMove(toParent: self)
                             
-                            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                            view.loadPopup(title: "\(sortedArr[index!].restaurantName ?? "")", message: "\nTap proceed to redirect you to \(sortedArr[index!].restaurantName ?? "") to receive the desired offer.\n", image: sortedArr[index!].image ?? "", action: "")
-                            view.proceedAction = {
-                                SwiftMessages.hide()
+                            let messageTitle = "\(sortedArr[index!].restaurantName ?? "")"
+                            let message = "Tap proceed to redirect you to \(sortedArr[index!].restaurantName ?? "") to receive the desired offer."
+                            
+                            showWarningAlert(title: messageTitle, message: message, actionButtonText: "Proceed".localized) {
                                 if let viewController = UIStoryboard(name: "Deliveries", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
                                     viewController.selectedRestaurant = self.selectedRestaurant
                                     viewController.paymentSourceArr = self.paymentSourceArr
@@ -315,16 +314,6 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                                     }
                                 }
                             }
-                            view.cancelAction = {
-                                SwiftMessages.hide()
-                            }
-                            view.configureDropShadow()
-                            var config = SwiftMessages.defaultConfig
-                            config.duration = .forever
-                            config.presentationStyle = .bottom
-                            config.dimMode = .gray(interactive: false)
-                            SwiftMessages.show(config: config, view: view)
-                            
                         }
                     }
                 }
@@ -630,10 +619,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     func allowLocationAccessMessage() {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-         view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.\n", image: "", action: "")
-         view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(title: "Allow location access".localized, message: "Location Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.".localized, actionButtonText: "Allow location access".localized) {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                  return
              }
@@ -642,17 +628,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                      printVal(object: "Settings opened: \(success)") // Prints true
                  })
              }
-         }
-         view.cancelAction = {
-             SwiftMessages.hide()
-         }
-         view.btnProceed.setTitle("Allow location access", for: .normal)
-         view.configureDropShadow()
-         var config = SwiftMessages.defaultConfig
-         config.duration = .forever
-        config.presentationStyle = .bottom
-         config.dimMode = .gray(interactive: false)
-         SwiftMessages.show(config: config, view: view)
+        }
         
     }
     

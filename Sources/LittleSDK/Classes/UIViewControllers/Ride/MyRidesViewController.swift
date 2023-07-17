@@ -7,7 +7,6 @@
 
 import UIKit
 import MessageUI
-import SwiftMessages
 
 class MyRidesViewController: UIViewController {
     
@@ -517,29 +516,12 @@ class MyRidesViewController: UIViewController {
     }
     
     func enterOtherReason(index: Int) {
-        
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "Type reason for cancelling trip.".localized, image: "", placeholderText: "Type Reason".localized, type: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-            if view.txtPopupText.text != "" {
-                self.cancelReason = view.txtPopupText.text!
-                self.cancelTrip(index: index)
-           } else {
-               self.showAlerts(title: "",message: "Reason required.".localized)
-           }
-        }
-        view.cancelAction = {
-            SwiftMessages.hide()
+        showWarningAlertWithTextfield(title: "", message: "Type reason for cancelling trip.".localized, dismissOnTap: false, actionButtonText: "Cancel Trip".localized, placeholderText: "Reason".localized) { text in
+            self.cancelReason = text
+            self.cancelTrip(index: index)
+        } cancelAction: {
             self.cancelReason = ""
         }
-        view.btnProceed.setTitle("Cancel Trip".localized, for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -646,22 +628,12 @@ class MyRidesViewController: UIViewController {
     }
         
     func getRemarks(indexs: Int, actions: String) {
+        let messageTitle = "Block \(trips[indexs].driverDetails?.first?.fullName?.capitalized ?? "")?"
+        let message = "Add a reason for blocking \(trips[indexs].driverDetails?.first?.fullName?.capitalized ?? "") \("(Optional)".localized)."
         
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib()
-        view.loadPopup(title: "Block \(trips[indexs].driverDetails?.first?.fullName?.capitalized ?? "")?", message: "\nAdd a reason for blocking \(trips[indexs].driverDetails?.first?.fullName?.capitalized ?? "") \("(Optional)".localized).\n", image: "", placeholderText: "Reason (Optional)".localized, type: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
-            self.blockDriver(index: indexs, action: actions, remarks: view.txtPopupText.text ?? "")
+        showWarningAlertWithTextfield(title: messageTitle, message: message, actionButtonText: "Proceed".localized, placeholderText: "Reason (Optional)".localized, reasonRequired: false) { text in
+            self.blockDriver(index: indexs, action: actions, remarks: text)
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
     }
     
     @objc func callDriver(_ tapGesture: UITapGestureRecognizer) {
@@ -679,11 +651,7 @@ class MyRidesViewController: UIViewController {
     }
     
     func reportAProblemTapped(index: Int) {
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nProceed to email customer care?\n".localized, image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(title: "Email support".localized, message: "Proceed to email customer care?".localized, actionButtonText: "Email support".localized) {
             let subject = "Trip Query".localized
             let body = "Trip\n\(self.trips[index].tripID?.components(separatedBy: "-").first ?? "")\n\nDriver\n\(self.trips[index].driverDetails?.first?.fullName ?? "")\n\nComments\n"
             let email = "operations@little.africa"
@@ -700,16 +668,6 @@ class MyRidesViewController: UIViewController {
                 self.present(mc, animated: true, completion: nil)
             }
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Email support".localized, for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -723,26 +681,16 @@ class MyRidesViewController: UIViewController {
             actionType = "Block"
         }
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "\(actionType) \(trips[index].driverDetails?.first?.fullName?.capitalized ?? "")?", message: "\nWould you like to \(actionType.lowercased()) \(trips[index].driverDetails?.first?.fullName?.capitalized ?? "")?\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        let messageTitle = "\(actionType) \(trips[index].driverDetails?.first?.fullName?.capitalized ?? "")?"
+        let message = "\nWould you like to \(actionType.lowercased()) \(trips[index].driverDetails?.first?.fullName?.capitalized ?? "")?\n"
+        
+        showWarningAlert(title: messageTitle, message: "Proceed to email customer care?".localized, actionButtonText: "Proceed".localized) {
             if self.trips[index].blocked == "B" {
                 self.getRemarks(indexs: index, actions: "U")
             } else {
                 self.blockDriver(index: index, action: "B", remarks: "")
             }
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("\(actionType)", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -756,23 +704,9 @@ class MyRidesViewController: UIViewController {
     func emailClientTapped(index: Int) {
         
         if SDKUtils.isValidEmail(testStr: am.getEmail()) {
-            
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-            view.loadPopup(title: "", message: "\nWould you like to receive a copy of this invoice?\n\nEmail will be sent to \(am.getEmail()!)\n", image: "", action: "")
-            view.proceedAction = {
-                SwiftMessages.hide()
+            showWarningAlert(message: "\nWould you like to receive a copy of this invoice?\n\nEmail will be sent to \(am.getEmail()!)\n", actionButtonText: "Email Invoice".localized) {
                 self.sendEmail(tripid: self.trips[index].tripID ?? "")
             }
-            view.cancelAction = {
-                SwiftMessages.hide()
-            }
-            view.btnProceed.setTitle("Email Invoice", for: .normal)
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .center
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
           
         } else {
             showAlerts(title: "", message: "Kindly ensure you have set a valid email on your profile. Head over to the side menu, tap on your profile picture to access your profile settings.")

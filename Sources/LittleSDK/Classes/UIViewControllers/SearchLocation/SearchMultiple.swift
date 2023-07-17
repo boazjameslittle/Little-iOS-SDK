@@ -9,7 +9,6 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
-import SwiftMessages
 
 public class SearchMultiple: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -155,32 +154,24 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
     @objc func btnEditInstructionsPressed(_ sender: UIButton) {
         let stop = locationStopsArr[sender.tag]
         
-        let view: PopoverPlaceInfo = try! SwiftMessages.viewFromNib(named: "PopoverPlaceInfo", bundle: sdkBundle!)
-        view.loadPopup(placeName: stop.name, image: "")
+        var message = ""
+        var placeholder = ""
         if stop.instructions != "" {
-            view.txtAddInstructions.text = stop.instructions
+            message = stop.instructions
         }
+        
         if stop.phonenumber != "" {
-            view.txtPopupText.text = stop.phonenumber
+            placeholder = stop.phonenumber
         }
-        view.proceedAction = {
-            SwiftMessages.hide()
-            self.locationStopsArr[sender.tag] = LocationSetSDK(id: stop.id, name: stop.name, subname: stop.subname, latitude: stop.latitude, longitude: stop.longitude, phonenumber: view.txtPopupText.text ?? "", instructions: view.txtAddInstructions.text ?? "")
+        
+        showWarningAlertWithTextfield(message: message, actionButtonText: "Proceed".localized, placeholderText: placeholder, reasonRequired: false) { text in
+            self.locationStopsArr[sender.tag] = LocationSetSDK(id: stop.id, name: stop.name, subname: stop.subname, latitude: stop.latitude, longitude: stop.longitude, phonenumber: text, instructions: text)
             var arr = self.locationStopsArr.filter { $0.id != self.locationStopsArr[safe: 0]?.id }
             arr.removeAll(where: { $0.name == "" })
             self.locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: self.locationsEstimateSet?.pickupLocation, dropoffLocations: arr)
             self.stopsTable.reloadData()
             self.setTableHeight()
         }
-        view.cancelAction = {
-           SwiftMessages.hide()
-        }
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     

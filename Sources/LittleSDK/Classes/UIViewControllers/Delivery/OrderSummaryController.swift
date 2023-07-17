@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 import UIView_Shimmer
 
 public class OrderSummaryController: UIViewController, UITableViewDataSource, UITableViewDelegate {

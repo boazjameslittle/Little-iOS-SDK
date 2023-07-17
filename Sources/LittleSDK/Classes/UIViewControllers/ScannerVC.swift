@@ -8,7 +8,6 @@
 
 import AVFoundation
 import UIKit
-import SwiftMessages
 
 public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
@@ -118,41 +117,18 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "Camera access denied/restricted", message: "\nYou won't be able to scan QR Codes on Little unless you allow access to the Camera. Click settings to turn on camera access.\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlertWithCancelAction(title: "Camera access denied/restricted".localized, message: "You won't be able to scan QR Codes on Little unless you allow access to the Camera. Click settings to turn on camera access.".localized, actionButtonText: "Go to Settings".localized) {
             UIApplication.shared.open(url)
-        }
-        view.cancelAction = {
-            SwiftMessages.hide()
+        } cancelAction: {
             self.navigationController?.popViewController(animated: true)
         }
-        view.btnProceed.setTitle("Go to Settings", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
     func failed() {
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "Scanning not supported", message: "\nYour device does not support scanning Little QR Codes. Please use a device with a camera.\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-           self.navigationController?.popViewController(animated: true)
+        showWarningAlert(title: "Scanning not supported".localized, message: "Your device does not support scanning Little QR Codes. Please use a device with a camera.".localized, dismissOnTap: false, actionButtonText: "Proceed".localized, showCancel: false) {
+            self.navigationController?.popViewController(animated: true)
         }
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
         
     }
@@ -205,36 +181,15 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "QRLISTENING"), object: nil, userInfo: dic)
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "QR Code Error", message: "\n\(qRData.message ?? "Kindly ensure the QR being scanned is a Little Merchants QR Code.")\n", image: "", action: "")
-                    view.proceedAction = {
-                       SwiftMessages.hide()
-                       self.captureSession.startRunning()
+                    showWarningAlert(title: "QR Code Error", message: qRData.message ?? "Kindly ensure the QR being scanned is a Little Merchants QR Code.", actionButtonText: "Dismiss".localized, showCancel: false) {
+                        self.captureSession.startRunning()
                     }
-                    view.btnDismiss.isHidden = true
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                 }
                 
             } catch {
-                
-                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                view.loadPopup(title: "Invalid QR Code", message: "\nKindly ensure the QR being scanned is a Little Merchants QR Code.\n", image: "", action: "")
-                view.proceedAction = {
-                   SwiftMessages.hide()
-                   self.captureSession.startRunning()
+                showWarningAlert(title: "Invalid Code Error", message: "Kindly ensure the QR being scanned is a Little Merchants QR Code.", actionButtonText: "Dismiss".localized, showCancel: false) {
+                    self.captureSession.startRunning()
                 }
-                view.btnDismiss.isHidden = true
-                view.configureDropShadow()
-                var config = SwiftMessages.defaultConfig
-                config.duration = .forever
-                config.presentationStyle = .bottom
-                config.dimMode = .gray(interactive: false)
-                SwiftMessages.show(config: config, view: view)
                 
             }
         }

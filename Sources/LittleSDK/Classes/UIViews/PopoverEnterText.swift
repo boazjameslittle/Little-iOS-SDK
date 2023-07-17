@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import SwiftMessages
 
-class PopoverEnterText: MessageView {
+//class PopoverEnterText: MessageView {
+class PopoverEnterText: UIView {
     
     @IBOutlet weak var btnDismiss: UIButton!
     @IBOutlet weak var btnProceed: UIButton!

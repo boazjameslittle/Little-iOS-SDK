@@ -1,5 +1,5 @@
 //
-//  PopoverEnterText.swift
+//  PopoverPlaceInfo.swift
 //  Little
 //
 //  Created by Gabriel John on 13/07/2020.
@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import SwiftMessages
 
-class PopoverPlaceInfo: MessageView {
+//class PopoverPlaceInfo: MessageView {
+class PopoverPlaceInfo: UIView {
     
     @IBOutlet weak var btnDismiss: UIButton!
     @IBOutlet weak var btnProceed: UIButton!

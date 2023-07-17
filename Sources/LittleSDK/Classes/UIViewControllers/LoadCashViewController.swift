@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 
 public class LoadCashViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
@@ -101,19 +100,9 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "LOADCASH"), object: nil)
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\(am.getMESSAGE() ?? "")", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(message: am.getMESSAGE() ?? "", dismissOnTap: false, showCancel: false) {
             self.navigationController?.popViewController(animated: true)
         }
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
        
     }
@@ -262,20 +251,9 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
             do {
                 let defaultMessage = try JSONDecoder().decode(DefaultMessage.self, from: data!)
                 if defaultMessage.status == "000" {
-                    
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(defaultMessage.message ?? "")\n", image: "", action: "")
-                    view.proceedAction = {
-                        SwiftMessages.hide()
+                    showWarningAlert(message: defaultMessage.message ?? "") {
                         self.navigationController?.popViewController(animated: true)
                     }
-                    view.btnDismiss.isHidden = true
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                     
                 } else {
                     showAlerts(title: "", message: defaultMessage.message ?? "Error loading cash. Kindly retry.")
@@ -285,20 +263,9 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
                 do {
                     let defaultMessage = try JSONDecoder().decode(DefaultMessages.self, from: data!)
                     if defaultMessage[0].status == "000" {
-                        
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                        view.loadPopup(title: "", message: "\n\(defaultMessage[0].message ?? "")\n", image: "", action: "")
-                        view.proceedAction = {
-                            SwiftMessages.hide()
+                        showWarningAlert(message: defaultMessage[safe: 0]?.message ?? "") {
                             self.navigationController?.popViewController(animated: true)
                         }
-                        view.btnDismiss.isHidden = true
-                        view.configureDropShadow()
-                        var config = SwiftMessages.defaultConfig
-                        config.duration = .forever
-                        config.presentationStyle = .bottom
-                        config.dimMode = .gray(interactive: false)
-                        SwiftMessages.show(config: config, view: view)
                         
                     } else {
                         showAlerts(title: "", message: defaultMessage[0].message ?? "Error loading cash. Kindly retry.")
@@ -400,28 +367,10 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         imgCoupon.image = UIImage()
         
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "Validate Coupon Code", message: "\nType the coupon code you wish to validate below.\n", image: "", placeholderText: "Enter coupon code", type: "")
-        view.txtPopupText.text = couponCode
-        view.proceedAction = {
-           SwiftMessages.hide()
-            if view.txtPopupText.text != "" {
-                self.CouponID = view.txtPopupText.text!
-                self.validateCoupon()
-           } else {
-               self.showAlerts(title: "",message: "Kindly ensure you have typed in the coupon code you are trying to validate.")
-           }
+        showWarningAlertWithTextfield(title: "Validate Coupon Code".localized, message: "Type the promocode you want to use below and verify.".localized, actionButtonText: "Validate Coupon".localized, placeholderText: "Coupon Code".localized) { text in
+            self.CouponID = text
+            self.validateCoupon()
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Validate Coupon", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftMessages
 import Alamofire
 
 class SDKHandleCalls {
@@ -44,10 +43,7 @@ class SDKHandleCalls {
             
             let bundle = Bundle.module
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
-            view.loadPopup(title: "", message: "\nYou appear to be offline. Kindly check your Internet connection and try again.\n", image: "", action: "")
-            view.proceedAction = {
-                SwiftMessages.hide()
+            topController?.showWarningAlert(title: "", message: "You appear to be offline. Kindly check your Internet connection and try again.".localized, actionButtonText: "Open Settings".localized) {
                 guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                     return
                 }
@@ -57,14 +53,6 @@ class SDKHandleCalls {
                     })
                 }
             }
-            view.btnProceed.setTitle("Open Settings", for: .normal)
-            view.btnDismiss.isHidden = true
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
             
         }
         

@@ -9,7 +9,6 @@
 import UIKit
 import GoogleMaps
 import UIView_Shimmer
-import SwiftMessages
 
 public class TrackOrderController: UIViewController {
     
@@ -414,19 +413,9 @@ public class TrackOrderController: UIViewController {
     
     func tripEnded(message: String) {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\n\(message)\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(message: message, dismissOnTap: false, showCancel: false) {
             self.navigationController?.popViewController(animated: true)
         }
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -718,10 +707,7 @@ public class TrackOrderController: UIViewController {
     }
     
     func allowLocationAccessMessage() {
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by keep track of your current order.\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(title: "Allow location access".localized, message: "Location Services Disabled. Please enable location services in settings to help identify your current location. This will be used by keep track of your current order.", actionButtonText: "Allow location access".localized) {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
@@ -731,16 +717,6 @@ public class TrackOrderController: UIViewController {
                 })
             }
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Allow location access", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
     }
 }
 

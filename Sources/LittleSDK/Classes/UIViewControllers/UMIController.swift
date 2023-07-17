@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 
 public class UMIController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -256,19 +255,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         if am.getPROMOTITLE() != "Invalid"  {
             promoValid()
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-            view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
-            view.proceedAction = {
-                SwiftMessages.hide()
-            }
-            view.btnProceed.setTitle("Dismiss", for: .normal)
-            view.btnDismiss.isHidden = true
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
+            showWarningAlert(title: am.getPROMOTITLE() ?? "", message: am.getPROMOTEXT() ?? "", image: am.getPROMOIMAGEURL() ?? "")
             
         } else {
             promoInvalid()
@@ -424,10 +411,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         leMessage = response.message ?? ""
                     }
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(leMessage)\n", image: "", action: "")
-                    view.proceedAction = {
-                        SwiftMessages.hide()
+                    showWarningAlert(message: leMessage, dismissOnTap: false, actionButtonText: "Proceed".localized, showCancel: false) {
                         NotificationCenter.default.addObserver(self, selector: #selector(self.loadCancelRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
                         
                         let popOverVC = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
@@ -438,13 +422,6 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.view.addSubview(popOverVC.view)
                         popOverVC.didMove(toParent: self)
                     }
-                    view.btnDismiss.isHidden = true
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                     
                 } else if response.status == "091" {
                     DispatchQueue.main.async(execute: {
@@ -460,26 +437,13 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         MESSAGE = response.message ?? ""
                     }
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(MESSAGE)\n", image: "", action: "")
-                    view.proceedAction = {
-                       SwiftMessages.hide()
+                    showWarningAlert(message: MESSAGE, actionButtonText: "Load Cash".localized) {
                         if let viewController = UIStoryboard(name: "UMI", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
-                           if let navigator = self.navigationController {
-                               navigator.pushViewController(viewController, animated: true)
-                           }
-                       }
+                            if let navigator = self.navigationController {
+                                navigator.pushViewController(viewController, animated: true)
+                            }
+                        }
                     }
-                    view.cancelAction = {
-                        SwiftMessages.hide()
-                    }
-                    view.btnProceed.setTitle("Load Cash", for: .normal)
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                     
                     
                 }else {
@@ -530,19 +494,9 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if response[0].status == "000" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(response[0].message ?? "")\n", image: "", action: "")
-                    view.proceedAction = {
-                        SwiftMessages.hide()
-                         self.backHome()
+                    showWarningAlert(message: response[safe: 0]?.message ?? "", dismissOnTap: false, showCancel: false) {
+                        self.backHome()
                     }
-                    view.btnDismiss.isHidden = true
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                     
                 } else {
                     showAlerts(title: "", message: response[0].message ?? "")

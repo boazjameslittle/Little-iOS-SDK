@@ -12,7 +12,6 @@ import GoogleMaps
 import GooglePlaces
 import UserNotifications
 import MessageUI
-import SwiftMessages
 import Alamofire
 import EasyNotificationBadge
 
@@ -225,7 +224,7 @@ public class TripVC: UIViewController {
         
         var isPopped = true
         
-        for controller in self.navigationController!.viewControllers as Array {
+        for controller in (self.navigationController?.viewControllers ?? []) {
             if controller == popToRestorationID {
                 printVal(object: "ToView")
                 if self.navShown ?? false {
@@ -291,30 +290,16 @@ public class TripVC: UIViewController {
     }
     
     func allowLocationAccessMessage() {
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-           guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                    printVal(object: "Settings opened: \(success)") // Prints true
-                })
-            }
+        showWarningAlert(message: "nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.", actionButtonText: "Allow location access".localized) {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                 return
+             }
+             if UIApplication.shared.canOpenURL(settingsUrl) {
+                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                     printVal(object: "Settings opened: \(success)") // Prints true
+                 })
+             }
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Allow location access", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -1172,29 +1157,12 @@ public class TripVC: UIViewController {
     }
     
     func enterOtherReason() {
-        
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nType reason for cancelling trip.\n", image: "", placeholderText: "Type Reason", type: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-            if view.txtPopupText.text != "" {
-                self.cancelReason = view.txtPopupText.text!
-                self.cancelTrip()
-           } else {
-               self.showAlerts(title: "",message: "Reason required.")
-           }
-        }
-        view.cancelAction = {
-            SwiftMessages.hide()
+        showWarningAlertWithTextfield(title: "", message: "Type reason for cancelling trip.".localized, dismissOnTap: false, actionButtonText: "Cancel Trip".localized, placeholderText: "Reason".localized) { text in
+            self.cancelReason = text
+            self.cancelTrip()
+        } cancelAction: {
             self.cancelReason = ""
         }
-        view.btnProceed.setTitle("Cancel Trip", for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -1423,22 +1391,9 @@ public class TripVC: UIViewController {
     
     
     @IBAction func panicButtonPressed(_ sender: UIButton) {
-        
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nWould you like to send a distress call to authorities near you?\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
-           self.panicButtonCall()
+        showWarningAlert(message: "Would you like to send a distress call to authorities near you?", actionButtonText: "Proceed".localized) {
+            self.panicButtonCall()
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -1488,19 +1443,7 @@ public class TripVC: UIViewController {
     }
     
     func showMessageOTP(title: String, message: String) {
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: title, message: "\n\(message)\n", image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Dismiss", for: .normal)
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
+        showWarningAlert(title: title, message: message)
     }
 }
 

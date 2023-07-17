@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 import SDWebImage
 
 public class ConfirmOrderController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
@@ -306,19 +305,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if am.getPROMOTITLE() != "Invalid"  {
             promoValid()
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-            view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
-            view.proceedAction = {
-                SwiftMessages.hide()
-            }
-            view.btnProceed.setTitle("Dismiss", for: .normal)
-            view.btnDismiss.isHidden = true
-            view.configureDropShadow()
-            var config = SwiftMessages.defaultConfig
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            config.dimMode = .gray(interactive: false)
-            SwiftMessages.show(config: config, view: view)
+            showWarningAlert(title: "", message: am.getPROMOTEXT() ?? "", image: am.getPROMOIMAGEURL() ?? "")
             
         } else {
             promoInvalid()
@@ -460,24 +447,6 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                         
                         self.view.removeAnimation()
                         
-                        /*let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: self.sdkBundle!)
-                        view.loadPopup(title: "", message: "\n\(orderResponse[0].message ?? "Your order has been successfully placed.")\n", image: "", action: "")
-                        view.proceedAction = {
-                            SwiftMessages.hide()
-                            self.am.saveFromConfirmOrder(data: true)
-                            let desiredViewController = self.navigationController?.viewControllers.filter { $0 is DeliveriesController }.first
-                            if desiredViewController != nil {
-                                self.navigationController?.popToViewController(desiredViewController!, animated: true)
-                            }
-                        }
-                        view.btnDismiss.isHidden = true
-                        view.configureDropShadow()
-                        var config = SwiftMessages.defaultConfig
-                        config.duration = .forever
-                        config.presentationStyle = .bottom
-                        config.dimMode = .gray(interactive: false)
-                        SwiftMessages.show(config: config, view: view)*/
-                        
                     })
                     
                     NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
@@ -508,27 +477,13 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     
                     let restaurantName = self.selectedRestaurant?.restaurantName ?? ""
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(MESSAGE)\n", image: "", action: "")
-                    view.proceedAction = {
-                       SwiftMessages.hide()
+                    showWarningAlert(message: MESSAGE, actionButtonText: "Load Cash".localized) {
                         if let viewController = UIStoryboard(name: "UMI", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
                            if let navigator = self.navigationController {
                                navigator.pushViewController(viewController, animated: true)
                            }
                        }
                     }
-                    view.cancelAction = {
-                        SwiftMessages.hide()
-                    }
-                    view.btnProceed.setTitle("Load Cash", for: .normal)
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
-                    
                     
                 } else {
                     DispatchQueue.main.async(execute: {

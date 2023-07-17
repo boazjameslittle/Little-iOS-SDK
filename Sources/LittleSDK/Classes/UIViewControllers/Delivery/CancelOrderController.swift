@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 
 public class CancelOrderController: UIViewController {
 
@@ -59,23 +58,13 @@ public class CancelOrderController: UIViewController {
                 DispatchQueue.main.async(execute: {
                     if defaultMessage[safe: 0]?.status == "000" {
                         
-                        let bundle = Bundle.module
-                        
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
-                        view.loadPopup(title: "", message: "\n\(defaultMessage[0].message ?? "Your \(self.restaurantName ?? "") order has been cancelled successfully.")\n", image: "", action: "")
-                        view.proceedAction = {
-                            SwiftMessages.hide()
-                            self.navigationController?.popViewController(animated: true)
-                        }
-                        view.btnDismiss.isHidden = true
-                        view.configureDropShadow()
-                        var config = SwiftMessages.defaultConfig
-                        config.duration = .forever
-                        config.presentationStyle = .bottom
-                        config.dimMode = .gray(interactive: false)
-                        SwiftMessages.show(config: config, view: view)
+                        let message = "\(defaultMessage[0].message ?? "Your \(self.restaurantName ?? "") order has been cancelled successfully.")"
                         
                         self.removeAnimate()
+                        
+                        self.showWarningAlert(title: "", message: message, dismissOnTap: false, showCancel: false) {
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     } else {
                         self.showAlerts(title: "", message: defaultMessage[safe: 0]?.message ?? "Error occurred cancelling your selected order.")
                         

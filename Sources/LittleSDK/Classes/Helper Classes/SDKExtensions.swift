@@ -7,7 +7,6 @@
 
 import UIKit
 import GoogleMaps
-import SwiftMessages
 import CommonCrypto
 import CoreTelephony
 import NVActivityIndicatorView
@@ -313,27 +312,7 @@ extension UIViewController {
         
         endEditSDK()
         
-        let color = SDKConstants.littleSDKThemeColor
-        
-        func alertConfig() -> SwiftMessages.Config {
-            var config = SwiftMessages.defaultConfig
-            config.dimMode = .gray(interactive: false)
-            config.duration = .forever
-            config.presentationStyle = .bottom
-            return config
-        }
-        
-        let messageView = MessageView.viewFromNib(layout: .centeredView)
-        messageView.configureTheme(backgroundColor: color, foregroundColor: .white, iconImage: nil, iconText: nil)
-        messageView.configureContent(title: "", body: "\n\(message)\n")
-        messageView.bodyLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16.0)
-        messageView.titleLabel?.isHidden = true
-        messageView.button?.isHidden = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSwiftAlert))
-        messageView.addGestureRecognizer(tap)
-        messageView.configureDropShadow()
-        messageView.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 100, right: 20)
-        SwiftMessages.show(config: alertConfig(), view: messageView)
+        showWarningAlert(title: title, message: message, dismissOnTap: false)
         
     }
     
@@ -383,29 +362,7 @@ extension UIViewController {
         
         endEditSDK()
         
-        let color = SDKConstants.littleSDKThemeColor
-        
-        func alertConfig() -> SwiftMessages.Config {
-            var config = SwiftMessages.defaultConfig
-            config.dimMode = .gray(interactive: true)
-            config.duration = .seconds(seconds: 4)
-            config.presentationStyle = .bottom
-            return config
-        }
-        
-        let messageView = MessageView.viewFromNib(layout: .centeredView)
-        messageView.configureTheme(backgroundColor: color, foregroundColor: .white, iconImage: nil, iconText: nil)
-        messageView.configureContent(title: title, body: "\n\(message)\n")
-        messageView.bodyLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16.0)
-        if title == "" {
-            messageView.titleLabel?.isHidden = true
-        }
-        messageView.button?.isHidden = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSwiftAlert))
-        messageView.addGestureRecognizer(tap)
-        messageView.configureDropShadow()
-        messageView.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 50, right: 20)
-        SwiftMessages.show(config: alertConfig(), view: messageView)
+        showWarningAlert(title: title, message: message)
         
     }
     
@@ -414,7 +371,7 @@ extension UIViewController {
     }
     
     @objc func dismissSwiftAlert() {
-        SwiftMessages.hide()
+        
     }
     
     func removeLoadingPage() {
@@ -516,29 +473,7 @@ extension UIViewController {
         
         self.view.endEditing(true)
         
-        let color = SDKConstants.littleSDKThemeColor
-        
-        func alertConfig() -> SwiftMessages.Config {
-            var config = SwiftMessages.defaultConfig
-            config.dimMode = .gray(interactive: true)
-            config.duration = .seconds(seconds: 4)
-            config.presentationStyle = .center
-            return config
-        }
-        
-        let messageView = MessageView.viewFromNib(layout: .centeredView)
-        messageView.configureTheme(backgroundColor: color, foregroundColor: .white, iconImage: nil, iconText: nil)
-        messageView.configureContent(title: "", body: "\n\("Ooops, something went wrong.".localized)\n")
-        messageView.bodyLabel?.font = .systemFont(ofSize: 16)
-        if title == "" {
-            messageView.titleLabel?.isHidden = true
-        }
-        messageView.button?.isHidden = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSwiftAlert))
-        messageView.addGestureRecognizer(tap)
-        messageView.configureDropShadow()
-        messageView.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 50, right: 20)
-        SwiftMessages.show(config: alertConfig(), view: messageView)
+        showWarningAlert(message: "Something went wrong.".localized)
         
     }
     
@@ -558,10 +493,7 @@ extension UIViewController {
     
     @objc func proceedEmail(email: String, delegate: MFMailComposeViewControllerDelegate) {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: Bundle.module)
-        view.loadPopup(title: "", message: "Proceed to write an email to Little Customer Care?".localized, image: "", action: "")
-        view.proceedAction = {
-            SwiftMessages.hide()
+        showWarningAlert(title: "Write Email".localized, message: "Proceed to write an email to Little Customer Care?".localized, actionButtonText: "Write Email".localized) {
             let subject = "General Inquiry".localized
             let body = ""
             let recipients = [email]
@@ -576,16 +508,6 @@ extension UIViewController {
                 self.present(mc, animated: true, completion: nil)
             }
         }
-        view.cancelAction = {
-            SwiftMessages.hide()
-        }
-        view.btnProceed.setTitle("Write Email".localized, for: .normal)
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .center
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
         
     }
     
@@ -894,7 +816,8 @@ extension String {
 }
 
 public func typingStatus(text: String) {
-    let message = text
+    #warning("Show typing message")
+    /*let message = text
     let color = SDKConstants.littleSDKThemeColor
     func alertConfig() -> SwiftMessages.Config {
         var config = SwiftMessages.defaultConfig
@@ -907,7 +830,7 @@ public func typingStatus(text: String) {
     messageView.configureTheme(backgroundColor: color, foregroundColor: .white, iconImage: nil, iconText: nil)
     messageView.bodyLabel?.font = UIFont(name: "SFUIDisplay-Regular", size: 14.0)
     messageView.bodyLabel?.text = message
-    SwiftMessages.show(config: alertConfig(), view: messageView)
+    SwiftMessages.show(config: alertConfig(), view: messageView)*/
 }
 
 func getPhoneFaceIdType() -> Bool {
@@ -972,6 +895,8 @@ extension UIColor {
     static let littleLabelColor = UIColor(named: "littleLabelColor", in: Bundle.module, compatibleWith: nil)!
     
     static let littleSecondaryLabelColor = UIColor(named: "LittleSecondaryLabelColor", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleSecondaryLabelColor2 = UIColor(named: "LittleSecondaryLabelColor2", in: Bundle.module, compatibleWith: nil)!
 
     
     static let littleWhite = UIColor(named: "littleWhite", in: Bundle.module, compatibleWith: nil)!
@@ -1228,5 +1153,57 @@ extension Date {
         formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
         formatter.dateFormat = "MM"
         return formatter.monthSymbols[month - 1]
+    }
+}
+
+extension UIViewController {
+    func showWarningAlert(title: String = "", message: String, dismissOnTap: Bool = true, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", showCancel: Bool = true, actionButtonClosure:  (() -> Void)? = nil) {
+        let vc = AlertVC()
+        vc.actionButtonText = actionButtonText
+        vc.messageTitle = title
+        vc.message = message
+        vc.actionButtonClosure = actionButtonClosure
+        vc.showCancel = showCancel
+        vc.dismissOnTap = dismissOnTap
+        vc.image = image
+        vc.dismissText = dismissText
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true)
+    }
+    
+    func showWarningAlertWithCancelAction(title: String = "", message: String, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", showCancel: Bool = true, actionButtonClosure:  (() -> Void)? = nil, cancelAction:  (() -> Void)? = nil) {
+        let vc = AlertVC()
+        vc.actionButtonText = actionButtonText
+        vc.messageTitle = title
+        vc.message = message
+        vc.actionButtonClosure = actionButtonClosure
+        vc.showCancel = showCancel
+        vc.dismissOnTap = false
+        vc.image = image
+        vc.cancelAction = cancelAction
+        vc.dismissText = dismissText
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true)
+    }
+    
+    func showWarningAlertWithTextfield(title: String = "", message: String, dismissOnTap: Bool = true, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", placeholderText: String = "", reasonRequired: Bool = true, showCancel: Bool = true, textSubmissionAction: @escaping ((_ text: String) -> Void), cancelAction:  (() -> Void)? = nil) {
+        let vc = AlertVC()
+        vc.actionButtonText = actionButtonText
+        vc.messageTitle = title
+        vc.message = message
+        vc.actionButtonClosure = nil
+        vc.textSubmissionAction = textSubmissionAction
+        vc.showCancel = showCancel
+        vc.dismissOnTap = dismissOnTap
+        vc.image = image
+        vc.dismissText = dismissText
+        vc.placeholderText = placeholderText
+        vc.cancelAction = cancelAction
+        vc.reasonRequired = reasonRequired
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true)
     }
 }
