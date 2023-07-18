@@ -228,7 +228,7 @@ class AlertVC: BaseVC {
         NSLayoutConstraint.activate([
             buttonStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             buttonStackView.heightAnchor.constraint(equalToConstant: 40),
-            buttonStackView.topAnchor.constraint(equalTo: textfield.bottomAnchor, constant: placeholderText.isEmpty ? 0 : 5),
+            buttonStackView.topAnchor.constraint(equalTo: textfield.bottomAnchor, constant: placeholderText.isEmpty ? 0 : 10),
             buttonStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12)
         ])
         
