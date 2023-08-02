@@ -469,7 +469,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         if proceed == "PROCEED" || goAhead {
             if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ConfirmOrderController") as? ConfirmOrderController {
                 viewController.selectedRestaurant = selectedRestaurant
-                viewController.paymentSourceArr = paymentSourceArr
+                viewController.myWallets = paymentSourceArr
                 viewController.cartItems = cartItems
                 viewController.currency = currency
                 viewController.merchantMessage = merchantMessage

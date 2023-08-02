@@ -374,11 +374,29 @@ struct ListPreferredDriver: Codable {
 struct Balance: Codable {
     let walletID, walletName: String?
     let balance: Double?
+    let walletType: String?
+    let walletAction: [WalletAction]?
+    let walletUniqueID: String?
 
     enum CodingKeys: String, CodingKey {
         case walletID = "WalletID"
         case walletName = "WalletName"
         case balance = "WalletBalance"
+        case walletType = "WalletType"
+        case walletAction = "WalletAction"
+        case walletUniqueID = "WalletUniqueID"
+    }
+}
+
+// MARK: - WalletAction
+struct WalletAction: Codable {
+    let actionType, actionData: String?
+    let paymentURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case actionType = "ActionType"
+        case actionData = "ActionData"
+        case paymentURL = "PaymentURL"
     }
 }
 

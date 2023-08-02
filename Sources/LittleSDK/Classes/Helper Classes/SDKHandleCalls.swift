@@ -87,7 +87,12 @@ class SDKHandleCalls {
                         
                         let sDKData = try JSONDecoder().decode(SDKData.self, from: data!)
                         
-                        let stringVal = self.am.DecryptDataAES(DataToSend: sDKData.data ?? "") as String
+                        var stringVal = self.am.DecryptDataAES(DataToSend: sDKData.data ?? "") as String
+                        
+                        if switchnum == SDKConstants.REMOVEARRAYRESPONSE && stringVal.starts(with: "[") {
+                            stringVal.removeFirst()
+                            stringVal.removeLast()
+                        }
                         
                         printVal(object: "makeServerCall \(method): \(stringVal)")
                         

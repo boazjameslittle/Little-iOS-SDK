@@ -799,6 +799,10 @@ extension String {
         return false
     }
     
+    func equalsIgnoringCase(_ string: String) -> Bool {
+        return self.caseInsensitiveCompare(string) == .orderedSame
+    }
+    
     public func replacingLastOccurrenceOfString(_ searchString: String, with replacementString: String, caseInsensitive: Bool = true) -> String {
         let options: String.CompareOptions
         if caseInsensitive {
@@ -1205,5 +1209,15 @@ extension UIViewController {
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .overCurrentContext
         self.present(vc, animated: true)
+    }
+}
+
+extension Dictionary<String, Any> {
+    func toJsonString() -> String {
+        if let data = try? JSONSerialization.data(withJSONObject: self) {
+            return String(data: data, encoding: .utf8) ?? ""
+        }
+        
+        return ""
     }
 }

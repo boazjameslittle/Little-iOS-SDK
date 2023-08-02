@@ -123,7 +123,7 @@ public class InitializeSDKVC: UIViewController {
     func initializeSDK() {
         
         let string = am.DecryptDataKC(DataToSend: cn.link()) as String
-        
+                
         let headers: HTTPHeaders = [
             HTTPHeader(name: "Content-Type", value: "application/json"),
             HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKAPIKey()))"),

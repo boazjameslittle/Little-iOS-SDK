@@ -14,7 +14,7 @@ class SDKConstants {
     var headerkey: NSString=""
     var headeriv: NSString="HDJAK$2$23232Fax"
         
-    var live = "lwCGahusOkXBoFnNKoWjOC58LxqE0rYr6QCBcag234r0pkyhIFs/8YyL3zZcOT1C"
+    var live = "lwCGahusOkXBoFnNKoWjOBPsuG6cAX5Cs5CUstPbKEUNzjKRzPKBQSemVIVw+PIu"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
     var mapsKey = "H+9x5dNgB0X7+tCZaCwKe9SbL0rG7i55NxDxQ+LReuubZ+nLUyINNG70bIAgqkME"
     var placesKey = "qn89yrVStFuJG6EEqugAV92lsc77lTXy1DeXZWhu3/4SZH6ASWxUB4zepBJ9TMrW"
@@ -57,5 +57,10 @@ class SDKConstants {
     
     // Change to vooma or quity
     static let SDK_CLIENT = SDKClient.VOOMA
+    
+   static let WALLET_ACTION_TYPE_DIAL = "DIAL"
+   static let WALLET_ACTION_TYPE_FORM_ID = "FORMID"
+    
+   static let REMOVEARRAYRESPONSE = 1
     
 }

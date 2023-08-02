@@ -88,6 +88,11 @@ class SDKUtils {
     }
     
     static func commonJsonTags(formId: String) -> [String: Any] {
+        var language = (Locale.current.languageCode ?? "en").lowercased()
+        if language.lowercased() != "en" && language.lowercased() != "fr" {
+            language = "en"
+        }
+        
         return [
             "FormID": formId,
             "SessionID": am.getMyUniqueID() ?? "",
@@ -106,6 +111,35 @@ class SDKUtils {
             "UniqueID": am.getMyUniqueID() ?? "",
             "CarrierName": SDKUtils.getCarrierName() ?? "",
             "UserAdditionalData": am.getSDKAdditionalData(),
+            "LanguageID": language
+        ]
+    }
+    
+    static func commonJsonTags(formId: String, uniqueId: String) -> [String: Any] {
+        var language = (Locale.current.languageCode ?? "en").lowercased()
+        if language.lowercased() != "en" && language.lowercased() != "fr" {
+            language = "en"
+        }
+        
+        return [
+            "FormID": formId,
+            "SessionID": am.getMyUniqueID() ?? "",
+            "MobileNumber": am.getSDKMobileNumber() ?? "",
+            "IMEI": am.getIMEI() ?? "",
+            "CodeBase": am.getMyCodeBase() ?? "",
+            "PackageName": am.getSDKPackageName() ?? "",
+            "DeviceName": SDKUtils.getPhoneType(),
+            "SOFTWAREVERSION": SDKUtils.getAppVersion(),
+            "RiderLL": am.getCurrentLocation() ?? "0.0,0.0",
+            "LatLong": am.getCurrentLocation() ?? "0.0,0.0",
+            "TripID": "",
+            "City": am.getCity() ?? "",
+            "Country": am.getCountry() ?? "",
+            "RegisteredCountry": am.getCountry() ?? "",
+            "UniqueID": uniqueId,
+            "CarrierName": SDKUtils.getCarrierName() ?? "",
+            "UserAdditionalData": am.getSDKAdditionalData(),
+            "LanguageID": language
         ]
     }
     
@@ -168,5 +202,41 @@ class SDKUtils {
         }
         
         return dateStr
+    }
+    
+    static func currencyFormatWithoutZero(_ amount: Float, currencyCode: String = SDKAllMethods().getGLOBALCURRENCY() ?? "KES") -> String? {
+        let cf = NumberFormatter()
+        cf.currencyCode = currencyCode
+        cf.numberStyle = .currency
+        cf.maximumFractionDigits = 0
+        cf.minimumFractionDigits = 0
+        cf.locale = Locale(identifier: "en")
+        cf.decimalSeparator = "."
+        cf.groupingSeparator = ","
+        return cf.string(for: amount)
+    }
+
+    static func currencyFormatWithoutZero(_ amount: Int, currencyCode: String = SDKAllMethods().getGLOBALCURRENCY() ?? "KES") -> String? {
+        let cf = NumberFormatter()
+        cf.currencyCode = currencyCode
+        cf.numberStyle = .currency
+        cf.maximumFractionDigits = 0
+        cf.minimumFractionDigits = 0
+        cf.locale = Locale(identifier: "en")
+        cf.decimalSeparator = "."
+        cf.groupingSeparator = ","
+        return cf.string(for: amount)
+    }
+
+    static func currencyFormatWithoutZero(_ amount: Double, currencyCode: String = SDKAllMethods().getGLOBALCURRENCY() ?? "KES") -> String? {
+        let cf = NumberFormatter()
+        cf.currencyCode = currencyCode
+        cf.numberStyle = .currency
+        cf.maximumFractionDigits = 0
+        cf.minimumFractionDigits = 0
+        cf.locale = Locale(identifier: "en")
+        cf.decimalSeparator = "."
+        cf.groupingSeparator = ","
+        return cf.string(for: amount)
     }
 }

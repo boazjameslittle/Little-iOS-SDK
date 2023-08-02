@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseVC: UIViewController {
+public class BaseVC: UIViewController {
     
     var customNavigationItem = {
         return UINavigationItem()
@@ -20,7 +20,7 @@ class BaseVC: UIViewController {
     
     var constraints: [NSLayoutConstraint] = []
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.tag = 1
         changeStatusBarStyle(.lightContent)
@@ -47,15 +47,15 @@ class BaseVC: UIViewController {
         //        }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.style
     }
     
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
         return statusBarHidden
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
         setupBorders()
@@ -80,7 +80,7 @@ class BaseVC: UIViewController {
         traitCollectionChaged = true
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .portrait
         } else {
@@ -92,7 +92,7 @@ class BaseVC: UIViewController {
         return .portrait
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if #available(iOS 14.0, *) {
             self.navigationItem.backButtonDisplayMode = .minimal

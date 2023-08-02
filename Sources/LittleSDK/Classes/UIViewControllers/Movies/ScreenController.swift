@@ -234,7 +234,7 @@ class ScreenController: UIViewController {
             viewController.selectedTicketNo = selectedSeatArr.count == 0 ? selectedManualArr.count : selectedSeatArr.count
             viewController.selectedSeats = mySeats
             viewController.markup = markup
-            viewController.paymentSourceArr = paymentModes
+            viewController.myWallets = paymentModes
             viewController.myPromoCode = myPromoCode
             viewController.myDisclaimerMessage = myDisclaimerMessage
             if let navigator = self.navigationController {
