@@ -368,10 +368,13 @@ class MPESAPaymentView: UIViewController {
                 if response.status == "000" {
                     lblInstructions1.text = response.message
                     addExternalRequest()
-                } else if response.message != nil && response.message?.isEmpty == false {
-                    self.showAlerts(title: "", message: response.message ?? "")
                 } else {
-                    self.showGeneralErrorAlert()
+                    let message = response.message ?? ""
+                    self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
+                        self.dismiss(animated: true) {
+                            self.backAction?()
+                        }
+                    }
                 }
             } catch (let error) {
                 self.showGeneralErrorAlert()
@@ -414,10 +417,13 @@ class MPESAPaymentView: UIViewController {
                 let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
                 if response.status == "000" {
                    startPaymentStatusTimer()
-                } else if response.message != nil && response.message?.isEmpty == false {
-                    self.showAlerts(title: "", message: response.message ?? "")
                 } else {
-                    self.showGeneralErrorAlert()
+                    let message = response.message ?? ""
+                    self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
+                        self.dismiss(animated: true) {
+                            self.backAction?()
+                        }
+                    }
                 }
             } catch (let error) {
                 self.showGeneralErrorAlert()
