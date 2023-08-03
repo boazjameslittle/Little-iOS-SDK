@@ -265,7 +265,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"APKVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0, 0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UNIQUEID\":\"\(paymentUniqueID)\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(commonWalletUniqueID.isEmpty ? (am.getMyCodeBase() ?? "") : "ANDROID")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"APKVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0, 0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UNIQUEID\":\"\(paymentUniqueID)\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -402,13 +402,13 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             
             let amountRestaurant = Double((lblProductsCash.text ?? "0").filterNumbersOnly())! - amountMovies
             
-            var restaurantDeliveryItems = ",\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(mySelectedWallet?.walletUniqueID ?? "")\",\"WalletUniqueID\":\"\(mySelectedWallet?.walletUniqueID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(specialRequest)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantCost\":\"\(amountRestaurant)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}"
+            var restaurantDeliveryItems = ",\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(specialRequest)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantCost\":\"\(amountRestaurant)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}"
             
             if orderString == "" {
                 restaurantDeliveryItems = ""
             }
             
-            dataToSend = "{\"FormID\":\"MOVIETICKETS\",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"Apple\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(SDKUtils.getPhoneType())\",\"SOFTWAREVERSION\":\"\(SDKUtils.getAppVersion())\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(paymentUniqueID)\",\"NetworkCountry\":\"\(am.getCountry() ?? "")\",\"CarrierName\":\"\(SDKUtils.getCarrierName() ?? "")\",\"MovieTickets\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(mySelectedWallet?.walletUniqueID ?? "")\",\"WalletUniqueID\":\"\(mySelectedWallet?.walletUniqueID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(deliveryDetails)\",\"DeliveryMode\":\"\(deliveryMode)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"FinalNotes\":\"\(specialRequest)\"\(moviesString)\(restaurantDeliveryItems)}}"
+            dataToSend = "{\"FormID\":\"MOVIETICKETS\",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(commonWalletUniqueID.isEmpty ? (am.getMyCodeBase() ?? "") : "ANDROID")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(SDKUtils.getPhoneType())\",\"SOFTWAREVERSION\":\"\(SDKUtils.getAppVersion())\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(paymentUniqueID)\",\"NetworkCountry\":\"\(am.getCountry() ?? "")\",\"CarrierName\":\"\(SDKUtils.getCarrierName() ?? "")\",\"MovieTickets\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(deliveryDetails)\",\"DeliveryMode\":\"\(deliveryMode)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"FinalNotes\":\"\(specialRequest)\"\(moviesString)\(restaurantDeliveryItems)}}"
             
         } else {
             
@@ -417,7 +417,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             
             let amountRestaurant = Double((lblTotalCash.text ?? "0").filterNumbersOnly())! - amountMovies
             
-            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(mySelectedWallet?.walletUniqueID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"DeliveryDate\":\"\(deliveryDate)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"DeliveryDate\":\"\(deliveryDate)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
             
             printVal(object: "delivery fee: \(delivery), data: \(dataToSend)")
         }
@@ -725,10 +725,11 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                         self.navigationController?.popToViewController(desiredViewController, animated: true)
                     }
                 } else {
-                    self.showAlerts(title: "", message: orderSuccessMessage)
-                    self.am.saveFromConfirmOrder(data: true)
-                    if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
-                        self.navigationController?.popToViewController(desiredViewController, animated: true)
+                    self.showWarningAlert(message: orderSuccessMessage, dismissOnTap: false, showCancel: false) {
+                        self.am.saveFromConfirmOrder(data: true)
+                        if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
+                            self.navigationController?.popToViewController(desiredViewController, animated: true)
+                        }
                     }
                 }
             } else {

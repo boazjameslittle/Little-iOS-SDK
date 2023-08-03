@@ -1395,3 +1395,16 @@ enum SDKClient {
     case EQUITY
     case VOOMA
 }
+
+// MARK: - ExternalRequestResponseData
+struct ExternalRequestResponseData: Codable {
+    let status: String
+    let message: String?
+    let commonWalletUniqueID: String?
+
+    enum CodingKeys: String, CodingKey {
+        case message = "Message"
+        case status = "Status"
+        case commonWalletUniqueID = "CommonWalletUniqueID"
+    }
+}

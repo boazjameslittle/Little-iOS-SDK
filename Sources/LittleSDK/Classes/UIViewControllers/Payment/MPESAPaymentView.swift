@@ -55,7 +55,7 @@ class MPESAPaymentView: UIViewController {
     var lblOpt2: UILabel!
     var lblInstructions2: UILabel!
     
-    var proceedAction: (() -> Void)?
+    var proceedAction: ((_ commonWalletUniqueID: String) -> Void)?
     var backAction: (() -> Void)?
     var resendAction: (() -> Void)?
     
@@ -462,10 +462,10 @@ class MPESAPaymentView: UIViewController {
                 
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
             do {
-                let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
+                let response = try JSONDecoder().decode(ExternalRequestResponseData.self, from: data)
                 if response.status == "000" {
                     self.dismiss(animated: true) {
-                        self.proceedAction?()
+                        self.proceedAction?(response.commonWalletUniqueID ?? "")
                     }
                 }
             } catch (let error) {

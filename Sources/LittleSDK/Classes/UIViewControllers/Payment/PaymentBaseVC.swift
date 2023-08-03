@@ -20,10 +20,13 @@ public class PaymentBaseVC: BaseVC {
     
     private var paymentPopUpVC: MPESAPaymentView?
     
+    var commonWalletUniqueID = ""
+    
     var isCorporate = false
     
     final func openPaymentPopUp(amount: Double) {
         generateUniqueId()
+        commonWalletUniqueID = ""
         
 //        myWallets.filter({ $0.walletUniqueID == am.getWalletUniqueID()}).first
         if let commonWallet = mySelectedWallet {
@@ -37,7 +40,8 @@ public class PaymentBaseVC: BaseVC {
             if #available(iOS 13.0, *) {
                 paymentPopUpVC.isModalInPresentation = true
             }
-            paymentPopUpVC.proceedAction = {
+            paymentPopUpVC.proceedAction = { commonWalletUniqueID in
+                self.commonWalletUniqueID = commonWalletUniqueID
                 self.onPaymentSuccessful(wallet: commonWallet)
             }
             
