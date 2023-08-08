@@ -49,7 +49,9 @@ public class PaymentBaseVC: BaseVC {
                 self.generateUniqueId()
                 paymentPopUpVC.requestUniqueID = self.paymentUniqueID
             }
-            self.present(paymentPopUpVC, animated: true, completion: nil)
+            
+            self.navigationController?.pushViewController(paymentPopUpVC, animated: true)
+//            self.present(paymentPopUpVC, animated: true, completion: nil)
         }
     }
     

@@ -135,7 +135,14 @@ class MPESAPaymentView: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         stopPaymentStatusTimer()
     }
     
@@ -327,9 +334,8 @@ class MPESAPaymentView: UIViewController {
     }
     
     @objc func btnBackPressed(_ sender: UIButton) {
-        self.dismiss(animated: true) {
-            self.backAction?()
-        }
+        self.navigationController?.popViewController(animated: true)
+        self.backAction?()
     }
     
     private func dialUssd() {
@@ -371,9 +377,8 @@ class MPESAPaymentView: UIViewController {
                 } else {
                     let message = response.message ?? ""
                     self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
-                        self.dismiss(animated: true) {
-                            self.backAction?()
-                        }
+                        self.navigationController?.popViewController(animated: true)
+                        self.backAction?()
                     }
                 }
             } catch (let error) {
@@ -420,9 +425,8 @@ class MPESAPaymentView: UIViewController {
                 } else {
                     let message = response.message ?? ""
                     self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
-                        self.dismiss(animated: true) {
-                            self.backAction?()
-                        }
+                        self.navigationController?.popViewController(animated: true)
+                        self.backAction?()
                     }
                 }
             } catch (let error) {
@@ -464,9 +468,8 @@ class MPESAPaymentView: UIViewController {
             do {
                 let response = try JSONDecoder().decode(ExternalRequestResponseData.self, from: data)
                 if response.status == "000" {
-                    self.dismiss(animated: true) {
-                        self.proceedAction?(response.commonWalletUniqueID ?? "")
-                    }
+                    self.navigationController?.popViewController(animated: true)
+                    self.proceedAction?(response.commonWalletUniqueID ?? "")
                 }
             } catch (let error) {
                 printVal(object: "error: \(error.localizedDescription)")
