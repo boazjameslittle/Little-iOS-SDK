@@ -248,10 +248,11 @@ struct RequestStatusResponseElement: Codable {
     let liveFare, et, ed, vehicleType: String?
     let corporateID, paymentMode, currency, wifiPass: String?
     let minimumFare, basePrice, distance, distanceTotalCost, timeTotalCost: String?
-    let time, paymentCodes, paymentCosts: String?
-    let startOTP, endOTP, parkingOTP, tripChat: String?
+    let time, batteryLife, paymentCodes, paymentCosts: String?
+    let startOTP, endOTP, parkingOTP, tollChargeOTP, tripChat, pickupAddress, dropOffAddress: String?
     let tripDropOffDetails: [TripDropOffDetail]?
-    let dropOffLL, pickupLL: String?
+    let pickUpLL, dropOffLL: String?
+    let emailId, driverName, driverMobile, driverImage: String?
 
     enum CodingKeys: String, CodingKey {
         case status = "Status"
@@ -274,6 +275,7 @@ struct RequestStatusResponseElement: Codable {
         case basePrice = "BasePrice"
         case distance = "Distance"
         case time = "Time"
+        case batteryLife = "BatteryLife"
         case paymentCodes = "PaymentCodes"
         case paymentCosts = "PaymentCosts"
         case distanceTotalCost = "DistanceTotalCost"
@@ -281,10 +283,130 @@ struct RequestStatusResponseElement: Codable {
         case startOTP = "StartTripOTP"
         case endOTP = "EndTripOTP"
         case parkingOTP = "ParkingOTP"
+        case tollChargeOTP = "TollChargeOTP"
         case tripChat = "TripChat"
         case tripDropOffDetails = "TripDropOffDetails"
+        case pickupAddress = "PickupAddress"
+        case dropOffAddress = "DropoffAddress"
+        case pickUpLL = "PickUpLL"
         case dropOffLL = "DropOffLL"
-        case pickupLL = "PickUpLL"
+        case emailId = "EMailID"
+        case driverName = "DriverName"
+        case driverMobile = "DriverMobile"
+        case driverImage = "DriverImage"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.status = try? container.decodeIfPresent(String.self, forKey: .status)
+        self.tripStatus = try? container.decodeIfPresent(String.self, forKey: .tripStatus)
+        self.message = try? container.decodeIfPresent(String.self, forKey: .message)
+        self.corporateID = try? container.decodeIfPresent(String.self, forKey: .corporateID)
+        self.currency = try? container.decodeIfPresent(String.self, forKey: .currency)
+        self.wifiPass = try? container.decodeIfPresent(String.self, forKey: .wifiPass)
+        self.paymentMode = try? container.decodeIfPresent(String.self, forKey: .paymentMode)
+        self.paymentCodes = try? container.decodeIfPresent(String.self, forKey: .paymentCodes)
+        self.paymentCosts = try? container.decodeIfPresent(String.self, forKey: .paymentCosts)
+        self.startOTP = try? container.decodeIfPresent(String.self, forKey: .startOTP)
+        self.endOTP = try? container.decodeIfPresent(String.self, forKey: .endOTP)
+        self.parkingOTP = try? container.decodeIfPresent(String.self, forKey: .parkingOTP)
+        self.tollChargeOTP = try? container.decodeIfPresent(String.self, forKey: .tollChargeOTP)
+        self.distance = try? container.decodeIfPresent(String.self, forKey: .distance)
+        self.time = try? container.decodeIfPresent(String.self, forKey: .time)
+        self.batteryLife = try? container.decodeIfPresent(String.self, forKey: .batteryLife)
+        self.vehicleType = try? container.decodeIfPresent(String.self, forKey: .vehicleType)
+        self.et = try? container.decodeIfPresent(String.self, forKey: .et)
+        self.ed = try? container.decodeIfPresent(String.self, forKey: .ed)
+        self.tripChat = try? container.decodeIfPresent(String.self, forKey: .tripChat)
+        self.pickupAddress = try? container.decodeIfPresent(String.self, forKey: .pickupAddress)
+        self.dropOffAddress = try? container.decodeIfPresent(String.self, forKey: .dropOffAddress)
+        self.tripDropOffDetails = try? container.decodeIfPresent([TripDropOffDetail].self, forKey: .tripDropOffDetails)
+        self.pickUpLL = try? container.decodeIfPresent(String.self, forKey: .pickUpLL)
+        self.dropOffLL = try? container.decodeIfPresent(String.self, forKey: .dropOffLL)
+        self.driverName = try? container.decodeIfPresent(String.self, forKey: .driverName)
+        self.driverImage = try? container.decodeIfPresent(String.self, forKey: .driverImage)
+        self.driverMobile = try? container.decodeIfPresent(String.self, forKey: .driverMobile)
+        self.emailId = try? container.decodeIfPresent(String.self, forKey: .emailId)
+        
+        if let liveFare = try? container.decodeIfPresent(String.self, forKey: .liveFare) {
+            self.liveFare = liveFare
+        } else if let liveFare = try? container.decodeIfPresent(Double.self, forKey: .liveFare) {
+            self.liveFare = String(liveFare)
+        } else {
+            self.liveFare = nil
+        }
+        
+        if let minimumFare = try? container.decodeIfPresent(String.self, forKey: .minimumFare) {
+            self.minimumFare = minimumFare
+        } else if let minimumFare = try? container.decodeIfPresent(Double.self, forKey: .minimumFare) {
+            self.minimumFare = String(minimumFare)
+        } else {
+            self.minimumFare = nil
+        }
+        
+        if let basePrice = try? container.decodeIfPresent(String.self, forKey: .basePrice) {
+            self.basePrice = basePrice
+        } else if let basePrice = try? container.decodeIfPresent(Double.self, forKey: .basePrice) {
+            self.basePrice = String(basePrice)
+        } else {
+            self.basePrice = nil
+        }
+        
+        if let perKM = try? container.decodeIfPresent(String.self, forKey: .costPerKilometer) {
+            self.costPerKilometer = perKM
+        } else if let perKM = try? container.decodeIfPresent(Double.self, forKey: .costPerKilometer) {
+            self.costPerKilometer = String(perKM)
+        } else {
+            self.costPerKilometer = nil
+        }
+        
+        if let perMin = try? container.decodeIfPresent(String.self, forKey: .costPerMinute) {
+            self.costPerMinute = perMin
+        } else if let perMin = try? container.decodeIfPresent(Double.self, forKey: .costPerMinute) {
+            self.costPerMinute = String(perMin)
+        } else {
+            self.costPerMinute = nil
+        }
+        
+        if let distanceTotalCost = try? container.decodeIfPresent(String.self, forKey: .distanceTotalCost) {
+            self.distanceTotalCost = distanceTotalCost
+        } else if let distanceTotalCost = try? container.decodeIfPresent(Double.self, forKey: .distanceTotalCost) {
+            self.distanceTotalCost = String(distanceTotalCost)
+        } else {
+            self.distanceTotalCost = nil
+        }
+        
+        if let timeTotalCost = try? container.decodeIfPresent(String.self, forKey: .timeTotalCost) {
+            self.timeTotalCost = timeTotalCost
+        } else if let timeTotalCost = try? container.decodeIfPresent(Double.self, forKey: .timeTotalCost) {
+            self.timeTotalCost = String(timeTotalCost)
+        } else {
+            self.timeTotalCost = nil
+        }
+        
+        if let driverLatitude = try? container.decodeIfPresent(String.self, forKey: .driverLatitude) {
+            self.driverLatitude = driverLatitude
+        } else if let driverLatitude = try? container.decodeIfPresent(Double.self, forKey: .driverLatitude) {
+            self.driverLatitude = String(driverLatitude)
+        } else {
+            self.driverLatitude = nil
+        }
+        
+        if let driverLongitude = try? container.decodeIfPresent(String.self, forKey: .driverLongitude) {
+            self.driverLongitude = driverLongitude
+        } else if let driverLongitude = try? container.decodeIfPresent(Double.self, forKey: .driverLongitude) {
+            self.driverLongitude = String(driverLongitude)
+        } else {
+            self.driverLongitude = nil
+        }
+        
+        if let driverBearing = try? container.decodeIfPresent(String.self, forKey: .driverBearing) {
+            self.driverBearing = driverBearing
+        } else if let driverBearing = try? container.decodeIfPresent(Double.self, forKey: .driverBearing) {
+            self.driverBearing = String(driverBearing)
+        } else {
+            self.driverBearing = nil
+        }
     }
 }
 
@@ -1406,5 +1528,140 @@ struct ExternalRequestResponseData: Codable {
         case message = "Message"
         case status = "Status"
         case commonWalletUniqueID = "CommonWalletUniqueID"
+    }
+}
+
+// MARK: - RedisTripStatus
+struct RedisTripStatus: Codable {
+    let status, tripStatus, tripID, paymentMode: String?
+    let liveFare, minimumFare, basePrice, perKM, timeTotalCost: Double?
+    let perMin: Double?
+    let distanceTotalCost: Double?
+    let paymentCodes, paymentCosts, message, dropOffLL: String?
+    let driverLongitude, driverLatitude, driverBearing: Double?
+    let distance, time, endTripOTP, et: String?
+    let ed: String?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case tripStatus = "TripStatus"
+        case tripID = "TripID"
+        case paymentMode = "PaymentMode"
+        case liveFare = "LiveFare"
+        case minimumFare = "MinimumFare"
+        case basePrice = "BasePrice"
+        case perKM = "PerKM"
+        case perMin = "PerMin"
+        case distanceTotalCost = "DistanceTotalCost"
+        case timeTotalCost = "TimeTotalCost"
+        case paymentCodes = "PaymentCodes"
+        case paymentCosts = "PaymentCosts"
+        case message = "Message"
+        case dropOffLL = "DropOffLL"
+        case driverLongitude = "DriverLongitude"
+        case driverLatitude = "DriverLatitude"
+        case driverBearing = "DriverBearing"
+        case distance = "Distance"
+        case time = "Time"
+        case endTripOTP = "EndTripOTP"
+        case et = "ET"
+        case ed = "ED"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.status = try? container.decodeIfPresent(String.self, forKey: .status)
+        self.tripStatus = try? container.decodeIfPresent(String.self, forKey: .tripStatus)
+        self.tripID = try? container.decodeIfPresent(String.self, forKey: .tripID)
+        self.paymentMode = try? container.decodeIfPresent(String.self, forKey: .paymentMode)
+        self.paymentCodes = try? container.decodeIfPresent(String.self, forKey: .paymentCodes)
+        self.paymentCosts = try? container.decodeIfPresent(String.self, forKey: .paymentCosts)
+        self.message = try? container.decodeIfPresent(String.self, forKey: .message)
+        self.dropOffLL = try? container.decodeIfPresent(String.self, forKey: .dropOffLL)
+        self.distance = try? container.decodeIfPresent(String.self, forKey: .distance)
+        self.time = try? container.decodeIfPresent(String.self, forKey: .time)
+        self.endTripOTP = try? container.decodeIfPresent(String.self, forKey: .endTripOTP)
+        self.et = try? container.decodeIfPresent(String.self, forKey: .et)
+        self.ed = try? container.decodeIfPresent(String.self, forKey: .ed)
+        
+        if let liveFare = try? container.decodeIfPresent(Double.self, forKey: .liveFare) {
+            self.liveFare = liveFare
+        } else if let liveFare = try? container.decodeIfPresent(String.self, forKey: .liveFare) {
+            self.liveFare = Double(liveFare)
+        } else {
+            self.liveFare = nil
+        }
+        
+        if let minimumFare = try? container.decodeIfPresent(Double.self, forKey: .minimumFare) {
+            self.minimumFare = minimumFare
+        } else if let minimumFare = try? container.decodeIfPresent(String.self, forKey: .minimumFare) {
+            self.minimumFare = Double(minimumFare)
+        } else {
+            self.minimumFare = nil
+        }
+        
+        if let basePrice = try? container.decodeIfPresent(Double.self, forKey: .basePrice) {
+            self.basePrice = basePrice
+        } else if let basePrice = try? container.decodeIfPresent(String.self, forKey: .basePrice) {
+            self.basePrice = Double(basePrice)
+        } else {
+            self.basePrice = nil
+        }
+        
+        if let perKM = try? container.decodeIfPresent(Double.self, forKey: .perKM) {
+            self.perKM = perKM
+        } else if let perKM = try? container.decodeIfPresent(String.self, forKey: .perKM) {
+            self.perKM = Double(perKM)
+        } else {
+            self.perKM = nil
+        }
+        
+        if let perMin = try? container.decodeIfPresent(Double.self, forKey: .perMin) {
+            self.perMin = perMin
+        } else if let perMin = try? container.decodeIfPresent(String.self, forKey: .perMin) {
+            self.perMin = Double(perMin)
+        } else {
+            self.perMin = nil
+        }
+        
+        if let distanceTotalCost = try? container.decodeIfPresent(Double.self, forKey: .distanceTotalCost) {
+            self.distanceTotalCost = distanceTotalCost
+        } else if let distanceTotalCost = try? container.decodeIfPresent(String.self, forKey: .distanceTotalCost) {
+            self.distanceTotalCost = Double(distanceTotalCost)
+        } else {
+            self.distanceTotalCost = nil
+        }
+        
+        if let timeTotalCost = try? container.decodeIfPresent(Double.self, forKey: .timeTotalCost) {
+            self.timeTotalCost = timeTotalCost
+        } else if let timeTotalCost = try? container.decodeIfPresent(String.self, forKey: .timeTotalCost) {
+            self.timeTotalCost = Double(timeTotalCost)
+        } else {
+            self.timeTotalCost = nil
+        }
+        
+        if let driverLatitude = try? container.decodeIfPresent(Double.self, forKey: .driverLatitude) {
+            self.driverLatitude = driverLatitude
+        } else if let driverLatitude = try? container.decodeIfPresent(String.self, forKey: .driverLatitude) {
+            self.driverLatitude = Double(driverLatitude)
+        } else {
+            self.driverLatitude = nil
+        }
+        
+        if let driverLongitude = try? container.decodeIfPresent(Double.self, forKey: .driverLongitude) {
+            self.driverLongitude = driverLongitude
+        } else if let driverLongitude = try? container.decodeIfPresent(String.self, forKey: .driverLongitude) {
+            self.driverLongitude = Double(driverLongitude)
+        } else {
+            self.driverLongitude = nil
+        }
+        
+        if let driverBearing = try? container.decodeIfPresent(Double.self, forKey: .driverBearing) {
+            self.driverBearing = driverBearing
+        } else if let driverBearing = try? container.decodeIfPresent(String.self, forKey: .driverBearing) {
+            self.driverBearing = Double(driverBearing)
+        } else {
+            self.driverBearing = nil
+        }
     }
 }

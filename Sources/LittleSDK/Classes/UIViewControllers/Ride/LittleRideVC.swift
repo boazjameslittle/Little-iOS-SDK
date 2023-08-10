@@ -4618,6 +4618,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         am.saveStillRequesting(data: false)
         
         let dataToSend = "{\"FormID\":\"GETREQUESTSTATUS\"\(commonCallParams()),\"GetRequestStatus\":{\"TripID\":\"\(am.getTRIPID() ?? "")\"}}"
+//        let datatosend = "FORMID|GETREQUESTSTATUS_V2|TRIPID|\(am.getTRIPID()!)|DEVICETOKEN|\(am.getDeviceToken()!)|GETET|N|"
         
         hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUSJSONData", switchnum: 0)
     
@@ -4733,9 +4734,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     am.saveTRIPSTATUS(data: "")
                 }
                 
+                printVal(object: "myTripStatus: \(am.getTRIPSTATUS())")
+                
                 loadMakeRequestStatus()
                 
-            } catch {}
+            } catch(let err) {printVal(object: "myTripStatus: \(err.localizedDescription)")}
         }
         
     }
