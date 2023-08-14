@@ -421,7 +421,7 @@ public class TripVC: UIViewController {
                             self.stopCheckingStatusUpdate()
                             self.am.saveTRIPID(data: "")
                             self.notificationMessage = "\(response.message ?? "Request successfully cancelled")"
-                            UNUserNotificationCenter.current().delegate = self
+//                            UNUserNotificationCenter.current().delegate = self
                             self.scheduleNotifications()
                             self.am.saveOnTrip(data: false)
                             
@@ -625,8 +625,8 @@ public class TripVC: UIViewController {
                 }
                 showDriverDetails()
                 notificationMessage = "Your ride is on the way."
-                UNUserNotificationCenter.current().delegate = self
-                // scheduleNotifications()
+//                UNUserNotificationCenter.current().delegate = self
+                 scheduleNotifications()
                 driverOnWay = true
             }
             lblPaymentMode.text = am.getPaymentMode()
@@ -647,7 +647,7 @@ public class TripVC: UIViewController {
                 driverArrived()
                 notificationMessage = "Your ride has arrived."
                 lblArrivalTime.text = "Your ride has arrived."
-                UNUserNotificationCenter.current().delegate = self
+//                UNUserNotificationCenter.current().delegate = self
                 scheduleNotifications()
                 arrived = true
             }
@@ -685,7 +685,7 @@ public class TripVC: UIViewController {
                 originMarker = nil
                 
                 notificationMessage = "Your trip is now in progress."
-                UNUserNotificationCenter.current().delegate = self
+//                UNUserNotificationCenter.current().delegate = self
                 scheduleNotifications()
                 
                 destinationChange = Double(am.getDISTANCE() ?? "0") ?? 0
@@ -732,7 +732,7 @@ public class TripVC: UIViewController {
             
             stopCheckingStatusUpdate()
             notificationMessage = "Your trip has ended."
-            UNUserNotificationCenter.current().delegate = self
+//            UNUserNotificationCenter.current().delegate = self
             scheduleNotifications()
             am.saveOnTrip(data: false)
            
@@ -749,8 +749,8 @@ public class TripVC: UIViewController {
             
             stopCheckingStatusUpdate()
             notificationMessage = "Your trip has ended."
-            UNUserNotificationCenter.current().delegate = self
-//            scheduleNotifications()
+//            UNUserNotificationCenter.current().delegate = self
+            scheduleNotifications()
             am.saveOnTrip(data: false)
             if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
                 if let navigator = self.navigationController {
@@ -766,8 +766,8 @@ public class TripVC: UIViewController {
             stopCheckingStatusUpdate()
             am.saveTRIPID(data: "")
             notificationMessage = "Your trip has ended."
-            UNUserNotificationCenter.current().delegate = self
-//            scheduleNotifications()
+//            UNUserNotificationCenter.current().delegate = self
+            scheduleNotifications()
             am.saveOnTrip(data: false)
             UIView.animate(withDuration: 1, delay:3, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
             }, completion: { finished in
@@ -779,7 +779,7 @@ public class TripVC: UIViewController {
             
             stopCheckingStatusUpdate()
             notificationMessage = "Your trip has ended."
-            UNUserNotificationCenter.current().delegate = self
+//            UNUserNotificationCenter.current().delegate = self
             scheduleNotifications()
             
             NotificationCenter.default.addObserver(self, selector: #selector(loadCancelRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
@@ -1529,7 +1529,7 @@ extension TripVC: GMSMapViewDelegate{
     
 }
 
-extension TripVC: UNUserNotificationCenterDelegate {
+/*extension TripVC: UNUserNotificationCenterDelegate {
     
     //for displaying notification when app is in foreground
     @available(iOS 10.0, *)
@@ -1555,4 +1555,4 @@ extension TripVC: UNUserNotificationCenterDelegate {
         completionHandler()
     }
     
-}
+}*/
