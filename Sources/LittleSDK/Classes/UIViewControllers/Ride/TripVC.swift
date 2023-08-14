@@ -750,7 +750,7 @@ public class TripVC: UIViewController {
             stopCheckingStatusUpdate()
             notificationMessage = "Your trip has ended."
             UNUserNotificationCenter.current().delegate = self
-            scheduleNotifications()
+//            scheduleNotifications()
             am.saveOnTrip(data: false)
             if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
                 if let navigator = self.navigationController {
@@ -767,7 +767,7 @@ public class TripVC: UIViewController {
             am.saveTRIPID(data: "")
             notificationMessage = "Your trip has ended."
             UNUserNotificationCenter.current().delegate = self
-            scheduleNotifications()
+//            scheduleNotifications()
             am.saveOnTrip(data: false)
             UIView.animate(withDuration: 1, delay:3, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
             }, completion: { finished in
