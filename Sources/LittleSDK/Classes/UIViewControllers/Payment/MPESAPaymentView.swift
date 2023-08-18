@@ -8,7 +8,7 @@
 import UIKit
 import NVActivityIndicatorView
 
-class MPESAPaymentView: UIViewController {
+public class MPESAPaymentView: UIViewController {
 
     // MARK: - Properties
     
