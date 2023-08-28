@@ -72,7 +72,11 @@ public class MPESAPaymentView: UIViewController {
     private var walletActionData = ""
     private var walletActionType = ""
     
-    override func viewDidLoad() {
+    deinit {
+        stopPaymentStatusTimer()
+    }
+    
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         btnBack = UIButton()
@@ -135,19 +139,14 @@ public class MPESAPaymentView: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopPaymentStatusTimer()
-    }
-    
-    deinit {
-        stopPaymentStatusTimer()
     }
     
     // MARK: - Visual Setup
@@ -468,6 +467,7 @@ public class MPESAPaymentView: UIViewController {
             do {
                 let response = try JSONDecoder().decode(ExternalRequestResponseData.self, from: data)
                 if response.status == "000" {
+                    stopPaymentStatusTimer()
                     self.navigationController?.popViewController(animated: true)
                     self.proceedAction?(response.commonWalletUniqueID ?? "")
                 }
