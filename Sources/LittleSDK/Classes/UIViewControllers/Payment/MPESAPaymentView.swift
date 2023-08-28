@@ -58,6 +58,7 @@ public class MPESAPaymentView: UIViewController {
     var proceedAction: ((_ commonWalletUniqueID: String) -> Void)?
     var backAction: (() -> Void)?
     var resendAction: (() -> Void)?
+    var failureAction: ((_ message: String) -> Void)?
     
     var wallet: Balance?
     var towallet: Balance?
@@ -374,11 +375,7 @@ public class MPESAPaymentView: UIViewController {
                     lblInstructions1.text = response.message
                     addExternalRequest()
                 } else {
-                    let message = response.message ?? ""
-                    self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
-                        self.navigationController?.popViewController(animated: true)
-                        self.backAction?()
-                    }
+                    showFailure(message: response.message ?? "Something went wrong.".localized)
                 }
             } catch (let error) {
                 self.showGeneralErrorAlert()
@@ -423,10 +420,7 @@ public class MPESAPaymentView: UIViewController {
                    startPaymentStatusTimer()
                 } else {
                     let message = response.message ?? ""
-                    self.showWarningAlert(message: message.isEmpty ? "Something went wrong.".localized : message, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
-                        self.navigationController?.popViewController(animated: true)
-                        self.backAction?()
-                    }
+                    showFailure(message: response.message ?? "Something went wrong.".localized)
                 }
             } catch (let error) {
                 self.showGeneralErrorAlert()
@@ -470,6 +464,9 @@ public class MPESAPaymentView: UIViewController {
                     stopPaymentStatusTimer()
                     self.navigationController?.popViewController(animated: true)
                     self.proceedAction?(response.commonWalletUniqueID ?? "")
+                } else if response.status == "092" {
+                    stopPaymentStatusTimer()
+                    showFailure(message: response.message ?? "")
                 }
             } catch (let error) {
                 printVal(object: "error: \(error.localizedDescription)")
@@ -487,6 +484,27 @@ public class MPESAPaymentView: UIViewController {
             timer?.invalidate()
             timer = nil
         }
+    }
+    
+    private func showFailure(message: String) {
+        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
+        let failureView = FailureView()
+        failureView.tag = -999999
+        failureView.lblMessage.text = message
+        self.view.addSubview(failureView)
+        NSLayoutConstraint.activate([
+            failureView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            failureView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            failureView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            failureView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 0)
+        ])
+        
+        failureView.btn.addTarget(self, action: #selector(handleFailureClick), for: .touchUpInside)
+    }
+    
+    @objc func handleFailureClick() {
+        self.navigationController?.popViewController(animated: true)
+        self.backAction?()
     }
 
 }
