@@ -68,6 +68,7 @@ public class MPESAPaymentView: UIViewController {
     private var totalAmount: Double = 0
     
     var requestUniqueID = ""
+    var formID = ""
     // MARK: - Init
     
     private var walletActionData = ""
@@ -104,7 +105,7 @@ public class MPESAPaymentView: UIViewController {
         let balance = towallet?.balance ?? 0
         totalAmount = (Double(amount) ?? 0)
         
-        lblAmount.text = SDKUtils.currencyFormatWithoutZero(totalAmount, currencyCode: am.getGLOBALCURRENCY() ?? "KES")
+        lblAmount.text = SDKUtils.numberFormat(totalAmount)
         
         opt2View.isHidden = true
         
@@ -378,7 +379,7 @@ public class MPESAPaymentView: UIViewController {
                     showFailure(message: response.message ?? "Something went wrong.".localized)
                 }
             } catch (let error) {
-                self.showGeneralErrorAlert()
+                showFailure(message: "Something went wrong.".localized)
                 printVal(object: "error: \(error.localizedDescription)")
             }
         }
@@ -395,7 +396,7 @@ public class MPESAPaymentView: UIViewController {
         let subParams: [String: Any] = [
             "Amount": totalAmount,
             "Message": "",
-            "FormID": "",
+            "FormID": formID,
             "UniqueID": requestUniqueID,
             "ActionType": walletActionType,
             "ActionData": walletActionData,
@@ -419,11 +420,11 @@ public class MPESAPaymentView: UIViewController {
                 if response.status == "000" {
                    startPaymentStatusTimer()
                 } else {
-                    let message = response.message ?? ""
-                    showFailure(message: response.message ?? "Something went wrong.".localized)
+                    let message = response.message ?? "Something went wrong.".localized
+                    showFailure(message: message)
                 }
             } catch (let error) {
-                self.showGeneralErrorAlert()
+                showFailure(message: "Something went wrong.".localized)
                 printVal(object: "error: \(error.localizedDescription)")
             }
         }
@@ -439,7 +440,7 @@ public class MPESAPaymentView: UIViewController {
         let subParams: [String: Any] = [
             "Amount": totalAmount,
             "Message": "",
-            "FormID": "",
+            "FormID": formID,
             "UniqueID": requestUniqueID,
             "ActionType": walletActionType,
             "ActionData": walletActionData,
@@ -469,6 +470,7 @@ public class MPESAPaymentView: UIViewController {
                     showFailure(message: response.message ?? "")
                 }
             } catch (let error) {
+                showFailure(message: "Something went wrong.".localized)
                 printVal(object: "error: \(error.localizedDescription)")
             }
         }
@@ -502,7 +504,7 @@ public class MPESAPaymentView: UIViewController {
         failureView.btn.addTarget(self, action: #selector(handleFailureClick), for: .touchUpInside)
     }
     
-    @objc func handleFailureClick() {
+    @objc private func handleFailureClick() {
         self.navigationController?.popViewController(animated: true)
         self.backAction?()
     }

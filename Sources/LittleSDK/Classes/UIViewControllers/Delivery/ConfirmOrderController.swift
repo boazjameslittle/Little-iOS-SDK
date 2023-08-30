@@ -100,6 +100,12 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        if selectedTheatre != nil {
+            formID = "MOVIETICKETS"
+        } else {
+            formID = "RESTAURANTDELIVERYITEMS"
+        }
+        
         sdkBundle = Bundle.module
 
         let nib = UINib.init(nibName: "MenuCell", bundle: sdkBundle!)

@@ -239,4 +239,27 @@ class SDKUtils {
         cf.groupingSeparator = ","
         return cf.string(for: amount)
     }
+
+    static func numberFormat(_ value: Float, maximumFractionDigits: Int = 0) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = maximumFractionDigits
+        numberFormatter.locale = Locale(identifier: "en")
+        return numberFormatter.string(from: NSNumber(value:value)) ?? ""
+    }
+
+    static func numberFormat(_ value: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.locale = Locale(identifier: "en")
+        return numberFormatter.string(from: NSNumber(value:value)) ?? ""
+    }
+
+    static func numberFormat(_ value: Double, maximumFractionDigits: Int = 0) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = maximumFractionDigits
+        numberFormatter.locale = Locale(identifier: "en")
+        return numberFormatter.string(from: NSNumber(value:value)) ?? ""
+    }
 }

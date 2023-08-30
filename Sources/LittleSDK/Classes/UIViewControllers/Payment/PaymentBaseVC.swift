@@ -11,6 +11,8 @@ public class PaymentBaseVC: BaseVC {
     private var am = SDKAllMethods()
     var pin = ""
     
+    var formID = ""
+    
     var paymentUniqueID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
     
     private var hc = SDKHandleCalls()
@@ -31,6 +33,7 @@ public class PaymentBaseVC: BaseVC {
 //        myWallets.filter({ $0.walletUniqueID == am.getWalletUniqueID()}).first
         if let commonWallet = mySelectedWallet {
             paymentPopUpVC = MPESAPaymentView()
+            paymentPopUpVC?.formID = formID
             
             guard let paymentPopUpVC = paymentPopUpVC else { return }
             paymentPopUpVC.requestUniqueID = paymentUniqueID
