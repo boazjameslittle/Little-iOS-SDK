@@ -335,6 +335,7 @@ public class MPESAPaymentView: UIViewController {
     }
     
     @objc func btnBackPressed(_ sender: UIButton) {
+        stopPaymentStatusTimer()
         self.navigationController?.popViewController(animated: true)
         self.backAction?()
     }
@@ -505,6 +506,7 @@ public class MPESAPaymentView: UIViewController {
     }
     
     @objc private func handleFailureClick() {
+        stopPaymentStatusTimer()
         self.navigationController?.popViewController(animated: true)
         self.backAction?()
     }
