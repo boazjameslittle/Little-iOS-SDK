@@ -158,14 +158,23 @@ public extension UIDevice {
 
 extension GMSMapView {
     func showMapStyleForView() {
+        printVal(object: "isDark: \(UIApplication.topViewController()?.traitCollection.userInterfaceStyle == .dark)")
         do {
-            if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-                self.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+            if UIApplication.topViewController()?.traitCollection.userInterfaceStyle == .dark {
+                if let styleURL = Bundle.module.url(forResource: "darkmode", withExtension: "json") {
+                    self.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+                } else {
+                    printVal(object: "Unable to find style.json")
+                }
             } else {
-                NSLog("Unable to find style.json")
+                if let styleURL = Bundle.module.url(forResource: "style", withExtension: "json") {
+                    self.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+                } else {
+                    printVal(object: "Unable to find style.json")
+                }
             }
         } catch {
-            NSLog("One or more of the map styles failed to load. \(error)")
+            printVal(object:"One or more of the map styles failed to load. \(error)")
         }
     }
 }

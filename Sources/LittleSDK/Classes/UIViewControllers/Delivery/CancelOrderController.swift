@@ -39,7 +39,7 @@ public class CancelOrderController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadCancelOrder),name:NSNotification.Name(rawValue: "DELETEDELIVERYFoodDelivery"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"DELETEDELIVERY\"\(commonCallParams()),\"GetRestaurantMenu\":{\"DeliveryTripID\":\"\(deliveryID ?? "")\",\"Message\":\"\(txtReason.text!)\"}}"
+        let dataToSend = "{\"FormID\":\"DELETEDELIVERY\"\(commonCallParams()),\"GetRestaurantMenu\":{\"DeliveryTripID\":\"\(deliveryID ?? "")\",\"Reason\":\"\(txtReason.text!)\"}}"
         
         hc.makeServerCall(sb: dataToSend, method: "DELETEDELIVERYFoodDelivery", switchnum: 0)
         

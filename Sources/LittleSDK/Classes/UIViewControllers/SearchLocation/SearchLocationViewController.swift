@@ -12,13 +12,11 @@ import CoreLocation
 
 private let reuseIdentifier = "locationCell"
 
-public class SearchLocationViewController: UIViewController {
+class SearchLocationViewController: UIViewController {
 
     // MARK: - Properties
     
     let am = SDKAllMethods()
-    
-    var sdkBundle: Bundle?
     
     var noLocationsView: UIView!
     var imgNoLocations: UIImageView!
@@ -36,7 +34,7 @@ public class SearchLocationViewController: UIViewController {
     
     var locationSearch = ""
     var isOSM = true
-    var isFirstLoad = true
+    var initialLoad = true
     var keyBoardHeight = CGFloat(0)
     
     var searchController = UISearchController(searchResultsController: nil)
@@ -59,31 +57,33 @@ public class SearchLocationViewController: UIViewController {
     var cancelAction: (() -> Void)?
     var proceedAction: (() -> Void)?
     
+    var country = ""
+    var city = ""
+    var currentSearchLocation = ""
+    
     // MARK: - Init
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
-        sdkBundle = Bundle.module
-        
         configureUI()
+        
+//        changeNavBarAppearance(isLightContent: false)
         
     }
     
     // MARK: - Handlers
     
     func configureUI() {
-        guard let sdkBundle = sdkBundle else { return }
         
         configureSearch()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        view.backgroundColor = .white
+        view.backgroundColor = .littleCellBackgrounds
         
-        navigationItem.title = "Search Location"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.title = "Search Location".localized
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
         
         noLocationsView = UIView()
         view.addSubview(noLocationsView)
@@ -95,7 +95,7 @@ public class SearchLocationViewController: UIViewController {
         noLocationsView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         imgNoLocations = UIImageView()
-        imgNoLocations.image = getImage(named: "no_record", bundle: sdkBundle)
+        imgNoLocations.image = getImage(named: "no_record")
         noLocationsView.addSubview(imgNoLocations)
         
         imgNoLocations.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ public class SearchLocationViewController: UIViewController {
         lblNoLocations = UILabel()
         lblNoLocations.textColor = UIColor(named: "appLabel")
         lblNoLocations.font = UIFont(name: "Avenir-Medium", size: 14.0)
-        lblNoLocations.text = "Kindly type a search query."
+        lblNoLocations.text = "Kindly type a search query.".localized
         noLocationsView.addSubview(lblNoLocations)
         
         lblNoLocations.translatesAutoresizingMaskIntoConstraints = false
@@ -132,13 +132,73 @@ public class SearchLocationViewController: UIViewController {
         printVal(object: littlePredictionsArr)
         
         tableView.reloadData()
+        tableHeightSet()
+        
+        if initialLoad {
+            initialLoad = false
+            searchController.isActive = true
+        }
         
         if littlePredictionsArr.count == 0 {
-            lblNoLocations.text = "Kindly type a different search query."
+            lblNoLocations.text = "Kindly type a different search query.".localized
             noLocationsView.isHidden = false
         }
         
-        isOSM = am.getIsOSM()
+//        isOSM = am.getIsOSM()
+    }
+    
+    func viewClosed() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func changeNavBarAppearance(isLightContent: Bool, isTranslucent: Bool = false) {
+        
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            
+            if isTranslucent {
+                navBarAppearance.configureWithTransparentBackground()
+                navBarAppearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+            } else {
+                navBarAppearance.configureWithOpaqueBackground()
+            }
+            
+            if isLightContent {
+                navBarAppearance.configureWithOpaqueBackground()
+                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleWhite]
+                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleWhite]
+                navigationController?.navigationBar.standardAppearance = navBarAppearance
+                navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            } else {
+                navBarAppearance.configureWithOpaqueBackground()
+                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleLabelColor]
+                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleLabelColor]
+                navigationController?.navigationBar.standardAppearance = navBarAppearance
+                navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            }
+        } else {
+            if isTranslucent {
+                navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+                navigationController?.navigationBar.shadowImage = UIImage()
+            }
+        }
+        
+        if isLightContent {
+            navigationController?.navigationBar.isTranslucent = false
+            navigationController?.navigationBar.tintColor = .littleWhite
+            navigationController?.navigationBar.barTintColor = .littleBlue
+            navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                                                       .foregroundColor: UIColor.littleWhite]
+        } else {
+            navigationController?.navigationBar.isTranslucent = false
+            navigationController?.navigationBar.tintColor = .littleLabelColor
+            navigationController?.navigationBar.barTintColor = .littleWhite
+            navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                                                       .foregroundColor: UIColor.littleBlue]
+        }
     }
     
     func configureTableView() {
@@ -151,21 +211,20 @@ public class SearchLocationViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
-        tableView.rowHeight = 80
+        tableView.rowHeight = 100
         
         view.addSubview(tableView)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
-        tableViewHeight = tableView.heightAnchor.constraint(equalToConstant: 0)
-        tableViewHeight.isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         
         view.bringSubviewToFront(noLocationsView)
         
         imgPoweredBy = UIImageView()
-        imgPoweredBy.image = getImage(named: "poweredbygoogle", bundle: sdkBundle!)
+        imgPoweredBy.image = getImage(named: "poweredbygoogle")
         imgPoweredBy.contentMode = .scaleAspectFit
         view.addSubview(imgPoweredBy)
         
@@ -179,16 +238,18 @@ public class SearchLocationViewController: UIViewController {
         locationCoordsArr = am.getRecentPlacesCoords()
         
         whenSearchQueryEmpty()
-        tableHeightSet()
+        
     }
     
     func configureSearch() {
-        searchController.searchBar.backgroundColor = navigationController?.navigationBar.backgroundColor
-        searchController.searchBar.tintColor = .darkGray
-        searchController.searchBar.barStyle = .default
+        navigationController?.navigationBar.backgroundColor = .littleCellBackgrounds
+        navigationController?.navigationBar.barTintColor = .littleCellBackgrounds
+        searchController.searchBar.backgroundColor = .littleCellBackgrounds
+        searchController.searchBar.tintColor = .white
+        searchController.searchBar.barStyle = .black
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Location"
+        searchController.searchBar.placeholder = "Search Location".localized
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
@@ -198,12 +259,10 @@ public class SearchLocationViewController: UIViewController {
         
         var tableHeight = CGFloat(0)
         
-        printVal(object: littlePredictionsArr.count)
-        printVal(object: locationPredictionsArr.count)
-        
         if isOSM {
             for i in (0..<littlePredictionsArr.count) {
                 let frame = tableView.rectForRow(at: IndexPath(item: i, section: 0))
+                printVal(object: frame.size.height)
                 tableHeight = tableHeight + (frame.size.height)
             }
         } else {
@@ -214,36 +273,55 @@ public class SearchLocationViewController: UIViewController {
             }
         }
         
-        tableHeight = (view.bounds.height - (70 + keyBoardHeight))
+        if tableHeight > (view.bounds.height - (100 + keyBoardHeight)) {
+            tableHeight = (view.bounds.height - (100 + keyBoardHeight))
+        }
         
-        tableViewHeight.constant = tableHeight
+//        tableViewHeight.constant = tableHeight
+        
+        printVal(object: "My Table Height: \(tableHeight)")
         
     }
     
     func locationTapped(index: Int) {
-        let littleLocation = littlePredictionsArr[index]
-        var placeDets = ""
-        if littleLocation.street != nil && littleLocation.street != "" {
-            placeDets = littleLocation.street!
-        } else {
-            placeDets = "\(littleLocation.city ?? ""), \(littleLocation.state ?? "")"
+        if index < littlePredictionsArr.count {
+            let littleLocation = littlePredictionsArr[index]
+            printVal(object: "littleLocation: \(littleLocation)")
+            var placeDets = ""
+            if littleLocation.street != nil && littleLocation.street != "" {
+                placeDets = littleLocation.street!
+            } else {
+                placeDets = "\(littleLocation.city ?? ""), \(littleLocation.state ?? "")"
+            }
+            let latlng = littleLocation.latlng?.trimmingCharacters(in: .whitespaces) ?? ""
+            let latlngComponents = latlng.components(separatedBy: ",")
+            if latlngComponents.count > 1 {
+                let lat = latlngComponents[0]
+                let long = latlngComponents[1]
+                let unique_id = NSUUID().uuidString
+                selectedLocation = LocationSetSDK(id: unique_id, name: (littleLocation.predictionDescription ?? "").cleanLocationNames(), subname: placeDets, latitude: lat, longitude: long, phonenumber: "", instructions: "")
+                self.dismiss(animated: true) {
+                    self.viewClosed()
+                    self.proceedAction?()
+                }
+            } else {
+                let id = littleLocation.id
+                if id != nil {
+                    getPlaceDetails(placename: littleLocation.predictionDescription ?? placeDets, placeID: "\(id!)")
+                }
+            }
         }
         
-        let latlng = littleLocation.latlng?.trimmingCharacters(in: .whitespaces) ?? ""
-        let latlngComponents = latlng.components(separatedBy: ",")
-        if latlngComponents.count > 1 {
-            let lat = littleLocation.latlng?.components(separatedBy: ",")[safe: 0] ?? "0"
-            let long = littleLocation.latlng?.components(separatedBy: ",")[safe: 1] ?? "0"
-            let unique_id = NSUUID().uuidString
-            selectedLocation = LocationSetSDK(id: unique_id, name: littleLocation.predictionDescription ?? "", subname: placeDets, latitude: lat, longitude: long, phonenumber: "", instructions: "")
-            self.dismiss(animated: true) {
-                self.viewClosed()
-                self.proceedAction?()
-            }
-        } else {
-            let id = littleLocation.id
-            if id != nil {
-                getPlaceDetails(placename: littleLocation.predictionDescription ?? placeDets, placeID: "\(id!)")
+    }
+    
+    func locationTappedGoogle(index: Int) {
+        if index < locationPredictionsArr.count {
+            let littleLocation = locationPredictionsArr[index]
+            printVal(object: "littleLocation: \(littleLocation)")
+            
+            let id = littleLocation.placeID ?? ""
+            if !id.isEmpty {
+                getPlaceDetails(placename: littleLocation.predictionDescription ?? "", placeID: id)
             }
         }
         
@@ -265,18 +343,13 @@ public class SearchLocationViewController: UIViewController {
         }
     }
     
-    func viewClosed() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
     @objc func filterContentForSearchText() {
-        callLittleServers()
-//        if isOSM {
-//            callLittleServers()
-//        } else {
-//            callGoogleServers()
-//        }
+        callGoogleServers()
+        /*if am.getIsOSM() {
+            callLittleServers()
+        } else {
+            callGoogleServers()
+        }*/
     }
     
     @objc func handleDismiss() {
@@ -287,23 +360,26 @@ public class SearchLocationViewController: UIViewController {
     }
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        keyBoardHeight = getKeyboardHeight(notification) - 30
-        tableHeightSet()
+        DispatchQueue.main.async {
+            self.keyBoardHeight = self.getKeyboardHeight(notification) - 30
+            self.tableHeightSet()
+        }
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        keyBoardHeight = 0
-        tableHeightSet()
-        
+        DispatchQueue.main.async {
+            self.keyBoardHeight = 0
+            self.tableHeightSet()
+        }
     }
     
     // MARK: - Server Calls
     
     func callLittleServers() {
-        
-        let escapedString = locationSearch.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        
-        guard let url = URL(string: "https://maps.little.bz/api/v2/places?q=\(escapedString ?? "")&location=\(am.getCurrentLocation() ?? "0.0,0.0")&city=&country=&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))") else { return }
+                
+        let escapedString = locationSearch
+                
+        guard let url = URL(string: "https://maps.little.africa/api/v2/places?q=\(escapedString)&location=\(currentSearchLocation.isEmpty ? (am.getCurrentLocation() ?? "") : currentSearchLocation)&city=\(city.isEmpty ? (am.getCity() ?? "") : city)&country=\(country.isEmpty ? (am.getCountry() ?? "") : country)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))") else { return }
         
         printVal(object: "URL: \(url)")
 
@@ -316,6 +392,7 @@ public class SearchLocationViewController: UIViewController {
                     if locationPredictions.success ?? false {
                         if locationPredictions.predictions?.count ?? 0 > 0 {
                             self.littlePredictionsArr = locationPredictions.predictions ?? []
+                            self.isOSM = true
                             printVal(object: "Locations: \(locationPredictions)")
                             self.noLocationsView.isHidden = true
                         } else {
@@ -335,7 +412,6 @@ public class SearchLocationViewController: UIViewController {
                     self.stopLoadingResults()
                     self.littlePredictionsArr.removeAll()
                     self.whenSearchQueryEmpty()
-                    self.tableHeightSet()
                 }
             }
         }
@@ -345,10 +421,13 @@ public class SearchLocationViewController: UIViewController {
     }
     
     func callGoogleServers() {
+//        let locale = Locale(identifier: Locale.current.languageCode ?? "en")
+//        let countryCode = locale.countryCode(by: country.isEmpty ? (am.getCountry() ?? "") : country) ?? ""
+//        printObject("region", countryCode)
         
         let escapedString = locationSearch.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         let theReal = am.DecryptDataKC(DataToSend: cn.placesKey) as String
-        guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=\(escapedString ?? "")&types=geocode&location=\(am.getCurrentLocation() ?? "0.0,0.0")&radius=500&key=\(theReal)") else { return }
+        let url = URL(string: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=\(escapedString ?? "")&location=\(currentSearchLocation.isEmpty ? (am.getCurrentLocation() ?? "") : currentSearchLocation)&radius=5000&key=\(theReal)")!
 
         printVal(object: "URL: \(url)")
         
@@ -361,6 +440,7 @@ public class SearchLocationViewController: UIViewController {
                     switch locationPredictions.status {
                     case "OK":
                         self.locationPredictionsArr = locationPredictions.predictions ?? []
+                        self.isOSM = false
                         printVal(object: "Locations: \(locationPredictions)")
                         self.noLocationsView.isHidden = true
                     case "ZERO_RESULTS":
@@ -368,11 +448,11 @@ public class SearchLocationViewController: UIViewController {
                         self.whenSearchQueryEmpty()
                     case "REQUEST_DENIED":
                         self.locationPredictionsArr.removeAll()
-                        self.lblNoLocations.text = "Kindly contact Little if this error persists\n\(locationPredictions.error_message ?? "")"
+                        self.lblNoLocations.text = "Kindly contact Little if this error persists".localized + "\n\(locationPredictions.error_message ?? "")"
                         self.noLocationsView.isHidden = false
                     default:
                         self.locationPredictionsArr.removeAll()
-                        self.lblNoLocations.text = "\(locationPredictions.error_message ?? "Kindly type a different search query.")"
+                        self.lblNoLocations.text = "\(locationPredictions.error_message ?? "Kindly type a different search query.".localized)"
                         self.noLocationsView.isHidden = false
                     }
                     self.tableView.reloadData()
@@ -384,7 +464,6 @@ public class SearchLocationViewController: UIViewController {
                     self.stopLoadingResults()
                     self.locationPredictionsArr.removeAll()
                     self.whenSearchQueryEmpty()
-                    self.tableHeightSet()
                 }
             }
         }
@@ -398,7 +477,7 @@ public class SearchLocationViewController: UIViewController {
         
         let theReal = am.DecryptDataKC(DataToSend: cn.placesKey) as String
         let placeIDString = placeID.replacingOccurrences(of: "string(\"", with: "").replacingOccurrences(of: "\")", with: "")
-        guard let url = URL(string: "https://maps.googleapis.com/maps/api/geocode/json?place_id=\(placeIDString)&key=\(theReal)") else { return }
+        let url = URL(string: "https://maps.googleapis.com/maps/api/geocode/json?place_id=\(placeIDString)&key=\(theReal)")!
         
         printVal(object: "URL: \(url)")
         
@@ -410,17 +489,16 @@ public class SearchLocationViewController: UIViewController {
                     printVal(object: "Location: \(placeDetails)")
                     self.view.removeAnimation()
                     if placeDetails.status == "OK" {
-                        let lat = placeDetails.results?[safe: 0]?.geometry?.location?.lat ?? 0.0
-                        let long = placeDetails.results?[safe: 0]?.geometry?.location?.lng ?? 0.0
+                        let lat = placeDetails.results?[0].geometry?.location?.lat ?? 0.0
+                        let long = placeDetails.results?[0].geometry?.location?.lng ?? 0.0
                         let unique_id = NSUUID().uuidString
-                        self.selectedLocation = LocationSetSDK(id: unique_id, name: placename, subname: placeDetails.results?[safe: 0]?.addressComponents?[safe: 0]?.longName ?? "", latitude: "\(lat)", longitude: "\(long)", phonenumber: "", instructions: "")
-                        
+                        self.selectedLocation = LocationSetSDK(id: unique_id, name: placename.cleanLocationNames(), subname: placeDetails.results?[0].addressComponents?[0].longName ?? "", latitude: "\(lat)", longitude: "\(long)", phonenumber: "", instructions: "")
                         self.dismiss(animated: true) {
                             self.viewClosed()
                             self.proceedAction?()
                         }
-                        
                     } else {
+                        printVal(object: "Geocode Error")
                         self.dismiss(animated: true) {
                             self.viewClosed()
                             self.cancelAction?()
@@ -440,15 +518,15 @@ public class SearchLocationViewController: UIViewController {
 
 extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSource {
     
-    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isOSM {
             return littlePredictionsArr.count
         } else {
@@ -456,11 +534,14 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationsCell
         
         cell.layoutIfNeeded()
+        
+        cell.mainView.leftAnchor.constraint(equalTo: cell.leftAnchor).isActive = true
+        cell.mainView.rightAnchor.constraint(equalTo: cell.rightAnchor).isActive = true
         
         if isOSM {
             let littleLocation = littlePredictionsArr[indexPath.item]
@@ -484,31 +565,43 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isFiltering {
             navigationItem.searchController?.dismiss(animated: true, completion: {
-                self.locationTapped(index: indexPath.item)
+                DispatchQueue.main.async {
+                    if self.isOSM {
+                        self.locationTapped(index: indexPath.item)
+                    } else {
+                        self.locationTappedGoogle(index: indexPath.item)
+                    }
+                }
             })
         } else {
-            self.locationTapped(index: indexPath.item)
+            DispatchQueue.main.async {
+                if self.isOSM {
+                    self.locationTapped(index: indexPath.item)
+                } else {
+                    self.locationTappedGoogle(index: indexPath.item)
+                }
+            }
         }
     }
 }
 
 extension SearchLocationViewController: UISearchResultsUpdating {
-    public func updateSearchResults(for searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         if searchBar.text != "" && locationSearch != searchBar.text && (searchBar.text?.count ?? 0) > 2 {
             startLoadingResults()
             locationSearch = searchBar.text!
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(filterContentForSearchText), object: nil)
             self.perform(#selector(filterContentForSearchText), with: nil, afterDelay: 0.7)
-        } else if !isFirstLoad {
+        } else {
             stopLoadingResults()
     
             if (searchBar.text?.count ?? 0) <= 2 && searchBar.text != "" {
                 
-                let arr = littlePredictionsArr.filter({ ($0.predictionDescription?.contains(searchBar.text ?? "")) == true })
+                let arr = littlePredictionsArr.filter({ ($0.predictionDescription?.contains(searchBar.text!))! })
                 self.littlePredictionsArr = arr
                 self.tableView.reloadData()
                 self.tableHeightSet()
@@ -518,12 +611,10 @@ extension SearchLocationViewController: UISearchResultsUpdating {
                 self.locationPredictionsArr.removeAll()
                 self.littlePredictionsArr.removeAll()
                 self.tableView.reloadData()
-                self.whenSearchQueryEmpty()
                 self.tableHeightSet()
+                self.whenSearchQueryEmpty()
                 
             }
-        } else {
-            isFirstLoad = false
         }
         
     }

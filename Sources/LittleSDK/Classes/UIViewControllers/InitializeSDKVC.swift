@@ -133,7 +133,7 @@ public class InitializeSDKVC: UIViewController {
         ]
 
         let parameters = [String: String]()
-
+        
         AF.request("\(string)",
                    method: .post,
                    parameters: parameters,
@@ -144,6 +144,7 @@ public class InitializeSDKVC: UIViewController {
             
             
             if data != nil {
+                printVal(object: "data: \(String(data: data!, encoding: .utf8))")
                 do {
                                         
                     let sdkData = try JSONDecoder().decode(SDKData.self, from: data!)

@@ -38,6 +38,7 @@ let package = Package(
             resources: [
                 .process("Assets/sparkle.wav"),
                 .process("Assets/style.json"),
+                .process("Assets/darkmode.json"),
                 .process("Assets/Localizable.strings")
             ]),
         .testTarget(
