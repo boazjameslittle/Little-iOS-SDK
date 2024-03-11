@@ -245,7 +245,7 @@ class SearchLocationViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .littleCellBackgrounds
         navigationController?.navigationBar.barTintColor = .littleCellBackgrounds
         searchController.searchBar.backgroundColor = .littleCellBackgrounds
-        searchController.searchBar.tintColor = .white
+        searchController.searchBar.tintColor = .littleLabelColor
         searchController.searchBar.barStyle = .black
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -253,6 +253,10 @@ class SearchLocationViewController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+
+        textFieldInsideSearchBar?.textColor = .littleLabelColor
     }
     
     func tableHeightSet() {
