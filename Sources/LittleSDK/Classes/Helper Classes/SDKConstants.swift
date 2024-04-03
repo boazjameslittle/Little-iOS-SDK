@@ -16,8 +16,8 @@ class SDKConstants {
         
     var live = "lwCGahusOkXBoFnNKoWjOBPsuG6cAX5Cs5CUstPbKEUNzjKRzPKBQSemVIVw+PIu"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
-    var mapsKey = "H+9x5dNgB0X7+tCZaCwKe9SbL0rG7i55NxDxQ+LReuubZ+nLUyINNG70bIAgqkME"
-    var placesKey = "qn89yrVStFuJG6EEqugAV92lsc77lTXy1DeXZWhu3/4SZH6ASWxUB4zepBJ9TMrW"
+    var mapsKey = "vdQEvjOXQir20oZY7ARDCVk/IZ0zf9mJptA3YxtrpEeuwVsYmtgKAKViH6wWYu3H"
+    var placesKey = "vdQEvjOXQir20oZY7ARDCVk/IZ0zf9mJptA3YxtrpEeuwVsYmtgKAKViH6wWYu3H"
     var littleMapKey = "/iPGWhGGttczgqTb/ZAXW8KcCKzPlbe259mm7o2VnHAuzftRz+s6VHkH5LguC1WK"
     
     init(){
@@ -45,11 +45,15 @@ class SDKConstants {
 //    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
     // Vooma
     static var littleSDKThemeColor = UIColor(hex: "#891755")
+    // rafiki
+//    static var littleSDKThemeColor = UIColor(hex: "#136EAF")
     
     // Equity
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+    // rafiki
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#136EAF")
     
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")

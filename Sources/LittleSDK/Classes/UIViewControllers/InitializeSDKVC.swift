@@ -121,7 +121,6 @@ public class InitializeSDKVC: UIViewController {
     }
     
     func initializeSDK() {
-        
         let string = am.DecryptDataKC(DataToSend: cn.link()) as String
                 
         let headers: HTTPHeaders = [

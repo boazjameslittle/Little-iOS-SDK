@@ -1734,7 +1734,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func drawPath() {
-        goLocalMultiple()
+        goGoogleMultiple()
 //        if am.getCountry()?.uppercased() == "KENYA" {
 //            goLocalMultiple()
 //        } else {
@@ -1770,6 +1770,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
         
         let directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)\(waypoints)&mode=driving&key=\(am.DecryptDataKC(DataToSend: cn.mapsKey))"
+        
+        printVal(object: "Directions: \(directionURL)")
         
         let url = URL(string: directionURL)
         URLSession.shared.dataTask(with:url!) { (data, response, error) in
