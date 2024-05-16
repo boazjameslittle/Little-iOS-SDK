@@ -545,7 +545,7 @@ extension UIViewController {
             if isLightContent {
                 let navBarAppearance = UINavigationBarAppearance()
                 navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.backgroundColor = .themeColor
                 navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navigationController?.navigationBar.standardAppearance = navBarAppearance
@@ -554,8 +554,8 @@ extension UIViewController {
                 let navBarAppearance = UINavigationBarAppearance()
                 navBarAppearance.configureWithOpaqueBackground()
                 navBarAppearance.backgroundColor = .littleWhite
-                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleBlue]
-                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleBlue]
+                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.themeColor]
+                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.themeColor]
                 navigationController?.navigationBar.standardAppearance = navBarAppearance
                 navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
             }
@@ -564,15 +564,15 @@ extension UIViewController {
         if isLightContent {
             navigationController?.navigationBar.isTranslucent = false
             navigationController?.navigationBar.tintColor = .littleWhite
-            navigationController?.navigationBar.barTintColor = .littleBlue
+            navigationController?.navigationBar.barTintColor = .themeColor
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
                                                                        .foregroundColor: UIColor.littleWhite]
         } else {
             navigationController?.navigationBar.isTranslucent = false
-            navigationController?.navigationBar.tintColor = .littleBlue
+            navigationController?.navigationBar.tintColor = .themeColor
             navigationController?.navigationBar.barTintColor = .littleWhite
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
-                                                                       .foregroundColor: UIColor.littleBlue]
+                                                                       .foregroundColor: UIColor.themeColor]
         }
     }
     
@@ -903,7 +903,7 @@ extension UIColor {
     
     static let littleCellBackgrounds = UIColor(named: "littleCellBackgrounds", in: Bundle.module, compatibleWith: nil)!
     
-    static let littleBlue = UIColor(named: "littleBlue", in: Bundle.module, compatibleWith: nil)!
+//    static let themeColor = UIColor(named: "themeColor", in: Bundle.module, compatibleWith: nil)!
     
     static let littleLabelColor = UIColor(named: "littleLabelColor", in: Bundle.module, compatibleWith: nil)!
     
@@ -915,6 +915,16 @@ extension UIColor {
     static let littleWhite = UIColor(named: "littleWhite", in: Bundle.module, compatibleWith: nil)!
     
     static let littleBlack = UIColor(named: "littleBlack", in: Bundle.module, compatibleWith: nil)!
+    
+    static var themeColor: UIColor = {
+        if let color  = UIColor(named: "LittleSDKThemeColor", in: Bundle.main, compatibleWith: nil) {
+            return color
+        }
+        
+        return UIColor(named: "LittleSDKThemeColor", in: Bundle.module, compatibleWith: nil)!
+    }()
+    
+    static let skyBlueLight = UIColor(named: "ColorSkyBlueLight", in: Bundle.module, compatibleWith: nil)!
 }
 
 extension UIImage {

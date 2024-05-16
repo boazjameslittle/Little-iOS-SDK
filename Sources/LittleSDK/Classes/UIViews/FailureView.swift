@@ -55,9 +55,9 @@ class FailureView: UIView {
     private(set) var btn: OutlinedButton =  {
         let view = OutlinedButton(height: 38)
         view.setTitle("Back".localized, for: .normal)
-        view.borderColor = .littleBlue
+        view.borderColor = .themeColor
         view.viewCornerRadius = 19
-        view.setTitleColor(.littleBlue, for: .normal)
+        view.setTitleColor(.themeColor, for: .normal)
         view.inset = NSDirectionalEdgeInsets(top: 0, leading: 40, bottom: 0, trailing: 40)
         
         return view

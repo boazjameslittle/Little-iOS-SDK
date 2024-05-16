@@ -61,13 +61,13 @@ class OutlinedButton: UIButton {
         self.backgroundColor = .clear
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isUserInteractionEnabled = true
-        self.setTitleColor(.littleBlue, for: .normal)
+        self.setTitleColor(.themeColor, for: .normal)
         self.setTitleColor(.darkGray, for: .highlighted)
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 10
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: height).activate()
-        self.layer.borderColor = UIColor.littleBlue.cgColor
+        self.layer.borderColor = UIColor.themeColor.cgColor
         self.layer.borderWidth = 1
         
         if #available(iOS 15.0, *) {

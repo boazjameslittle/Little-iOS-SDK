@@ -96,7 +96,7 @@ class TheatrePicker: UIViewController {
             lblPayment.text = each.name ?? ""
             lblPayment.font = .systemFont(ofSize: 16, weight: .bold)
             lblPayment.textAlignment = .left
-            lblPayment.textColor = .littleBlue
+            lblPayment.textColor = .themeColor
             lblPayment.numberOfLines = 0
             
             optionView.addSubview(lblPayment)

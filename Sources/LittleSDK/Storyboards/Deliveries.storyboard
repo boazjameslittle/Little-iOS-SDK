@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -29,7 +30,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meb-Qj-xhm">
-                                <rect key="frame" x="0.0" y="143" width="320" height="361"/>
+                                <rect key="frame" x="0.0" y="118" width="320" height="386"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Oq2-DA-8gy">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -58,7 +59,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Special Offers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGT-1f-vIT">
                                                         <rect key="frame" x="16" y="4" width="288" height="20.5"/>
                                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="17"/>
-                                                        <color key="textColor" name="littleBlueInverse"/>
+                                                        <color key="textColor" name="LittleSDKThemeColorInverse"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QMX-3A-d5t">
@@ -142,17 +143,17 @@
                                 </constraints>
                             </scrollView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropoff_location" translatesAutoresizingMaskIntoConstraints="NO" id="H6E-MO-nsc">
-                                <rect key="frame" x="67" y="88.5" width="25" height="25"/>
+                                <rect key="frame" x="67" y="78.5" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="c6S-92-DKA"/>
                                     <constraint firstAttribute="height" constant="25" id="uEK-du-DPk"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="bEg-Fa-5zq">
-                                <rect key="frame" x="96" y="84" width="128" height="34"/>
+                                <rect key="frame" x="96" y="74" width="128" height="34"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="18"/>
                                 <state key="normal" title="Choose Location">
-                                    <color key="titleColor" name="littleBlueInverse"/>
+                                    <color key="titleColor" name="littleLabelColor"/>
                                 </state>
                                 <connections>
                                     <action selector="btnLocationPressed:" destination="yQ2-Dh-Oru" eventType="touchUpInside" id="7oW-Vk-VY2"/>
@@ -160,20 +161,20 @@
                                 </connections>
                             </button>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drop_down" translatesAutoresizingMaskIntoConstraints="NO" id="TA4-WI-gdZ">
-                                <rect key="frame" x="228" y="91" width="20" height="20"/>
+                                <rect key="frame" x="228" y="81" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="Fot-D1-2wN"/>
                                     <constraint firstAttribute="height" constant="20" id="xVd-Vw-3Ti"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JMR-lR-ahj">
-                                <rect key="frame" x="50" y="128" width="254" height="0.0"/>
+                                <rect key="frame" x="50" y="103" width="254" height="0.0"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kh-5g-Zlh">
-                                <rect key="frame" x="16" y="113" width="30" height="30"/>
+                                <rect key="frame" x="16" y="88" width="30" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="ENA-97-Iap"/>
@@ -220,7 +221,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rLq-6r-o8S">
                                 <rect key="frame" x="16" y="512" width="288" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Oga-s7-yJX"/>
                                 </constraints>
@@ -245,7 +246,7 @@
                             <constraint firstItem="H6E-MO-nsc" firstAttribute="centerY" secondItem="bEg-Fa-5zq" secondAttribute="centerY" id="8S1-UQ-fU2"/>
                             <constraint firstItem="9kh-5g-Zlh" firstAttribute="leading" secondItem="C4h-gA-0SR" secondAttribute="leading" constant="16" id="8tU-ff-UiA"/>
                             <constraint firstItem="TA4-WI-gdZ" firstAttribute="centerY" secondItem="bEg-Fa-5zq" secondAttribute="centerY" id="EgW-qo-3QV"/>
-                            <constraint firstItem="bEg-Fa-5zq" firstAttribute="top" secondItem="C4h-gA-0SR" secondAttribute="top" constant="20" id="FTG-XJ-Vgb"/>
+                            <constraint firstItem="bEg-Fa-5zq" firstAttribute="top" secondItem="C4h-gA-0SR" secondAttribute="top" constant="10" id="FTG-XJ-Vgb"/>
                             <constraint firstItem="bEg-Fa-5zq" firstAttribute="centerX" secondItem="rib-V0-MG9" secondAttribute="centerX" id="Hwt-Cs-U9g"/>
                             <constraint firstItem="v3P-NW-ooy" firstAttribute="leading" secondItem="C4h-gA-0SR" secondAttribute="leading" constant="40" id="M53-z0-dJI"/>
                             <constraint firstItem="rLq-6r-o8S" firstAttribute="leading" secondItem="C4h-gA-0SR" secondAttribute="leading" constant="16" id="Ndq-cj-USd"/>
@@ -258,7 +259,7 @@
                             <constraint firstItem="JMR-lR-ahj" firstAttribute="centerY" secondItem="9kh-5g-Zlh" secondAttribute="centerY" id="iqC-iF-R6P"/>
                             <constraint firstItem="H6E-MO-nsc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="C4h-gA-0SR" secondAttribute="leading" constant="16" id="m7m-xA-jqn"/>
                             <constraint firstItem="C4h-gA-0SR" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TA4-WI-gdZ" secondAttribute="trailing" constant="16" id="nvx-Sq-2Af"/>
-                            <constraint firstItem="meb-Qj-xhm" firstAttribute="top" secondItem="bEg-Fa-5zq" secondAttribute="bottom" constant="25" id="oAS-jI-2rw"/>
+                            <constraint firstItem="meb-Qj-xhm" firstAttribute="top" secondItem="bEg-Fa-5zq" secondAttribute="bottom" constant="10" id="oAS-jI-2rw"/>
                             <constraint firstAttribute="trailing" secondItem="JMR-lR-ahj" secondAttribute="trailing" constant="16" id="qkp-xA-usQ"/>
                             <constraint firstItem="v3P-NW-ooy" firstAttribute="centerY" secondItem="C4h-gA-0SR" secondAttribute="centerY" id="sm0-vJ-7iY"/>
                             <constraint firstItem="meb-Qj-xhm" firstAttribute="top" secondItem="9kh-5g-Zlh" secondAttribute="bottom" id="tYH-U6-Ys3"/>
@@ -267,20 +268,10 @@
                             <constraint firstItem="C4h-gA-0SR" firstAttribute="trailing" secondItem="rLq-6r-o8S" secondAttribute="trailing" constant="16" id="zJK-Ti-1vP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Delivery" id="yZB-Y4-PEr">
-                        <barButtonItem key="backBarButtonItem" title="  " id="HnZ-bm-tB7"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="GMS-0E-ao3">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="btnSearchPressed:" destination="bU5-Vh-H7x" id="07i-Jk-fzd"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="btnCancelSearch" destination="9kh-5g-Zlh" id="3Nc-kL-ncc"/>
                         <outlet property="btnLocation" destination="bEg-Fa-5zq" id="vrH-DK-e1x"/>
-                        <outlet property="btnSearch" destination="GMS-0E-ao3" id="QOY-tD-9hA"/>
                         <outlet property="categoryCollection" destination="Oq2-DA-8gy" id="Lj1-tr-FGz"/>
                         <outlet property="imgNoShops" destination="nvM-nF-4NS" id="FKo-y1-5cl"/>
                         <outlet property="lblNoShops" destination="E9k-pD-rMN" id="FlT-wb-TZj"/>
@@ -523,7 +514,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="fBW-Au-15X">
                                                         <rect key="frame" x="144" y="0.0" width="144" height="19.5"/>
                                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="16"/>
-                                                        <color key="textColor" name="littleBlue"/>
+                                                        <color key="textColor" name="LittleSDKThemeColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
@@ -627,7 +618,7 @@
             <objects>
                 <viewController storyboardIdentifier="ProductController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PS3-m7-GVo" customClass="ProductController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TPD-U7-jJq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="498"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Xw-3C-jyN">
@@ -856,7 +847,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstItem="02x-wQ-ydB" firstAttribute="leading" secondItem="fay-xH-UMS" secondAttribute="leading" constant="8" id="03a-Ur-3fh"/>
                                     <constraint firstItem="Y9P-RK-OqD" firstAttribute="leading" secondItem="2Md-3Z-kDx" secondAttribute="trailing" constant="8" id="2Ny-7O-eVW"/>
@@ -952,7 +943,7 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="440"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLs-e4-Wrf">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="769.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="767.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Summary" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="t0g-f3-lGP">
                                                 <rect key="frame" x="16" y="8" width="288" height="22"/>
@@ -1278,7 +1269,7 @@
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXs-tD-oMc">
                                                 <rect key="frame" x="229" y="602" width="75" height="30"/>
-                                                <color key="backgroundColor" name="littleBlue"/>
+                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="AaQ-He-iSY"/>
                                                     <constraint firstAttribute="width" constant="75" id="fsP-fK-oT7"/>
@@ -1304,7 +1295,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="c15-W3-85W">
-                                                <rect key="frame" x="16" y="653" width="288" height="106.5"/>
+                                                <rect key="frame" x="16" y="653" width="288" height="104.5"/>
                                                 <subviews>
                                                     <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aiY-oD-h9C">
                                                         <rect key="frame" x="0.0" y="0.0" width="288" height="0.0"/>
@@ -1328,16 +1319,16 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E97-FZ-zJD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="288" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="288" height="17.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Products" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RNA-3S-ySI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="BNz-IT-fXV">
-                                                                <rect key="frame" x="144" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="144" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1349,16 +1340,16 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxp-0A-1ue">
-                                                        <rect key="frame" x="0.0" y="29" width="288" height="18"/>
+                                                        <rect key="frame" x="0.0" y="28.5" width="288" height="17.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery Fee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKT-4H-fqb">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="11D-Mb-Vvw">
-                                                                <rect key="frame" x="144" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="144" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1370,16 +1361,16 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jp2-zr-sX3">
-                                                        <rect key="frame" x="0.0" y="58" width="288" height="18"/>
+                                                        <rect key="frame" x="0.0" y="57" width="288" height="17.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promo Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9w5-Ft-PiY">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="R7i-Wh-0U1">
-                                                                <rect key="frame" x="144" y="0.0" width="144" height="18"/>
+                                                                <rect key="frame" x="144" y="0.0" width="144" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="15"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1391,18 +1382,18 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UEY-XB-MF5">
-                                                        <rect key="frame" x="0.0" y="87" width="288" height="19.5"/>
+                                                        <rect key="frame" x="0.0" y="85.5" width="288" height="19"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s6G-7W-Hbb">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="19.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="19"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="16"/>
                                                                 <color key="textColor" name="littleLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="CMA-nm-0tK">
-                                                                <rect key="frame" x="144" y="0.0" width="144" height="19.5"/>
+                                                                <rect key="frame" x="144" y="0.0" width="144" height="19"/>
                                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Semibold" family="SF UI Display" pointSize="16"/>
-                                                                <color key="textColor" name="littleBlueInverse"/>
+                                                                <color key="textColor" name="LittleSDKThemeColorInverse"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
@@ -1420,7 +1411,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="13"/>
                                                 <state key="normal" title="Load Wallet?">
-                                                    <color key="titleColor" name="littleBlue"/>
+                                                    <color key="titleColor" name="LittleSDKThemeColor"/>
                                                     <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -1497,7 +1488,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dob-1O-QdB">
                                 <rect key="frame" x="16" y="512" width="288" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="zUH-P8-EtS"/>
                                 </constraints>
@@ -1706,7 +1697,7 @@
                                     <constraint firstAttribute="width" constant="40" id="XQa-SF-tMe"/>
                                     <constraint firstAttribute="height" constant="40" id="wpC-ih-1DI"/>
                                 </constraints>
-                                <color key="tintColor" name="littleBlue"/>
+                                <color key="tintColor" name="LittleSDKThemeColor"/>
                                 <state key="normal" image="close_popup"/>
                                 <connections>
                                     <action selector="btnClosePressed:" destination="Sgd-I8-xO7" eventType="touchUpInside" id="Ct3-Nl-dg3"/>
@@ -1720,7 +1711,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Zd-cI-Im1">
                                 <rect key="frame" x="20" y="508" width="280" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="FL6-BI-yf5"/>
                                 </constraints>
@@ -1959,7 +1950,7 @@
                                                 </constraints>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstItem="OO5-ei-LV2" firstAttribute="top" secondItem="H5z-Ij-NfH" secondAttribute="bottom" constant="4" id="1uD-ZB-koO"/>
                                             <constraint firstItem="62J-nh-Een" firstAttribute="leading" secondItem="OO5-ei-LV2" secondAttribute="trailing" constant="4" id="2hc-ad-F4P"/>
@@ -2002,7 +1993,7 @@
                                             <constraint firstAttribute="width" constant="40" id="JzC-c2-OYS"/>
                                             <constraint firstAttribute="height" constant="40" id="PCV-wV-hla"/>
                                         </constraints>
-                                        <color key="tintColor" name="littleBlue"/>
+                                        <color key="tintColor" name="LittleSDKThemeColor"/>
                                         <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" image="call_action"/>
                                         <connections>
@@ -2159,7 +2150,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstItem="HMY-IV-KnP" firstAttribute="leading" secondItem="hAt-xN-bvK" secondAttribute="leading" constant="8" id="11D-y4-4Bz"/>
                                     <constraint firstItem="HMY-IV-KnP" firstAttribute="top" secondItem="hAt-xN-bvK" secondAttribute="top" constant="15" id="8OW-mR-XlA"/>
@@ -2259,7 +2250,7 @@
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
                                         <color key="tintColor" red="0.24313725489999999" green="0.50980392159999999" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Close">
-                                            <color key="titleColor" name="littleBlue"/>
+                                            <color key="titleColor" name="LittleSDKThemeColor"/>
                                         </state>
                                         <connections>
                                             <action selector="btnClose:" destination="BLM-pI-cNo" eventType="touchUpInside" id="VZU-Do-nOa"/>
@@ -2365,17 +2356,17 @@
         <image name="wallet_icon_" width="25" height="25"/>
         <image name="white_star" width="35" height="35"/>
         <image name="white_timer" width="35" height="35"/>
+        <namedColor name="LittleSDKThemeColor">
+            <color red="0.37254901960784315" green="0.30980392156862746" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="LittleSDKThemeColorInverse">
+            <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="littleBackgrounds">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="littleBlack">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </namedColor>
-        <namedColor name="littleBlue">
-            <color red="0.074509803921568626" green="0.43137254901960786" blue="0.68627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="littleBlueInverse">
-            <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleCellBackgrounds">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

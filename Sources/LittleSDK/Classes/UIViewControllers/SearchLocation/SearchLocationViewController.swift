@@ -166,14 +166,14 @@ class SearchLocationViewController: UIViewController {
             
             if isLightContent {
                 navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.backgroundColor = .themeColor
                 navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navigationController?.navigationBar.standardAppearance = navBarAppearance
                 navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
             } else {
                 navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.backgroundColor = .themeColor
                 navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleLabelColor]
                 navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleLabelColor]
                 navigationController?.navigationBar.standardAppearance = navBarAppearance
@@ -189,7 +189,7 @@ class SearchLocationViewController: UIViewController {
         if isLightContent {
             navigationController?.navigationBar.isTranslucent = false
             navigationController?.navigationBar.tintColor = .littleWhite
-            navigationController?.navigationBar.barTintColor = .littleBlue
+            navigationController?.navigationBar.barTintColor = .themeColor
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
                                                                        .foregroundColor: UIColor.littleWhite]
         } else {
@@ -197,7 +197,7 @@ class SearchLocationViewController: UIViewController {
             navigationController?.navigationBar.tintColor = .littleLabelColor
             navigationController?.navigationBar.barTintColor = .littleWhite
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
-                                                                       .foregroundColor: UIColor.littleBlue]
+                                                                       .foregroundColor: UIColor.themeColor]
         }
     }
     

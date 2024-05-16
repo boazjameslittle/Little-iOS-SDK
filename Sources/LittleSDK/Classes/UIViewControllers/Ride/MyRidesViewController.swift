@@ -62,7 +62,7 @@ class MyRidesViewController: UIViewController {
         view.layer.shadowRadius = 0
         view.showTopLeftRadius = false
         view.showTopRightRadius = false
-        view.backgroundColor = .littleBlue
+        view.backgroundColor = .themeColor
         return view
     }()
     

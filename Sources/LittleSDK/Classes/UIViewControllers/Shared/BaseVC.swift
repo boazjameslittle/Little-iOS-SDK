@@ -119,7 +119,7 @@ public class BaseVC: UIViewController {
             
             if isLightContent {
                 navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.backgroundColor = .themeColor
                 navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleWhite]
                 navigationController?.navigationBar.standardAppearance = navBarAppearance
@@ -142,7 +142,7 @@ public class BaseVC: UIViewController {
         if isLightContent {
             navigationController?.navigationBar.isTranslucent = false
             navigationController?.navigationBar.tintColor = .littleWhite
-            navigationController?.navigationBar.barTintColor = .littleBlue
+            navigationController?.navigationBar.barTintColor = .themeColor
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
                                                                        .foregroundColor: UIColor.littleWhite]
         } else {
@@ -150,7 +150,7 @@ public class BaseVC: UIViewController {
             navigationController?.navigationBar.tintColor = .littleLabelColor
             navigationController?.navigationBar.barTintColor = .littleWhite
             navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
-                                                                       .foregroundColor: UIColor.littleBlue]
+                                                                       .foregroundColor: UIColor.themeColor]
         }
     }
     

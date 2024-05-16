@@ -86,9 +86,9 @@ public class MPESAPaymentView: UIViewController {
         btnBack.backgroundColor = .littleElevatedViews
         btnBack.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15.0)
         btnBack.setTitle("Back".localized, for: .normal)
-        btnBack.setTitleColor(.littleBlue, for: .normal)
+        btnBack.setTitleColor(.themeColor, for: .normal)
         btnBack.borderWidth = 2
-        btnBack.borderColor = .littleBlue
+        btnBack.borderColor = .themeColor
         btnBack.addTarget(self, action: #selector(btnBackPressed(_:)), for: .touchUpInside)
         
         view.addSubview(btnBack)
@@ -168,7 +168,7 @@ public class MPESAPaymentView: UIViewController {
             imgStackView.bottomAnchor.constraint(equalTo: imgContainerView.bottomAnchor, constant: 0),
         ])
         
-        activityView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: NVActivityIndicatorType.circleStrokeSpin, color:  .littleBlue)
+        activityView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: NVActivityIndicatorType.circleStrokeSpin, color:  .themeColor)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         activityView.startAnimating()
         
@@ -240,7 +240,7 @@ public class MPESAPaymentView: UIViewController {
         
         btnResendPrompt = UIButton()
         btnResendPrompt.viewCornerRadius = 20
-        btnResendPrompt.backgroundColor = UIColor(named: "littleBlue")
+        btnResendPrompt.backgroundColor = .themeColor
         btnResendPrompt.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15.0)
 //        btnResendPrompt.setTitle("Resend MPESA Prompt".localized, for: .normal)
         btnResendPrompt.setTitleColor(UIColor(named: "littleWhite"), for: .normal)

@@ -72,7 +72,7 @@
                                         </state>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstItem="D0C-Oj-CFc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tQ8-1b-itv" secondAttribute="trailing" constant="8" id="Pjb-Rh-GLz"/>
                                     <constraint firstItem="tQ8-1b-itv" firstAttribute="leading" secondItem="LaS-bZ-YmV" secondAttribute="leading" constant="16" id="Vnk-qS-L2x"/>
@@ -325,7 +325,7 @@
         <image name="dropoff_location" width="301" height="301"/>
         <image name="list_down" width="30" height="30"/>
         <image name="pickup_location" width="301" height="301"/>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.63921568627450975" green="0.16470588235294117" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleCellBackgrounds">

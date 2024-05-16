@@ -72,7 +72,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" name="littleBlue"/>
+                    <color key="backgroundColor" name="LittleSDKThemeColor"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="xTk-tf-VdN" secondAttribute="trailing" constant="15" id="0Nj-eZ-qZ4"/>
                         <constraint firstAttribute="bottom" secondItem="xTk-tf-VdN" secondAttribute="bottom" constant="15" id="0vK-8y-YYv"/>
@@ -128,7 +128,7 @@
         </view>
     </objects>
     <resources>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleWhite">

@@ -53,7 +53,6 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     @IBOutlet weak var shopTable: UITableView!
     @IBOutlet weak var btnLocation: UIButton!
-    @IBOutlet weak var btnSearch: UIBarButtonItem!
     @IBOutlet weak var btnCancelSearch: UIButton!
     @IBOutlet weak var lblSearchResults: UILabel!
     
@@ -70,6 +69,23 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var offersConstraint: NSLayoutConstraint!
     @IBOutlet weak var restaurantConstraint: NSLayoutConstraint!
     
+    private let searchController: UISearchController = {
+        let vc = UISearchController()
+        return vc
+    }()
+    
+    private var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    private var isFiltering: Bool {
+      return searchController.isActive && !isSearchBarEmpty
+    }
+    
+    private var searchText: String? {
+        return searchController.searchBar.text
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -84,6 +100,8 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         let nib2 = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle!)
         self.categoryCollection.register(nib2, forCellWithReuseIdentifier: "cell")
         
+        setupSearch()
+        
         adjustOffersView()
         
         shopTable.reloadData()
@@ -96,7 +114,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             btnLocation.setTitle(am.getPICKUPADDRESS(), for: UIControl.State())
         }
         
-        btnSearch.isEnabled = false
+       disableSearchBar()
         
         currentPlaceCoordinates = SDKUtils.extractCoordinate(string: am.getCurrentLocation() ?? "0.0,0.0")
 
@@ -127,12 +145,16 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                 }
             }
         } else {
+            if searchController.isActive {
+                closeSearchBar()
+            }
+            
             if fromSearch {
                 fromSearch = false
                 getRestaurants()
             } else {
                 
-                btnSearch.isEnabled = false
+                disableSearchBar()
                 checkLocation()
             }
         }
@@ -161,6 +183,46 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             printVal(object: "ToRoot")
             self.navigationController?.popToRootViewController(animated: true)
         }
+    }
+    
+    // MARK: - Search
+    private func setupSearch() {
+        // Text changes
+        searchController.searchResultsUpdater = self
+        
+        // Do not obsecure
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        
+        searchController.searchBar.placeholder = "Search restaurants".localized
+        navigationItem.searchController = searchController
+        
+        //hide search when nav to another ViewController
+        definesPresentationContext = true
+        
+        self.searchController.extendedLayoutIncludesOpaqueBars = true
+        
+        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController.searchBar.barTintColor = .themeColor
+        self.searchController.searchBar.tintColor = .themeColor
+        self.searchController.searchBar.searchBarStyle = .minimal
+        if #available(iOS 13.0, *) {
+            self.searchController.searchBar.searchTextField.textColor = .littleLabelColor
+            self.searchController.searchBar.searchTextField.backgroundColor = .skyBlueLight
+            self.searchController.searchBar.searchTextField.tintColor = .themeColor
+        }
+    }
+    
+    private func enableSearchBar() {
+        searchController.searchBar.isUserInteractionEnabled = true
+    }
+    
+    private func disableSearchBar() {
+        searchController.searchBar.isUserInteractionEnabled = false
+    }
+    
+    private func closeSearchBar() {
+        searchController.isActive = false
     }
     
     func adjustOffersView() {
@@ -233,7 +295,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         self.view.setTemplateWithSubviews(false)
         
-        btnSearch.isEnabled = true
+        enableSearchBar()
         let data = notification.userInfo?["data"] as? Data
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "GETRESTAURANTSFoodDelivery"), object: nil)
         
@@ -473,8 +535,8 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         shopTable.reloadData()
         offersCollection.reloadData()
         
-        btnCancelSearch.isHidden = false
-        lblSearchResults.text = "Search results for \"\(searchTerm)\""
+//        btnCancelSearch.isHidden = false
+//        lblSearchResults.text = "Search results for \"\(searchTerm)\""
         
         adjustOffersView()
     }
@@ -931,4 +993,20 @@ extension DeliveriesController: CLLocationManagerDelegate {
         checkLocation()
     }
     
+}
+
+//MARK: - UISearchResultsUpdating
+extension DeliveriesController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        let mySearchText = searchText ?? ""
+        
+        if !mySearchText.isEmpty {
+            
+            searchTerm = mySearchText
+            searchFromReataurants()
+            
+        } else {
+            closeSearch()
+        }
+    }
 }

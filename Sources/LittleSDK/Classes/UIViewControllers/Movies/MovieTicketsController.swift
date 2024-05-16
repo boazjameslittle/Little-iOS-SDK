@@ -74,7 +74,7 @@ class MovieTicketsController: UIViewController {
         view.backgroundColor = .littleElevatedViews
         
         let toolbarBG = UIView()
-        toolbarBG.backgroundColor = .littleBlue
+        toolbarBG.backgroundColor = .themeColor
         
         view.addSubview(toolbarBG)
         

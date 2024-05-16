@@ -700,7 +700,7 @@ extension ScreenController: UICollectionViewDelegate, UICollectionViewDataSource
         if collectionView.tag == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
             if selectedTime == indexPath.item {
-                cell.categoryView.backgroundColor = .littleBlue
+                cell.categoryView.backgroundColor = .themeColor
                 cell.lblCategory.textColor = .littleWhite
             } else {
                 cell.categoryView.backgroundColor = .littleCellBackgrounds
@@ -715,7 +715,7 @@ extension ScreenController: UICollectionViewDelegate, UICollectionViewDataSource
             return cell
         } else {
             
-            let color = UIColor.littleBlue
+            let color = UIColor.themeColor
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! SeatCell
             

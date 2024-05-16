@@ -44,23 +44,25 @@ class SDKConstants {
     // Equity
 //    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-    static var littleSDKThemeColor = UIColor(hex: "#891755")
+//    static var littleSDKThemeColor = UIColor(hex: "#891755")
     // rafiki
 //    static var littleSDKThemeColor = UIColor(hex: "#136EAF")
+    static var littleSDKThemeColor = UIColor.themeColor
     
     // Equity
-    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
     // Vooma
 //    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
     // rafiki
 //    static var littleSDKDarkThemeColor = UIColor(hex: "#136EAF")
+    static var littleSDKDarkThemeColor = UIColor.themeColor
     
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
     static var littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
     
     // Change to vooma or quity
-    static let SDK_CLIENT = SDKClient.VOOMA
+    static let SDK_CLIENT = SDKClient.UNIVERSAL
     
    static let WALLET_ACTION_TYPE_DIAL = "DIAL"
    static let WALLET_ACTION_TYPE_FORM_ID = "FORMID"

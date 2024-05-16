@@ -26,7 +26,7 @@
                             </imageView>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new_checked_blue" translatesAutoresizingMaskIntoConstraints="NO" id="v8h-bY-dJT">
                                 <rect key="frame" x="70" y="0.0" width="20" height="20"/>
-                                <color key="tintColor" name="littleBlue"/>
+                                <color key="tintColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="PsK-2D-vRD"/>
                                     <constraint firstAttribute="height" constant="20" id="p5q-Rh-xU2"/>
@@ -97,7 +97,7 @@
     <resources>
         <image name="COMFORT" width="434" height="434"/>
         <image name="new_checked_blue" width="40" height="40"/>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleCellBackgrounds">

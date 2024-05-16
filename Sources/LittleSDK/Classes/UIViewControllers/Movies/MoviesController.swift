@@ -140,7 +140,7 @@ class MoviesController: UIViewController {
         view.backgroundColor = .littleElevatedViews
         
         let toolbarBG = UIView()
-        toolbarBG.backgroundColor = .littleBlue
+        toolbarBG.backgroundColor = .themeColor
         
         view.addSubview(toolbarBG)
         
@@ -559,7 +559,7 @@ extension MoviesController: UICollectionViewDelegate, UICollectionViewDataSource
            if collectionView == self.collectionView {
                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
                if selectedAccount == indexPath.item {
-                   cell.categoryView.backgroundColor = .littleBlue
+                   cell.categoryView.backgroundColor = .themeColor
                    cell.lblCategory.textColor = .littleWhite
                } else {
                    cell.categoryView.backgroundColor = .littleCellBackgrounds

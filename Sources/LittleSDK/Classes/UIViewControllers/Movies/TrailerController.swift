@@ -61,7 +61,7 @@ class TrailerController: UIViewController {
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.setThumbImage(getImage(named: "track"), for: .normal)
         slider.maximumTrackTintColor = .white
-        slider.minimumTrackTintColor = .littleBlue
+        slider.minimumTrackTintColor = .themeColor
         slider.addTarget(self, action: #selector(sliderValChanged), for: .valueChanged)
         return slider
     }()
@@ -496,7 +496,7 @@ extension TrailerController: UICollectionViewDelegate, UICollectionViewDataSourc
             
         } else {
             if selectedTime == indexPath.item {
-                cell.categoryView.backgroundColor = .littleBlue
+                cell.categoryView.backgroundColor = .themeColor
                 cell.lblCategory.textColor = .littleWhite
             } else {
                 cell.categoryView.backgroundColor = .littleCellBackgrounds
@@ -578,7 +578,7 @@ extension TrailerController: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 lblScreenDescription.text = "\(movieTimeingsArr[selectedTime ?? 0].screenDescription ?? "")"
                 
-                btnBuyTickets.backgroundColor = .littleBlue
+                btnBuyTickets.backgroundColor = .themeColor
                 btnBuyTickets.setTitleColor(.littleWhite, for: .normal)
                 
             } else {

@@ -1516,6 +1516,7 @@ struct PickerItem {
 enum SDKClient {
     case EQUITY
     case VOOMA
+    case UNIVERSAL
 }
 
 // MARK: - ExternalRequestResponseData

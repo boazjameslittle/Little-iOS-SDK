@@ -543,7 +543,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         //
         
-        littleBlue = SDKConstants.littleSDKThemeColor
+        littleBlue = .themeColor
        
     }
     

@@ -177,7 +177,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="u5s-5V-8HJ" secondAttribute="trailing" id="YUA-C3-PII"/>
                                             <constraint firstAttribute="bottom" secondItem="u5s-5V-8HJ" secondAttribute="bottom" constant="2" id="cS4-la-V6T"/>
@@ -207,7 +207,7 @@
                                                     </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="New_arrow-right-outline-16" translatesAutoresizingMaskIntoConstraints="NO" id="d0I-rw-38y">
                                                         <rect key="frame" x="107" y="0.0" width="16" height="50"/>
-                                                        <color key="tintColor" name="littleBlue"/>
+                                                        <color key="tintColor" name="LittleSDKThemeColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="2pY-kC-LM0"/>
                                                             <constraint firstAttribute="width" constant="16" id="WaT-j0-n0k"/>
@@ -475,7 +475,7 @@
                                         </connections>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstItem="yC2-HP-5MG" firstAttribute="leading" secondItem="WMj-PI-TwB" secondAttribute="leading" constant="8" id="9go-if-z5s"/>
                                     <constraint firstAttribute="bottom" secondItem="rGO-qw-Q11" secondAttribute="bottom" constant="8" id="BvC-ZM-mSS"/>
@@ -494,7 +494,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgX-VI-G9Y">
                                 <rect key="frame" x="20" y="508" width="280" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="0Zx-y0-uli"/>
                                 </constraints>
@@ -592,7 +592,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="U6K-cS-BX9"/>
-                        <color key="backgroundColor" name="littleBlue"/>
+                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                         <constraints>
                             <constraint firstItem="qgX-VI-G9Y" firstAttribute="leading" secondItem="U6K-cS-BX9" secondAttribute="leading" constant="20" id="0Oi-PD-oOY"/>
                             <constraint firstItem="xel-eI-eTv" firstAttribute="leading" secondItem="U6K-cS-BX9" secondAttribute="leading" constant="16" id="1tb-pG-29C"/>
@@ -739,7 +739,7 @@
                                             <constraint firstAttribute="height" constant="20" id="OWP-at-oN8"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="16"/>
-                                        <color key="textColor" name="littleBlue"/>
+                                        <color key="textColor" name="LittleSDKThemeColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropoff_location" translatesAutoresizingMaskIntoConstraints="NO" id="1is-Gc-rgS">
@@ -763,7 +763,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="18"/>
                                         <state key="normal" title="Search location">
-                                            <color key="titleColor" name="littleBlueInverse"/>
+                                            <color key="titleColor" name="LittleSDKThemeColorInverse"/>
                                         </state>
                                         <connections>
                                             <action selector="btnPickupPressed:" destination="GsP-BC-zOn" eventType="touchUpInside" id="F0K-Uf-4fw"/>
@@ -838,7 +838,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u7d-tw-UEw">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="60"/>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="WEc-DP-MjT"/>
                                         </constraints>
@@ -955,7 +955,7 @@
                                         <color key="backgroundColor" name="littleWhite"/>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
                                         <state key="normal" title="Cancel">
-                                            <color key="titleColor" name="littleBlue"/>
+                                            <color key="titleColor" name="LittleSDKThemeColor"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -965,7 +965,7 @@
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="littleBlue"/>
+                                                <color key="value" name="LittleSDKThemeColor"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -974,7 +974,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFs-uw-hMT">
                                         <rect key="frame" x="145" y="0.0" width="135" height="40"/>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" name="littleWhite"/>
@@ -1030,7 +1030,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bhB-YU-0xu">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="ngr-NQ-dVg"/>
                                 </constraints>
@@ -1163,7 +1163,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hy-rH-gZw">
                                 <rect key="frame" x="20" y="508" width="280" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="y4Y-5f-EOz"/>
                                 </constraints>
@@ -1543,7 +1543,7 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstItem="d0R-s7-zlM" firstAttribute="centerY" secondItem="WXW-5W-5YY" secondAttribute="centerY" constant="1" id="1B4-cn-ZyP"/>
                                             <constraint firstItem="d0R-s7-zlM" firstAttribute="leading" secondItem="WXW-5W-5YY" secondAttribute="trailing" constant="4" id="3Fj-av-g4f"/>
@@ -1613,7 +1613,7 @@
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="****" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cfc-gi-Gug">
                                                 <rect key="frame" x="207" y="1" width="23" height="18"/>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
-                                                <color key="textColor" name="littleBlue"/>
+                                                <color key="textColor" name="LittleSDKThemeColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rk7-ez-UFe">
@@ -1647,7 +1647,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DdR-Mv-sDj">
                                         <rect key="frame" x="23.5" y="201.5" width="3.5" height="16"/>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="13"/>
-                                        <color key="textColor" name="littleBlue"/>
+                                        <color key="textColor" name="LittleSDKThemeColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sP0-u5-rfW">
@@ -1656,7 +1656,7 @@
                                             <constraint firstAttribute="width" constant="40" id="MwA-9G-urN"/>
                                             <constraint firstAttribute="height" constant="40" id="wBp-SV-S7h"/>
                                         </constraints>
-                                        <color key="tintColor" name="littleBlue"/>
+                                        <color key="tintColor" name="LittleSDKThemeColor"/>
                                         <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" image="call_action"/>
                                         <connections>
@@ -1669,7 +1669,7 @@
                                             <constraint firstAttribute="width" constant="40" id="200-P4-qes"/>
                                             <constraint firstAttribute="height" constant="40" id="Dfo-zz-wFM"/>
                                         </constraints>
-                                        <color key="tintColor" name="littleBlue"/>
+                                        <color key="tintColor" name="LittleSDKThemeColor"/>
                                         <state key="normal" image="volume_on"/>
                                         <connections>
                                             <action selector="muteBtnPressed:" destination="zis-Wt-UaH" eventType="touchUpInside" id="Z1S-HL-uZx"/>
@@ -1779,7 +1779,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="9GA-zv-zgw" secondAttribute="trailing" constant="16" id="3qd-n2-KbS"/>
                                             <constraint firstAttribute="bottom" secondItem="IkK-8l-4VT" secondAttribute="bottom" constant="8" id="Jun-d3-wQP"/>
@@ -1820,7 +1820,7 @@
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="****" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49Q-QD-jU9">
                                                         <rect key="frame" x="130" y="16.5" width="22" height="17"/>
                                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="14"/>
-                                                        <color key="textColor" name="littleBlue"/>
+                                                        <color key="textColor" name="LittleSDKThemeColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vja-kd-rW0">
@@ -1863,7 +1863,7 @@
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="****" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYj-6N-J8F">
                                                         <rect key="frame" x="127.5" y="16.5" width="22" height="17"/>
                                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="14"/>
-                                                        <color key="textColor" name="littleBlue"/>
+                                                        <color key="textColor" name="LittleSDKThemeColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nzt-Vc-JwJ">
@@ -2478,7 +2478,7 @@
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5U-x1-hSS">
                                                 <rect key="frame" x="10" y="517.5" width="260" height="40"/>
-                                                <color key="backgroundColor" name="littleBlue"/>
+                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="avm-fq-ecE"/>
                                                 </constraints>
@@ -2556,7 +2556,7 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jvO-iP-Nn6">
                                                         <rect key="frame" x="0.0" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2565,7 +2565,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ax8-9R-zq0">
                                                         <rect key="frame" x="17.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2574,7 +2574,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ajn-zI-t8k">
                                                         <rect key="frame" x="35.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2583,7 +2583,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CC1-Qw-o7e">
                                                         <rect key="frame" x="53" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2592,7 +2592,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uYj-DW-qOo">
                                                         <rect key="frame" x="70.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2601,7 +2601,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3eM-Ga-NlP">
                                                         <rect key="frame" x="88.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2610,7 +2610,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gVw-rz-yZN">
                                                         <rect key="frame" x="106" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2619,7 +2619,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wc2-Qi-ryj">
                                                         <rect key="frame" x="123.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2628,7 +2628,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rLl-cA-Pnx">
                                                         <rect key="frame" x="141.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2637,7 +2637,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uuM-V5-ZvS">
                                                         <rect key="frame" x="159" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2646,7 +2646,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1zb-Wm-PbO">
                                                         <rect key="frame" x="176.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2655,7 +2655,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nl0-rk-nWV">
                                                         <rect key="frame" x="194.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2664,7 +2664,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfp-t5-DIG">
                                                         <rect key="frame" x="212" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2673,7 +2673,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ia8-Ld-wxZ">
                                                         <rect key="frame" x="229.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2682,7 +2682,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ezc-4D-VNB">
                                                         <rect key="frame" x="247.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2739,7 +2739,7 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2L9-qb-Tts">
                                                         <rect key="frame" x="0.0" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2748,7 +2748,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yw5-Xd-RJh">
                                                         <rect key="frame" x="17.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2757,7 +2757,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="orj-g2-GeH">
                                                         <rect key="frame" x="35.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2766,7 +2766,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30q-Ea-0uD">
                                                         <rect key="frame" x="53" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2775,7 +2775,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBO-ec-3dI">
                                                         <rect key="frame" x="70.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2784,7 +2784,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9T5-Ux-LQr">
                                                         <rect key="frame" x="88.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2793,7 +2793,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rrw-RG-gBb">
                                                         <rect key="frame" x="106" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2802,7 +2802,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="26t-G4-cCp">
                                                         <rect key="frame" x="123.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2811,7 +2811,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuK-X9-vt2">
                                                         <rect key="frame" x="141.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2820,7 +2820,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKc-Oh-8Vw">
                                                         <rect key="frame" x="159" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2829,7 +2829,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Qs-h5-jdz">
                                                         <rect key="frame" x="176.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2838,7 +2838,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uur-Xe-T1L">
                                                         <rect key="frame" x="194.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2847,7 +2847,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLn-9v-hgV">
                                                         <rect key="frame" x="212" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2856,7 +2856,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPZ-pj-Mu3">
                                                         <rect key="frame" x="229.5" y="0.0" width="13" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2865,7 +2865,7 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ch-jc-ad4">
                                                         <rect key="frame" x="247.5" y="0.0" width="12.5" height="10"/>
-                                                        <color key="backgroundColor" name="littleBlue"/>
+                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <real key="value" value="5"/>
@@ -2932,7 +2932,7 @@
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="svY-xW-iWj"/>
-                        <color key="backgroundColor" name="littleBlue"/>
+                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                         <constraints>
                             <constraint firstItem="avz-Iy-gCI" firstAttribute="top" secondItem="SkZ-5t-E8d" secondAttribute="top" id="NOs-Se-9R0"/>
                             <constraint firstItem="avz-Iy-gCI" firstAttribute="trailing" secondItem="svY-xW-iWj" secondAttribute="trailing" id="Oqt-4h-4RV"/>
@@ -3043,7 +3043,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstItem="s70-aU-A1Y" firstAttribute="leading" secondItem="ssd-24-BQD" secondAttribute="leading" constant="8" id="0j2-ro-t9b"/>
                                     <constraint firstItem="s70-aU-A1Y" firstAttribute="top" secondItem="ssd-24-BQD" secondAttribute="top" constant="20" id="Exl-8N-CLU"/>
@@ -3123,7 +3123,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r5r-Bt-Ohb">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="60"/>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="ddn-f7-1Dk"/>
                                         </constraints>
@@ -3250,7 +3250,7 @@
                                         <color key="backgroundColor" name="littleWhite"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="17"/>
                                         <state key="normal" title="Cancel">
-                                            <color key="titleColor" name="littleBlue"/>
+                                            <color key="titleColor" name="LittleSDKThemeColor"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
@@ -3260,7 +3260,7 @@
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="littleBlue"/>
+                                                <color key="value" name="LittleSDKThemeColor"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
                                                 <size key="value" width="0.0" height="0.0"/>
@@ -3279,7 +3279,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y41-Uo-xXj">
                                         <rect key="frame" x="145" y="0.0" width="135" height="40"/>
-                                        <color key="backgroundColor" name="littleBlue"/>
+                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                         <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="17"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" name="littleWhite"/>
@@ -3374,10 +3374,10 @@
         <namedColor name="littleBlack">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.63921568627450975" green="0.16470588235294117" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="littleBlueInverse">
+        <namedColor name="LittleSDKThemeColorInverse">
             <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleCellBackgrounds">

@@ -110,7 +110,7 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j9a-Qi-H8N">
                                 <rect key="frame" x="16" y="762" width="361" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="8TP-VC-jbF"/>
                                 </constraints>
@@ -599,7 +599,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQI-fc-0BK">
                                 <rect key="frame" x="16" y="770" width="361" height="40"/>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="4UK-Rx-a28"/>
                                 </constraints>
@@ -823,7 +823,7 @@
                                         </state>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" name="littleBlue"/>
+                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="6Mb-L9-mvb"/>
                                     <constraint firstItem="93a-fD-oUY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oXk-um-6na" secondAttribute="trailing" constant="8" id="BnK-Cz-pbQ"/>
@@ -1290,7 +1290,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vrs-AU-frp">
                                                 <rect key="frame" x="127" y="0.0" width="107" height="40"/>
-                                                <color key="backgroundColor" name="littleBlue"/>
+                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="k68-t5-dba"/>
                                                 </constraints>
@@ -1309,7 +1309,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EAo-nE-5yY">
                                                 <rect key="frame" x="254" y="0.0" width="107" height="40"/>
-                                                <color key="backgroundColor" name="littleBlue"/>
+                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="RjV-ab-khk"/>
                                                 </constraints>
@@ -1421,7 +1421,7 @@
         <image name="no_movies" width="33.333332061767578" height="33.333332061767578"/>
         <image name="play_button" width="33.333332061767578" height="33.333332061767578"/>
         <image name="screen" width="815" height="122"/>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.63921568627450975" green="0.16470588235294117" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleElevatedViews">

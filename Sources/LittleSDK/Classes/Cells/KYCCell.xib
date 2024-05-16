@@ -45,7 +45,7 @@
                             <constraint firstAttribute="width" constant="30" id="he7-Bi-zTv"/>
                             <constraint firstAttribute="height" constant="30" id="we3-yd-YhP"/>
                         </constraints>
-                        <color key="tintColor" name="littleBlue"/>
+                        <color key="tintColor" name="LittleSDKThemeColor"/>
                         <state key="normal" image="Contact"/>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nEW-7c-teZ">
@@ -98,7 +98,7 @@
     <resources>
         <image name="Contact" width="25" height="25"/>
         <image name="drop_down" width="30" height="30"/>
-        <namedColor name="littleBlue">
+        <namedColor name="LittleSDKThemeColor">
             <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleElevatedViews">
