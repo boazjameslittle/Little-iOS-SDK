@@ -221,7 +221,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rLq-6r-o8S">
                                 <rect key="frame" x="16" y="512" width="288" height="40"/>
-                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                <color key="backgroundColor" systemColor="tintColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Oga-s7-yJX"/>
                                 </constraints>

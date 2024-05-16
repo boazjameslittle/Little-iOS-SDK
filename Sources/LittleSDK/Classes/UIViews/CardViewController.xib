@@ -232,7 +232,7 @@
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vE-j4-pTS">
                             <rect key="frame" x="347" y="89.5" width="20" height="20"/>
-                            <color key="tintColor" name="LittleSDKThemeColor"/>
+                            <color key="tintColor" systemColor="tintColor"/>
                             <state key="normal" image="New_ic_map"/>
                         </button>
                         <button hidden="YES" opaque="NO" alpha="0.40000000596046448" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ztU-oS-Su6">
@@ -430,7 +430,7 @@
                                         <constraint firstAttribute="height" constant="21" id="2YK-gI-wdj"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
-                                    <color key="textColor" name="LittleSDKThemeColor"/>
+                                    <color key="textColor" systemColor="tintColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drive Me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" translatesAutoresizingMaskIntoConstraints="NO" id="FdH-sG-ibC">
@@ -514,11 +514,11 @@
                                         <segment title="Automatic"/>
                                         <segment title="Manual"/>
                                     </segments>
-                                    <color key="tintColor" name="LittleSDKThemeColor"/>
+                                    <color key="tintColor" systemColor="tintColor"/>
                                 </segmentedControl>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tI-cG-Djm">
                                     <rect key="frame" x="20" y="238" width="335" height="40"/>
-                                    <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                    <color key="backgroundColor" systemColor="tintColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="YLU-Li-HWZ"/>
                                     </constraints>
@@ -593,7 +593,7 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new_checked_blue" translatesAutoresizingMaskIntoConstraints="NO" id="Egq-xg-yJW">
                                                             <rect key="frame" x="147.5" y="8" width="20" height="20"/>
-                                                            <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                            <color key="tintColor" systemColor="tintColor"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="20" id="6hd-J6-cao"/>
                                                                 <constraint firstAttribute="height" constant="20" id="FLB-Rz-kTe"/>
@@ -618,7 +618,7 @@
                                                                 <constraint firstAttribute="height" constant="21" id="cHf-Li-itX"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
-                                                            <color key="textColor" name="LittleSDKThemeColor"/>
+                                                            <color key="textColor" systemColor="tintColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSG-QN-7d1">
@@ -670,7 +670,7 @@
                                                     <subviews>
                                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new_checked_blue" translatesAutoresizingMaskIntoConstraints="NO" id="WW2-IH-nmH">
                                                             <rect key="frame" x="147.5" y="8" width="20" height="20"/>
-                                                            <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                            <color key="tintColor" systemColor="tintColor"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="20" id="Ahq-Ls-40V"/>
                                                                 <constraint firstAttribute="height" constant="20" id="WzE-Xd-VhI"/>
@@ -695,7 +695,7 @@
                                                                 <constraint firstAttribute="height" constant="21" id="5X6-FJ-aIx"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
-                                                            <color key="textColor" name="LittleSDKThemeColor"/>
+                                                            <color key="textColor" systemColor="tintColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rgW-dv-7xI">
@@ -835,7 +835,7 @@
                                                 <segment title="Home"/>
                                                 <segment title="Office"/>
                                             </segments>
-                                            <color key="tintColor" name="LittleSDKThemeColor"/>
+                                            <color key="tintColor" systemColor="tintColor"/>
                                         </segmentedControl>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver's address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yj-Gc-pQ2">
                                             <rect key="frame" x="0.0" y="372" width="375" height="14.5"/>
@@ -861,7 +861,7 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twq-m1-uej">
                                             <rect key="frame" x="20" y="465.5" width="335" height="40"/>
-                                            <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                            <color key="backgroundColor" systemColor="tintColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="WKx-OF-dLf"/>
                                             </constraints>
@@ -971,7 +971,7 @@
                                         <constraint firstAttribute="height" constant="21" id="vBV-XF-4E4"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="17"/>
-                                    <color key="textColor" name="LittleSDKThemeColor"/>
+                                    <color key="textColor" systemColor="tintColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comfort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" translatesAutoresizingMaskIntoConstraints="NO" id="Gq2-pE-8xR">
@@ -1000,7 +1000,7 @@
                                         <constraint firstAttribute="height" constant="17" id="e1k-Ye-XW4"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="14"/>
-                                    <color key="textColor" name="LittleSDKThemeColor"/>
+                                    <color key="textColor" systemColor="tintColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -1035,7 +1035,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="CJN-Gf-cgv" secondAttribute="height" multiplier="1:1" id="aHk-Ph-kII"/>
                                                     </constraints>
-                                                    <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                    <color key="tintColor" systemColor="tintColor"/>
                                                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                                     <state key="normal" image="new_wallet"/>
                                                 </button>
@@ -1080,7 +1080,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="P5n-np-zOs" secondAttribute="height" multiplier="1:1" id="2sg-Wu-m7g"/>
                                                     </constraints>
-                                                    <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                    <color key="tintColor" systemColor="tintColor"/>
                                                     <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                                     <state key="normal" image="new_promo"/>
                                                 </button>
@@ -1128,7 +1128,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="kas-AQ-EQo" secondAttribute="height" multiplier="1:1" id="xpx-nL-zg2"/>
                                                     </constraints>
-                                                    <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                    <color key="tintColor" systemColor="tintColor"/>
                                                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                                     <state key="normal" image="new_preferred"/>
                                                 </button>
@@ -1237,7 +1237,7 @@
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ckt-P8-pV8">
                                                             <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
-                                                            <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                                            <color key="backgroundColor" systemColor="tintColor"/>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="14"/>
                                                             <state key="normal" title="Submit to Approver">
                                                                 <color key="titleColor" name="littleWhite"/>
@@ -1364,7 +1364,7 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new_promo_check" translatesAutoresizingMaskIntoConstraints="NO" id="TQr-S0-yKd">
                                                     <rect key="frame" x="145.5" y="0.0" width="44" height="44"/>
-                                                    <color key="tintColor" name="LittleSDKThemeColor"/>
+                                                    <color key="tintColor" systemColor="tintColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="TQr-S0-yKd" secondAttribute="height" multiplier="1:1" id="LLL-Od-w3P"/>
                                                     </constraints>
@@ -1372,7 +1372,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promo code applied successfully." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTT-q6-a5Z">
                                                     <rect key="frame" x="0.0" y="44" width="335" height="16"/>
                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="12"/>
-                                                    <color key="textColor" name="LittleSDKThemeColor"/>
+                                                    <color key="textColor" systemColor="tintColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1389,7 +1389,7 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX2-z9-g5t">
                                             <rect key="frame" x="20" y="132.5" width="335" height="40"/>
-                                            <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                            <color key="backgroundColor" systemColor="tintColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="6b4-aX-bwX"/>
                                             </constraints>
@@ -1464,7 +1464,7 @@
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7u7-Io-hSf">
                                     <rect key="frame" x="20" y="96" width="335" height="40"/>
-                                    <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                    <color key="backgroundColor" systemColor="tintColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="F4M-17-bjn"/>
                                     </constraints>
@@ -1532,7 +1532,7 @@
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Requesting John on Basic..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qfH-Lx-SVy">
                             <rect key="frame" x="16" y="165.5" width="343" height="19.5"/>
                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="16"/>
-                            <color key="textColor" name="LittleSDKThemeColor"/>
+                            <color key="textColor" systemColor="tintColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -1602,9 +1602,6 @@
         <image name="new_promo_check" width="35" height="35"/>
         <image name="new_wallet" width="100" height="100"/>
         <image name="pickup_location" width="301" height="301"/>
-        <namedColor name="LittleSDKThemeColor">
-            <color red="0.37254901960784315" green="0.30980392156862746" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="LittleSDKThemeColorInverse">
             <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

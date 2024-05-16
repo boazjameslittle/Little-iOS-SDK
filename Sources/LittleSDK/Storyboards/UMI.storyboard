@@ -89,7 +89,7 @@
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baF-4K-fJj">
                                                 <rect key="frame" x="224" y="110" width="80" height="30"/>
-                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                                <color key="backgroundColor" systemColor="tintColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="2Xk-F2-Gx3"/>
                                                     <constraint firstAttribute="width" constant="80" id="UBH-T8-KGE"/>
@@ -209,7 +209,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="13"/>
                                                 <state key="normal" title="Load Wallet?">
-                                                    <color key="titleColor" name="LittleSDKThemeColor"/>
+                                                    <color key="titleColor" systemColor="tintColor"/>
                                                     <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -252,7 +252,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7F-4F-YqO">
                                                         <rect key="frame" x="213" y="16" width="75" height="30"/>
-                                                        <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                                        <color key="backgroundColor" systemColor="tintColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="75" id="2PF-UG-lcC"/>
                                                             <constraint firstAttribute="height" constant="30" id="fS7-DH-Lcd"/>
@@ -323,7 +323,7 @@
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LdV-sw-hkE">
                                                 <rect key="frame" x="16" y="430" width="288" height="40"/>
-                                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                                <color key="backgroundColor" systemColor="tintColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="Uvb-YU-E6Y"/>
                                                 </constraints>
@@ -438,7 +438,7 @@
                     <navigationItem key="navigationItem" title="UMI" id="eFN-0m-K4c">
                         <barButtonItem key="backBarButtonItem" title="   " id="nxg-lc-sJm"/>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="QRImage" id="l8U-nn-WOd">
-                            <color key="tintColor" name="LittleSDKThemeColor"/>
+                            <color key="tintColor" systemColor="tintColor"/>
                             <connections>
                                 <action selector="btnScanPressed:" destination="a4d-eg-q6A" id="xUu-74-FCB"/>
                             </connections>
@@ -860,7 +860,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qrz-wL-p59">
                                 <rect key="frame" x="16" y="464" width="288" height="40"/>
-                                <color key="backgroundColor" name="LittleSDKThemeColor"/>
+                                <color key="backgroundColor" systemColor="tintColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="rZO-y1-Whj"/>
                                 </constraints>
@@ -939,9 +939,6 @@
         <image name="drop_down" width="30" height="30"/>
         <image name="gift_promo_sent" width="25" height="25"/>
         <image name="umi_logo" width="995" height="256"/>
-        <namedColor name="LittleSDKThemeColor">
-            <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="littleElevatedViews">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>

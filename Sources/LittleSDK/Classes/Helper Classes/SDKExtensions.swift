@@ -917,11 +917,11 @@ extension UIColor {
     static let littleBlack = UIColor(named: "littleBlack", in: Bundle.module, compatibleWith: nil)!
     
     static var themeColor: UIColor = {
-        if let color  = UIColor(named: "LittleSDKThemeColor", in: Bundle.main, compatibleWith: nil) {
+        if let color  = UIColor(named: "AccentColor", in: Bundle.main, compatibleWith: nil) {
             return color
         }
         
-        return UIColor(named: "LittleSDKThemeColor", in: Bundle.module, compatibleWith: nil)!
+        return UIColor(named: "littleBlue", in: Bundle.module, compatibleWith: nil)!
     }()
     
     static let skyBlueLight = UIColor(named: "ColorSkyBlueLight", in: Bundle.module, compatibleWith: nil)!
