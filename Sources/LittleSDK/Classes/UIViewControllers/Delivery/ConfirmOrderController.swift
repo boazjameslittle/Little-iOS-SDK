@@ -460,7 +460,27 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                     
                     NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                     
-                    let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
+                    var merchantId = ""
+                    var merchantName = ""
+                    
+                    if let selectedTheatre = selectedTheatre {
+                        merchantId = selectedTheatre.restaurantID ?? ""
+                        merchantName = selectedTheatre.name ?? ""
+                    } else {
+                        merchantId = selectedRestaurant?.restaurantID ?? ""
+                        merchantName = selectedRestaurant?.restaurantName ?? ""
+                    }
+                    
+                    let userInfo = [
+                        "amount": Double(lblTotalCash.text ?? "0") ?? 0,
+                        "reference": reference,
+                        "additionalData": am.getSDKAdditionalData(),
+                        "merchantName": merchantName,
+                        "merchantId": merchantId,
+                    ] as [String : Any]
+                    
+                    printVal(object: "userInfo: \(userInfo)")
+                    
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                     
                     #warning("remove post order notification")
