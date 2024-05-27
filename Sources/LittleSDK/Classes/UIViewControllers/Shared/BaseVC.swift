@@ -27,7 +27,7 @@ public class BaseVC: UIViewController {
         
 //        UITextField.appearance().tintColor = .littleBlue
         
-        changeNavBarAppearance(isLightContent: true)
+//        changeNavBarAppearance(isLightContent: true)
         
         setupViews()
         setupContraints()

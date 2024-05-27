@@ -477,6 +477,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                         "additionalData": am.getSDKAdditionalData(),
                         "merchantName": merchantName,
                         "merchantId": merchantId,
+                        "accountNumber": mySelectedWallet?.walletAccountID ?? "",
                     ] as [String : Any]
                     
                     printVal(object: "userInfo: \(userInfo)")

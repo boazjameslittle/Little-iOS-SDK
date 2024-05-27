@@ -499,6 +499,7 @@ struct Balance: Codable {
     let walletType: String?
     let walletAction: [WalletAction]?
     let walletUniqueID: String?
+    let walletAccountID: String?
 
     enum CodingKeys: String, CodingKey {
         case walletID = "WalletID"
@@ -507,6 +508,7 @@ struct Balance: Codable {
         case walletType = "WalletType"
         case walletAction = "WalletAction"
         case walletUniqueID = "WalletUniqueID"
+        case walletAccountID = "WalletAccountID"
     }
 }
 
