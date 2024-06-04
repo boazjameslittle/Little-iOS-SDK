@@ -87,6 +87,11 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     
     @IBOutlet weak var lblDisclaimer: UILabel!
     @IBOutlet weak var tfDate: UITextField!
+    @IBOutlet weak var promoViewTopConst: NSLayoutConstraint!
+    @IBOutlet weak var imgPaymentIcon: UIImageView!
+    @IBOutlet weak var imgPaymentChevron: UIImageView!
+    @IBOutlet weak var paymentModeSeparatorView: UIView!
+    @IBOutlet weak var lblPaymentMode: UILabel!
     
     var myDisclaimerMessage: String = ""
     
@@ -141,7 +146,21 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         
         reference = NSUUID().uuidString
         
+        if am.getAllowAccountSelection() {
+            btnPaymentMode.isHidden = false
+            imgPaymentIcon.isHidden = false
+            imgPaymentChevron.isHidden = false
+            paymentModeSeparatorView.isHidden = false
+            lblPaymentMode.isHidden = false
+        } else {
+            btnPaymentMode.isHidden = true
+            imgPaymentIcon.isHidden = true
+            imgPaymentChevron.isHidden = true
+            paymentModeSeparatorView.isHidden = true
+            lblPaymentMode.isHidden = true
+        }
         extraViewConst.constant = 90
+        promoViewTopConst.constant = am.getAllowAccountSelection() ? extraViewConst.constant + 70 : extraViewConst.constant
         totalHeight = totalHeight + 70
         lblExtra.text = merchantMessage
         txtExtraDetails.placeholder = merchantMessage
@@ -458,7 +477,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                         
                     })
                     
-                    NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
+                    /*NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                     
                     var merchantId = ""
                     var merchantName = ""
@@ -490,6 +509,22 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                          let userInfo = ["success": true] as [String : Any]
                          NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
                          }
+                    }*/
+                    
+                    if self.selectedTheatre != nil {
+                        self.am.saveMESSAGE(data: "FromBookingMovie")
+                        #warning("check removeAndUpdateCart")
+    //                    self.removeAndUpdateCart()
+                        if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is MoviesController }).first {
+                            self.navigationController?.popToViewController(desiredViewController, animated: true)
+                        }
+                    } else {
+                        self.showWarningAlert(message: orderSuccessMessage, dismissOnTap: false, showCancel: false) {
+                            self.am.saveFromConfirmOrder(data: true)
+                            if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
+                                self.navigationController?.popToViewController(desiredViewController, animated: true)
+                            }
+                        }
                     }
                 } else if orderResponse[0].status == "091" {
                     DispatchQueue.main.async(execute: {
@@ -710,7 +745,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             })
             
         } else {
-            if source.deliveryModeDescription?.lowercased().contains("pickup") ?? false  || source.deliveryModeDescription == "1" {
+            if source.deliveryModeDescription?.containsIgnoringCase("pickup") ?? false  || source.deliveryModeDescription == "1" {
 //                self.totalViewHeight.constant = ((525.0 + totalHeight) - 120.0)
                 self.deliverLocationConst.constant = 0
                 self.topDelConst.constant = 60
@@ -743,22 +778,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         if let success = success {
             if success {
-//                self.placeFoodOrder()
-                if self.selectedTheatre != nil {
-                    self.am.saveMESSAGE(data: "FromBookingMovie")
-                    #warning("check removeAndUpdateCart")
-//                    self.removeAndUpdateCart()
-                    if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is MoviesController }).first {
-                        self.navigationController?.popToViewController(desiredViewController, animated: true)
-                    }
-                } else {
-                    self.showWarningAlert(message: orderSuccessMessage, dismissOnTap: false, showCancel: false) {
-                        self.am.saveFromConfirmOrder(data: true)
-                        if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
-                            self.navigationController?.popToViewController(desiredViewController, animated: true)
-                        }
-                    }
-                }
+                self.placeFoodOrder()
             } else {
                 self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
             }
@@ -912,13 +932,49 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     }
     
     private func handlePlaceOrder() {
-        if shouldOpenPaymentPopup() {
+        if am.getShowPaymentAuthorization() {
+            generateUniqueId()
+            postPaymentRequestNotification()
+            
+            /*DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+             let userInfo = ["success": true] as [String : Any]
+             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
+             }*/
+        } else if shouldOpenPaymentPopup() {
             let amount = Double(lblTotalCash.text?.filterNumbersOnly() ?? "") ?? 0
             openPaymentPopUp(amount: amount)
         } else {
             generateUniqueId()
             placeFoodOrder()
         }
+    }
+    
+    private func postPaymentRequestNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
+        
+        var merchantId = ""
+        var merchantName = ""
+        
+        if let selectedTheatre = selectedTheatre {
+            merchantId = selectedTheatre.restaurantID ?? ""
+            merchantName = selectedTheatre.name ?? ""
+        } else {
+            merchantId = selectedRestaurant?.restaurantID ?? ""
+            merchantName = selectedRestaurant?.restaurantName ?? ""
+        }
+        
+        let userInfo = [
+            "amount": Double(lblTotalCash.text?.filterNumbersOnly() ?? "0") ?? 0,
+            "reference": reference,
+            "additionalData": am.getSDKAdditionalData(),
+            "merchantName": merchantName,
+            "merchantId": merchantId,
+            "accountNumber": mySelectedWallet?.walletAccountID ?? "",
+        ] as [String : Any]
+        
+        printVal(object: "userInfo: \(userInfo)")
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
     }
     
     @IBAction func btnCashSourcePressed(_ sender: UIButton) {

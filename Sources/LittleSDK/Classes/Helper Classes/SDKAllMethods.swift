@@ -1311,6 +1311,30 @@ class SDKAllMethods {
         return check ?? ""
     }
     
+    func saveShowPaymentAuthorization(data:Bool) {
+        wrapper.set(data, forKey: "ShowPaymentAuthorization")
+    }
+    
+    func getShowPaymentAuthorization() -> Bool! {
+        var check=wrapper.bool(forKey: "ShowPaymentAuthorization")
+        if check == nil {
+            check = true
+        }
+        return check
+    }
+    
+    func saveAllowAccountSelection(data:Bool) {
+        wrapper.set(data, forKey: "AllowAccountSelection")
+    }
+    
+    func getAllowAccountSelection() -> Bool! {
+        var check=wrapper.bool(forKey: "AllowAccountSelection")
+        if check == nil {
+            check = true
+        }
+        return check
+    }
+    
     
     // MARK: - Encryption
     
