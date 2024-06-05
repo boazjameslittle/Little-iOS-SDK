@@ -773,6 +773,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     }
     
     @objc func paymentResultReceived(_ notification: Notification) {
+        printVal(object: "paymentResultReceived: \(String(describing: notification.userInfo))")
         
         let success = notification.userInfo?["success"] as? Bool
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
@@ -971,9 +972,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             "merchantId": merchantId,
             "accountNumber": mySelectedWallet?.walletAccountID ?? "",
         ] as [String : Any]
-        
-        printVal(object: "userInfo: \(userInfo)")
-        
+                
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
     }
     
