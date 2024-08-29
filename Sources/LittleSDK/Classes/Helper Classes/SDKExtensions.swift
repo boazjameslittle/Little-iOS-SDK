@@ -891,7 +891,7 @@ func printVal(object: Any) {
 #warning("Check logs")
 #if DEBUG
     //        print("______________________________________________________________________\n")
-            print("Little:", object)
+            print("Little iOS SDK:", object)
     //        print("\n______________________________________________________________________")
 #endif
 }
