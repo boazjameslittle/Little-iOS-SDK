@@ -519,7 +519,7 @@
                                 </segmentedControl>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tI-cG-Djm">
                                     <rect key="frame" x="20" y="238" width="335" height="40"/>
-                                    <color key="backgroundColor" name="AccentColor"/>
+                                    <color key="backgroundColor" systemColor="tintColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="YLU-Li-HWZ"/>
                                     </constraints>
@@ -862,7 +862,7 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twq-m1-uej">
                                             <rect key="frame" x="20" y="465.5" width="335" height="40"/>
-                                            <color key="backgroundColor" name="AccentColor"/>
+                                            <color key="backgroundColor" systemColor="tintColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="WKx-OF-dLf"/>
                                             </constraints>
@@ -1390,7 +1390,7 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX2-z9-g5t">
                                             <rect key="frame" x="20" y="132.5" width="335" height="40"/>
-                                            <color key="backgroundColor" name="AccentColor"/>
+                                            <color key="backgroundColor" systemColor="tintColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="6b4-aX-bwX"/>
                                             </constraints>
@@ -1465,12 +1465,11 @@
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7u7-Io-hSf">
                                     <rect key="frame" x="20" y="96" width="335" height="40"/>
-                                    <color key="backgroundColor" name="AccentColor"/>
+                                    <color key="backgroundColor" systemColor="tintColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="F4M-17-bjn"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
-                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" title="Request">
                                         <color key="titleColor" name="littleWhite"/>
                                     </state>
@@ -1603,9 +1602,6 @@
         <image name="new_promo_check" width="35" height="35"/>
         <image name="new_wallet" width="100" height="100"/>
         <image name="pickup_location" width="301" height="301"/>
-        <namedColor name="AccentColor">
-            <color red="0.32156862745098042" green="0.19607843137254902" blue="0.47843137254901963" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="LittleSDKThemeColorInverse">
             <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
