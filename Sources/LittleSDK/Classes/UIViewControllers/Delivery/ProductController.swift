@@ -161,8 +161,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     menuArr = getRestaurant.foodMenu ?? []
                     categoryArr.append("All")
                     for each in menuArr {
-                        if !(categoryArr.contains(each.foodCategory!)) {
-                            categoryArr.append(each.foodCategory!)
+                        if !(categoryArr.contains(each.foodCategory ?? "")) {
+                            categoryArr.append(each.foodCategory ?? "")
                         }
                         if !(sortedArr.contains(where: { $0.menuID == each.menuID })) {
                             sortedArr.append(each)
