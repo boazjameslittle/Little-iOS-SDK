@@ -65,51 +65,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         sdkBundle = Bundle.module
         
-        var amount = Double(am.getLIVEFARE())
-        lblAmountToPay.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
-        lblPickUp.text = am.getPICKUPADDRESS()
-        lblDropOff.text = am.getDROPOFFADDRESS()
-        costPerKmLbl.text = "Distance Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERKM() ?? "0")/km)"
-        costPerMinLbl.text = "Time Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERMIN() ?? "0")/min)"
-        amount = Double(am.getBASEPRICE())
-        minimumCostsLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
-        amount = Double(am.getBASEFARE())
-        baseFareLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
-        amount = Double(am.getDISTANCETOTALCOST())
-        distanceCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
-        amount = Double(am.getTIMETOTALCOST())
-        timeCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
+        setupData()
         
-        if am.getCORPORATECODE() != "" {
-            paymentMode = "COPORATE"
-            paymentModeID = ""
-            isCorporate = true
-            amount = Double(am.getLIVEFARE())
-            btnPaymentType.setTitle("Corporate", for: UIControl.State())
-            lblTripType.text = "Corporate"
-            paymentBtn.setTitle("Proceed", for: .normal)
-        } else {
-            if am.getPaymentModes() != "" {
-                paymentModes = am.getPaymentModes().components(separatedBy: ";")
-                paymentModes = paymentModes.filter { $0 != "" }
-                paymentModeIDs = am.getPaymentModeIDs().components(separatedBy: ";")
-                paymentModeIDs = paymentModeIDs.filter { $0 != "" }
-                btnPaymentType.setTitle("\(am.getPaymentMode()?.capitalized ?? "Cash")", for: UIControl.State())
-                paymentMode = am.getPaymentMode()
-                paymentModeID = am.getPaymentModeID()
-            }
-            lblTripType.text = "Individual"
-            paymentBtn.setTitle("Proceed", for: .normal)
-        }
-        
-        payDescArr = am.getPAYMENTCODES().components(separatedBy: ";")
-        payDescArr = payDescArr.filter { $0 != "" }
-        payCostArr = am.getPAYMENTCOSTS().components(separatedBy: ";")
-        payCostArr = payCostArr.filter { $0 != "" }
-        extraChargesTable.delegate = self
-        extraChargesTable.dataSource = self
-        finishedLoadingInitialTableCells = false
-        extraChargesTable.reloadData()
+        getTripCost()
         
     }
     
@@ -251,5 +209,198 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                 cell.alpha = 1
             }, completion: nil)
         }
+    }
+    
+    private func getTripCost() {
+        view.createLoadingNormal()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadTripCost),name:NSNotification.Name(rawValue: "GETREQUESTSTATUSTripCostJSONData"), object: nil)
+                
+        var params = SDKUtils.commonJsonTags(formId: "GETREQUESTSTATUS")
+        params["TripID"] = am.getTRIPID()
+        params["GetRequestStatus"] = [
+            "TripID": am.getTRIPID() ?? ""
+        ]
+        
+        hc.makeServerCall(sb: params.toJsonString(), method: "GETREQUESTSTATUSTripCostJSONData", switchnum: 0)
+        
+    }
+    
+    @objc private func loadTripCost(_ notification: Notification) {
+        view.removeAnimation()
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "GETREQUESTSTATUSTripCostJSONData"), object: nil)
+        
+        guard let data = notification.userInfo?["data"] as? Data else { return }
+        
+        var STATUS = ""
+        var TRIPSTATUS = ""
+        var WIFIPASS = ""
+        var DRIVERLATITUDE = ""
+        var DRIVERLONGITUDE = ""
+        var DRIVERBEARING = ""
+        var VEHICLETYPE = ""
+        var LIVEFARE = ""
+        var BASEPRICE = ""
+        var PERMIN = ""
+        var PERKM = ""
+        var CORPORATECODE = ""
+        var BASEFARE = ""
+        var DISTANCE = ""
+        var TIME = ""
+        var DISTANCETOTALCOST = ""
+        var TIMETOTALCOST = ""
+        var PAYMENTCODES = ""
+        var PAYMENTCOSTS = ""
+        var ET = ""
+        var ED = ""
+        var MESSAGE = ""
+        var CURRENCY = ""
+        var STARTOTP = ""
+        var ENDOTP = ""
+        var PARKOTP = ""
+        var CHAT = ""
+        
+        am.saveTRIPSTATUS(data: TRIPSTATUS)
+        am.saveWIFIPASS(data: WIFIPASS)
+        am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
+        am.saveDRIVERLONGITUDE(data: DRIVERLONGITUDE)
+        am.saveDRIVERBEARING(data: DRIVERBEARING)
+        am.saveVEHICLETYPE(data: VEHICLETYPE)
+        am.savePERMIN(data: PERMIN)
+        am.savePERKM(data: PERKM)
+        am.saveCORPORATECODE(data: CORPORATECODE)
+        am.saveLIVEFARE(data: LIVEFARE)
+        am.saveBASEPRICE(data: BASEPRICE)
+        am.saveBASEFARE(data: BASEFARE)
+        am.saveDISTANCE(data: DISTANCE)
+        am.saveTIME(data: TIME)
+        am.saveGLOBALCURRENCY(data: CURRENCY)
+        am.saveDISTANCETOTALCOST(data: DISTANCETOTALCOST)
+        am.saveTIMETOTALCOST(data: TIMETOTALCOST)
+        am.savePAYMENTCODES(data: PAYMENTCODES)
+        am.savePAYMENTCOSTS(data: PAYMENTCOSTS)
+        am.saveET(data: ET)
+        am.saveED(data: ED)
+        am.saveMESSAGE(data: MESSAGE)
+        am.saveStartTripOTP(data: STARTOTP)
+        am.saveEndTripOTP(data: ENDOTP)
+        am.saveParkingFeeOTP(data: PARKOTP)
+        am.saveCHAT(data: CHAT)
+        
+        do {
+            let requestStatusResponse = try JSONDecoder().decode(RequestStatusResponse.self, from: data)
+            guard let response = requestStatusResponse[safe: 0] else { return }
+            
+            STATUS = response.status ?? ""
+            TRIPSTATUS = response.tripStatus ?? ""
+            WIFIPASS = response.wifiPass ?? ""
+            DRIVERLATITUDE = "\(response.driverLatitude ?? "0.0")"
+            DRIVERLONGITUDE = "\(response.driverLongitude ?? "0.0")"
+            DRIVERBEARING = "\(response.driverBearing ?? "0.0")"
+            VEHICLETYPE = response.vehicleType ?? ""
+            LIVEFARE = response.liveFare ?? ""
+            BASEFARE = response.minimumFare ?? ""
+            BASEPRICE = response.basePrice ?? ""
+            PERMIN = "\(response.costPerMinute ?? "0.0")"
+            PERKM = "\(response.costPerKilometer ?? "0.0")"
+            CORPORATECODE = response.corporateID ?? ""
+            DISTANCE = response.distance ?? ""
+            TIME = response.time ?? ""
+            DISTANCETOTALCOST = response.distanceTotalCost ?? ""
+            TIMETOTALCOST = response.timeTotalCost ?? ""
+            PAYMENTCODES = response.paymentCodes ?? ""
+            PAYMENTCOSTS = response.paymentCosts ?? ""
+            ET = response.et ?? ""
+            ED = response.ed ?? ""
+            MESSAGE = response.message ?? ""
+            CURRENCY = response.currency ?? ""
+            STARTOTP = response.startOTP ?? ""
+            ENDOTP = response.endOTP ?? ""
+            PARKOTP = response.parkingOTP ?? ""
+            CHAT = response.tripChat ?? ""
+            
+            am.saveTRIPSTATUS(data: TRIPSTATUS)
+            am.saveWIFIPASS(data: WIFIPASS)
+            am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
+            am.saveDRIVERLONGITUDE(data: DRIVERLONGITUDE)
+            am.saveDRIVERBEARING(data: DRIVERBEARING)
+            am.saveVEHICLETYPE(data: VEHICLETYPE)
+            am.savePERMIN(data: PERMIN)
+            am.savePERKM(data: PERKM)
+            am.saveCORPORATECODE(data: CORPORATECODE)
+            am.saveLIVEFARE(data: LIVEFARE)
+            am.saveBASEPRICE(data: BASEPRICE)
+            am.saveBASEFARE(data: BASEFARE)
+            am.saveDISTANCE(data: DISTANCE)
+            am.saveTIME(data: TIME)
+            am.saveGLOBALCURRENCY(data: CURRENCY)
+            am.saveDISTANCETOTALCOST(data: DISTANCETOTALCOST)
+            am.saveTIMETOTALCOST(data: TIMETOTALCOST)
+            am.savePAYMENTCODES(data: PAYMENTCODES)
+            am.savePAYMENTCOSTS(data: PAYMENTCOSTS)
+            am.saveET(data: ET)
+            am.saveED(data: ED)
+            am.saveMESSAGE(data: MESSAGE)
+            am.saveStartTripOTP(data: STARTOTP)
+            am.saveEndTripOTP(data: ENDOTP)
+            am.saveParkingFeeOTP(data: PARKOTP)
+            am.saveCHAT(data: CHAT)
+            am.savePaymentMode(data: response.paymentMode ?? "")
+            am.saveTollChargeOTP(data: response.tollChargeOTP ?? "")
+            
+            if STATUS != "000" {
+                am.saveTRIPSTATUS(data: "")
+            }
+            
+            setupData()
+            
+        } catch {}
+    }
+    
+    private func setupData() {
+        var amount = Double(am.getLIVEFARE())
+        lblAmountToPay.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount ?? 0)
+        lblPickUp.text = am.getPICKUPADDRESS()
+        lblDropOff.text = am.getDROPOFFADDRESS()
+        costPerKmLbl.text = "Distance Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERKM() ?? "0")/km)"
+        costPerMinLbl.text = "Time Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERMIN() ?? "0")/min)"
+        amount = Double(am.getBASEPRICE())
+        minimumCostsLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount ?? 0)
+        amount = Double(am.getBASEFARE())
+        baseFareLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount ?? 0)
+        amount = Double(am.getDISTANCETOTALCOST())
+        distanceCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount ?? 0)
+        amount = Double(am.getTIMETOTALCOST())
+        timeCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount ?? 0)
+        
+        if am.getCORPORATECODE() != "" {
+            paymentMode = "COPORATE"
+            paymentModeID = ""
+            isCorporate = true
+            amount = Double(am.getLIVEFARE())
+            btnPaymentType.setTitle("Corporate", for: UIControl.State())
+            lblTripType.text = "Corporate"
+            paymentBtn.setTitle("Proceed", for: .normal)
+        } else {
+            if am.getPaymentModes() != "" {
+                paymentModes = am.getPaymentModes().components(separatedBy: ";")
+                paymentModes = paymentModes.filter { $0 != "" }
+                paymentModeIDs = am.getPaymentModeIDs().components(separatedBy: ";")
+                paymentModeIDs = paymentModeIDs.filter { $0 != "" }
+                btnPaymentType.setTitle("\(am.getPaymentMode()?.capitalized ?? "Cash")", for: UIControl.State())
+                paymentMode = am.getPaymentMode()
+                paymentModeID = am.getPaymentModeID()
+            }
+            lblTripType.text = "Individual"
+            paymentBtn.setTitle("Proceed", for: .normal)
+        }
+        
+        payDescArr = am.getPAYMENTCODES().components(separatedBy: ";")
+        payDescArr = payDescArr.filter { $0 != "" }
+        payCostArr = am.getPAYMENTCOSTS().components(separatedBy: ";")
+        payCostArr = payCostArr.filter { $0 != "" }
+        extraChargesTable.delegate = self
+        extraChargesTable.dataSource = self
+        finishedLoadingInitialTableCells = false
+        extraChargesTable.reloadData()
     }
 }

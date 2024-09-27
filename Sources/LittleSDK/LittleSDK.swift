@@ -65,6 +65,7 @@ public class LittleFramework {
     
     public func initializeToRides(_ vc: UIViewController) {
         printVal(object: "Latest initializeToRides")
+        
         let viewController = InitializeSDKVC()
         if let navigator = vc.navigationController {
             viewController.isUAT = self.isUAT

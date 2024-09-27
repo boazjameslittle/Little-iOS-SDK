@@ -27,19 +27,21 @@ let package = Package(
         .package(name: "IQKeyboardManagerSwift", url: "https://github.com/hackiftekhar/IQKeyboardManager", from: "6.0.5"),
         .package(name: "ESPullToRefresh", url: "https://github.com/eggswift/pull-to-refresh", from: "2.9.3"),
         .package(name: "PanModal", url: "https://github.com/slackhq/PanModal.git", from: "1.2.6"),
+        .package(name: "SwiftJWT", url: "https://github.com/Kitura/Swift-JWT.git", from: "4.0.0"),
+        .package(name: "RxSwift", url: "https://github.com/ReactiveX/RxSwift.git", from: "6.2.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: ["NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
+            dependencies: ["NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal", "SwiftJWT", "RxSwift", .product(name: "RxCocoa", package: "RxSwift")],
             path: "Sources/LittleSDK",
             resources: [
-                .process("Assets/sparkle.wav"),
-                .process("Assets/style.json"),
-                .process("Assets/darkmode.json"),
-                .process("Assets/Localizable.strings")
+                .process("Resources/sparkle.wav"),
+                .process("Resources/style.json"),
+                .process("Resources/darkmode.json"),
+                .copy("Resources/fleet.pem")
             ]),
         .testTarget(
             name: "LittleSDKTests",

@@ -13,7 +13,7 @@ class SDKConstants {
     var iv: NSString="i7otp4rq4ysrdh5v"
     var headerkey: NSString=""
     var headeriv: NSString="HDJAK$2$23232Fax"
-        
+    
     var live = "lwCGahusOkXBoFnNKoWjOBPsuG6cAX5Cs5CUstPbKEUNzjKRzPKBQSemVIVw+PIu"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
     var mapsKey = "vdQEvjOXQir20oZY7ARDCVk/IZ0zf9mJptA3YxtrpEeuwVsYmtgKAKViH6wWYu3H"
@@ -42,19 +42,19 @@ class SDKConstants {
     static let littleGreen = UIColor(hex: "#0D9848")
     
     // Equity
-//    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
+    //    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-//    static var littleSDKThemeColor = UIColor(hex: "#891755")
+    //    static var littleSDKThemeColor = UIColor(hex: "#891755")
     // rafiki
-//    static var littleSDKThemeColor = UIColor(hex: "#136EAF")
+    //    static var littleSDKThemeColor = UIColor(hex: "#136EAF")
     static var littleSDKThemeColor = UIColor.themeColor
     
     // Equity
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+    //    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+    //    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
     // rafiki
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#136EAF")
+    //    static var littleSDKDarkThemeColor = UIColor(hex: "#136EAF")
     static var littleSDKDarkThemeColor = UIColor.themeColor
     
     static var littleSDKLabelColor = UIColor(hex: "#404040")
@@ -64,9 +64,14 @@ class SDKConstants {
     // Change to vooma or quity
     static let SDK_CLIENT = SDKClient.UNIVERSAL
     
-   static let WALLET_ACTION_TYPE_DIAL = "DIAL"
-   static let WALLET_ACTION_TYPE_FORM_ID = "FORMID"
+    static let WALLET_ACTION_TYPE_DIAL = "DIAL"
+    static let WALLET_ACTION_TYPE_FORM_ID = "FORMID"
     
-   static let REMOVEARRAYRESPONSE = 1
+    static let REMOVEARRAYRESPONSE = 1
+    
+    static let GOOGLE_MAP_BASE_URL: String = "https://maps.googleapis.com/maps/api/"
+    static let GOOGLE_PROVIDER_ID = "LyzvlIDDcbSgWXhhcfiqEh0ZOFjYme1j6zYQJGYprg4="
+    static let FLEET_ENGINE_BASE_URL = "jfjkgfWcF13c0FVSifCT0yyER91V8ctElMtOZwIhPb7v65Atf8KuWGGmfOvnnFVe2G7s2dpBw1dNOJKvd/zLF5l5ZsdETC0cchhjfQtJMUI="
+    static let GOOGLE_KEY_ID = "kpF6okaTmsP67z1gPfCYRnkYh+ZHz4znnBWes05CSV/KwzYyrmAB44fEZRli+24S"
     
 }

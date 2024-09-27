@@ -117,6 +117,13 @@ struct GetPendingResult: Codable {
     let wallets: [Wallet]?
     let paymentTypes: [PaymentTypeSDK]?
     let recentTrips: [RecentTrip]?
+    let agentUniqueID: String?
+    let tripOTP: [TripOTP]?
+    let costPerKilometer: Double?
+    let driverName, driverMobile, driverPIC, carModel, carNumber, carColor, driverRating, badgeText, badgeColor, paymentMode, changePaymentType: String?
+    let tripDropOffDetails: [TripDropOffDetail]?
+    let pickupAddress: String?
+    let tripStatus: String?
     
     enum CodingKeys: String, CodingKey {
         case status = "Status"
@@ -140,6 +147,23 @@ struct GetPendingResult: Codable {
         case wallets = "Wallets"
         case paymentTypes = "PaymentTypes"
         case recentTrips = "RecentTrips"
+        case agentUniqueID = "AgentUniqueID"
+        case tripOTP = "TripOTP"
+        case costPerKilometer = "CostPerKilometer"
+        case driverName = "DriverName"
+        case driverMobile = "DriverMobile"
+        case driverPIC = "DriverPIC"
+        case carModel = "CarModel"
+        case carNumber = "CarNumber"
+        case carColor = "CarColor"
+        case driverRating = "DriverRating"
+        case badgeText = "BadgeText"
+        case badgeColor = "BadgeColor"
+        case paymentMode = "PaymentMode"
+        case changePaymentType = "ChangePaymentType"
+        case tripDropOffDetails = "TripDropOffDetails"
+        case pickupAddress = "PickupAddress"
+        case tripStatus = "TripStatus"
     }
 }
 

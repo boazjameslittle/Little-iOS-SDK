@@ -310,6 +310,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
+        SDKUtils.printObject("viewWillDisappear")
         if providertimer != nil {
             providertimer.invalidate()
         }
@@ -318,6 +319,16 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
         if timer != nil {
             timer.invalidate()
+        }
+    }
+    
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            let hasUserInterfaceStyleChanged = previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false
+            if hasUserInterfaceStyleChanged {
+                gmsMapView.showMapStyleForView()
+            }
         }
     }
     
@@ -380,19 +391,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
         }
         
-    }
-    
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 13.0, *) {
-            let hasUserInterfaceStyleChanged = previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false
-            if hasUserInterfaceStyleChanged {
-                if gmsMapView != nil {
-                    gmsMapView.showMapStyleForView()
-                }
-            }
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
     }
     
     // Setup Functions
@@ -3163,9 +3161,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         am.saveStillRequesting(data: false)
         
-        let dataToSend = "{\"FormID\":\"CHECKFORTRIP_V1\"\(commonCallParams())}"
+        let params = SDKUtils.commonJsonTags(formId: "CHECKFORTRIP_V1")
         
-        hc.makeServerCall(sb: dataToSend, method: "CHECKFORTRIPJSONData", switchnum: 0)
+        hc.makeServerCall(sb: params.toJsonString(), method: "CHECKFORTRIPJSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
     }
     
     @objc func loadPendingRequests(_ notification: NSNotification) {
@@ -3188,8 +3186,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         cardViewController.requestingLoadingView.removeAnimation()
         
         do {
-            let getPendingResults = try JSONDecoder().decode(GetPendingResults.self, from: data!)
-            let results = getPendingResults[0]
+            let results = try JSONDecoder().decode(GetPendingResult.self, from: data!)
             processGetPendingResults(results: results)
             
         } catch (let err) {
@@ -3207,6 +3204,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         printVal(object: "processGetPendingResults: \(results)")
         PaymentModes.removeAll()
         PaymentModeIDs.removeAll()
+        
+        am.saveAgentUniqueId(data: results.agentUniqueID ?? "")
         
         var paymentModesString = ""
         var paymentModeIDsString = ""
@@ -4768,7 +4767,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                             am.saveVEHICLEIMAGE(data: carActiveIcons[selectedCarIndex])
                         }
                         
-                        informationTopView.isUserInteractionEnabled = true
+                        /*informationTopView.isUserInteractionEnabled = true
                         
                         cardViewController.lblRequestingText.text = ""
                         makeRequestDefaultMessage = ""
@@ -4776,24 +4775,28 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         cardViewController.lblRequestingText.textColor = littleBlue
                         cardViewController.requestingLoadingView.isHidden = true
                         cardViewController.requestingLoadingView.removeAnimation()
-                        cardViewController.lblRequestingText.isHidden = true
+                        cardViewController.lblRequestingText.isHidden = true*/
                         
                         forwardSkipDrivers = ""
                         stopMakeRequestStatusUpdate()
                         am.savePaymentMode(data: PaymentMode)
                         am.savePaymentModeID(data: PaymentModeID)
                         
-                        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
-                            if let navigator = self.navigationController {
-                                viewController.popToRestorationID = popToRestorationID
-                                viewController.navShown = navShown
-                                viewController.paymentVC = paymentVC
-                                navigator.pushViewController(viewController, animated: true)
-                            }
-                        }
+                        getMoreTripDetails()
                         
                     }
                 }
+            }
+        }
+    }
+    
+    private func proceedToTrip() {
+        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
+            if let navigator = self.navigationController {
+                viewController.popToRestorationID = popToRestorationID
+                viewController.navShown = navShown
+                viewController.paymentVC = paymentVC
+                navigator.pushViewController(viewController, animated: true)
             }
         }
     }
@@ -4982,6 +4985,83 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
         else {
             return 360 + degree
+        }
+    }
+    
+    @objc private func getMoreTripDetails() {
+        SDKUtils.printObject("getMoreTripDetails")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMoreTripDetails),name:NSNotification.Name(rawValue: "CHECKFORTRIP_V1JSONData"), object: nil)
+        
+        let params = SDKUtils.commonJsonTags(formId: "CHECKFORTRIP_V1")
+        
+        SDKHandleCalls().makeServerCall(sb: params.toJsonString(), method: "CHECKFORTRIP_V1JSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadMoreTripDetails(_ notification: NSNotification) {
+        let data = notification.userInfo?["data"] as? Data
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "CHECKFORTRIP_V1JSONData"), object: nil)
+        
+        do {
+                        
+            if let data = data {
+                let results = try JSONDecoder().decode(GetPendingResult.self, from: data)
+                
+                if let tripOtp = results.tripOTP?.first {
+                    am.saveStartTripOTP(data: tripOtp.startTripOTP ?? "")
+                    am.saveEndTripOTP(data: tripOtp.endTripOTP ?? "")
+                    am.saveTollChargeOTP(data: tripOtp.tollChargeOTP ?? "")
+                    am.saveParkingFeeOTP(data: tripOtp.parkingOTP ?? "")
+                }
+                
+                SDKUtils.printObject("myTripStatus", results.tripStatus)
+                if let status = results.tripStatus {
+                    am.saveAgentUniqueId(data: results.agentUniqueID ?? "")
+                    am.savePERKM(data: "\(results.costPerKilometer ?? 0.0)")
+                    am.saveDRIVERMOBILE(data: results.driverMobile ?? "")
+                    am.saveDRIVERNAME(data: results.driverName ?? "")
+                    am.saveDRIVERPICTURE(data: results.driverPIC ?? "")
+                    am.saveMODEL(data: results.carModel ?? "")
+                    am.saveCOLOR(data: results.carColor ?? "")
+                    am.saveNUMBER(data: results.carNumber ?? "")
+                    am.savePaymentMode(data: results.paymentMode ?? "")
+                    
+                    am.saveTRIPSTATUS(data: status)
+                    
+                    if let pickupAddress = results.pickupAddress {
+                        am.savePICKUPADDRESS(data: pickupAddress)
+                    }
+                    
+                    if let intVal: Int = Int(am.getTRIPSTATUS() ?? "0") {
+                        if intVal >= 2 {
+                            
+                            informationTopView.isUserInteractionEnabled = true
+                            
+                            cardViewController.lblRequestingText.text = ""
+                            makeRequestDefaultMessage = ""
+                            cardViewController.requestingLoadingView.isUserInteractionEnabled = false
+                            cardViewController.lblRequestingText.textColor = littleBlue
+                            cardViewController.requestingLoadingView.isHidden = true
+                            cardViewController.requestingLoadingView.removeAnimation()
+                            cardViewController.lblRequestingText.isHidden = true
+                            
+                            forwardSkipDrivers = ""
+                            stopMakeRequestStatusUpdate()
+                            am.savePaymentMode(data: PaymentMode)
+                            am.savePaymentModeID(data: PaymentModeID)
+                            
+                            proceedToTrip()
+                            
+                        }
+                    }
+                }
+            } else {
+                SDKUtils.printObject("loadMoreTripDetails nil data")
+            }
+            
+        } catch {
+            SDKUtils.printObject("loadMoreTripDetails error", error.localizedDescription)
         }
     }
 }

@@ -318,6 +318,7 @@ class SDKAllMethods {
     }
     
     func saveLIVEFARE(data:String){
+        SDKUtils.printObject("saveLIVEFARE", data)
         wrapper.set(data, forKey: "LIVEFARE")
     }
     func saveDISTANCE(data:String){
@@ -1333,6 +1334,39 @@ class SDKAllMethods {
             check = true
         }
         return check
+    }
+    
+    // Mark: - Fleet
+    func saveCallFleet(data:Bool) {
+        wrapper.set(data, forKey: "CallFleet")
+    }
+    
+    func getCallFleet() -> Bool! {
+        var check=wrapper.bool(forKey: "CallFleet")
+        if check == nil {
+            check = true
+        }
+        return check
+    }
+    
+    // Mark: -AgentUniqueId
+    func saveAgentUniqueId(data:String) {
+        wrapper.set(data, forKey: "AgentUniqueId")
+    }
+    
+    func getAgentUniqueId() -> String{
+        let check = wrapper.string(forKey: "AgentUniqueId")
+        return check ?? ""
+    }
+    
+    // Mark: -TollChargeOTP
+    func saveTollChargeOTP(data:String) {
+        wrapper.set(data, forKey: "TollChargeOTP")
+    }
+    
+    func getTollChargeOTP() -> String{
+        let check = wrapper.string(forKey: "TollChargeOTP")
+        return check ?? ""
     }
     
     

@@ -262,4 +262,93 @@ class SDKUtils {
         numberFormatter.locale = Locale(identifier: "en")
         return numberFormatter.string(from: NSNumber(value:value)) ?? ""
     }
+    
+    static func printObject(_ items: Any?...) {
+        #if DEBUG
+        print(Date().logDateFormat(), separator: "", terminator: " Little: ")
+        
+        for (idx, item) in items.enumerated() {
+            if idx != items.count - 1 {
+                if item != nil {
+                    print(item!, separator: "", terminator: ", ")
+                } else {
+                    print(String(describing: item), separator: "", terminator: ", ")
+                }
+            } else {
+                if item != nil {
+                    print(item!, separator: "", terminator: "\n")
+                } else {
+                    print(String(describing: item), separator: "", terminator: "\n")
+                }
+            }
+        }
+        #endif
+    }
+    
+    static func safeAreaBottomInset() -> CGFloat  {
+        return UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0
+    }
+
+    static func safeAreaTopInset() -> CGFloat  {
+        return UIWindow.keyWindow?.safeAreaInsets.top ?? 0
+    }
+
+    static func safeAreaLeftInset() -> CGFloat  {
+        return UIWindow.keyWindow?.safeAreaInsets.left ?? 0
+    }
+
+    static func safeAreaRightInset() -> CGFloat  {
+        return UIWindow.keyWindow?.safeAreaInsets.right ?? 0
+    }
+    
+    static func formatDistance(distance: String) -> String {
+        let myDistance: Double = Double(distance) ?? 0.0
+        
+        if myDistance < 1 {
+            let distanceInMetres = myDistance * 1000
+            
+            var rounded: Int {
+                if distanceInMetres > 50 {
+                    return Int(round(distanceInMetres, toNearest: 100))
+                }
+                
+                return Int(round(distanceInMetres, toNearest: 50))
+            }
+            
+            if rounded >= 1000 {
+                return String(format: "%.1f km".localized, myDistance)
+            }
+            
+            return String(format: "%d metres".localized, rounded)
+        }
+        
+        return String(format: "%.1f km".localized, myDistance)
+    }
+
+    static func formatDistance(distance: Double) -> String {
+        
+        if distance < 1 {
+            let distanceInMetres = distance * 1000
+            
+            var rounded: Int {
+                if distanceInMetres > 50 {
+                    return Int(round(distanceInMetres, toNearest: 100))
+                }
+                
+                return Int(round(distanceInMetres, toNearest: 50))
+            }
+            
+            if rounded >= 1000 {
+                return String(format: "%.1f km".localized, distance)
+            }
+            
+            return String(format: "%d metres".localized, rounded)
+        }
+        
+        return String(format: "%.1f km".localized, distance)
+    }
+    
+    static func round(_ value: Double, toNearest: Double) -> Double {
+        return _math.round(value / toNearest) * toNearest
+    }
 }

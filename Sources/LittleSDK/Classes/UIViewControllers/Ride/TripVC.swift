@@ -14,8 +14,10 @@ import UserNotifications
 import MessageUI
 import Alamofire
 import EasyNotificationBadge
+import RxSwift
+import RxCocoa
 
-public class TripVC: UIViewController {
+public class TripVC: BaseVC {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
@@ -152,9 +154,23 @@ public class TripVC: UIViewController {
     @IBOutlet weak var imgParkingHint: UIImageView!
     
     @IBOutlet weak var btnChat: UIButton!
+    @IBOutlet weak var btnTripCodes: UIButton! {
+        didSet {
+            btnTripCodes.viewCornerRadius = 10
+        }
+    }
     
+    private lazy var viewModel = FleetEngineVM()
+    
+    private let disposeBag = DisposeBag()
+    
+    private var estimatedDistanceText = ""
+    private var tripDetailsFetched = false
+        
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        am.saveCallFleet(data: true)
         
         sdkBundle = Bundle.module
         guard let sdkBundle = sdkBundle else { return }
@@ -217,8 +233,85 @@ public class TripVC: UIViewController {
             toChat = false
         }
     }
+    
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            let hasUserInterfaceStyleChanged = previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false
+            if hasUserInterfaceStyleChanged {
+                gmsMapView.showMapStyleForView()
+            }
+        }
+    }
+    
+    override func setupLabels() {
+        btnTripCodes.setTitle("Show Trip Codes".localized, for: .normal)
+    }
+    
+    override func setupGestures() {
+        btnTripCodes.addTarget(self, action: #selector(getTripCodes), for: .touchUpInside)
+    }
  
     // MARK: - Functions
+    
+    override func setupObservers() {
+        super.setupObservers()
+    
+        viewModel.fleetTripDetailsResponse.observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                switch result {
+                case .loading:
+                    break
+                case .data(let response):
+                    guard let self = self else { return }
+                    
+                    switch response {
+                    case .success(let data):
+                        self.processTripDetailsResponse(data)
+                    case .failure(_):
+                        /*if self.vehicleId.isEmpty {
+                            if error.isSessionTaskError {
+                                self.showWarningAlertWithCancelAction(message: "You appear to be offline. Kindly check your Internet connection and try again.".localized, actionButtonText: "Try Again".localized, actionButtonClosure: {
+                                    self.getVehicleDetails()
+                                }, cancelAction: {
+                                    self.exitScreen()
+                                })
+                            } else {
+                                self.showWarningAlert(message: "Ooops, something went wrong.".localized, dismissOnTap: false, actionButtonText: "Dismiss".localized, showCancel: false) {
+                                    self.exitScreen()
+                                }
+                            }
+                        }*/
+                        break
+                    }
+                case .none:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    
+        viewModel.vehicleDetailsResponse.observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                switch result {
+                case .loading:
+                    break
+                case .data(let response):
+                    guard let self = self else { return }
+                    
+                    self.removeLoadingPage()
+                    
+                    switch response {
+                    case .success(let data):
+                        self.processVehicleDetailsResponse(data)
+                    case .failure(_):
+                        break
+                    }
+                case .none:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    }
     
     @objc func postBackHome() {
         
@@ -323,7 +416,12 @@ public class TripVC: UIViewController {
     
     @objc func TimerRequestStatus() {
         if isContinueRequest {
-            getTripStatus()
+            if am.getCallFleet() {
+                getTripDetails()
+                getVehicleDetails()
+            } else {
+                getTripStatus()
+            }
         }
     }
     
@@ -438,7 +536,6 @@ public class TripVC: UIViewController {
     }
     
     func getTripStatus() {
-        
         NotificationCenter.default.addObserver(self, selector: #selector(loadMakeRequestStatusJSON(_:)),name:NSNotification.Name(rawValue: "GETREQUESTSTATUSJSONData"), object: nil)
         
         am.saveStillRequesting(data: false)
@@ -571,6 +668,7 @@ public class TripVC: UIViewController {
                 am.saveParkingFeeOTP(data: PARKOTP)
                 am.saveCHAT(data: CHAT)
                 am.savePaymentMode(data: response.paymentMode ?? "")
+                am.saveTollChargeOTP(data: response.tollChargeOTP ?? "")
                 
                 if STATUS != "000" {
                     am.saveTRIPSTATUS(data: "")
@@ -588,14 +686,19 @@ public class TripVC: UIViewController {
                     btnStops.isHidden = false
                 }
                 
-                loadRequestStatus()
+                loadRequestStatus(requestStatus: STATUS)
                 
             } catch {}
         }
         
+        /*if !tripDetailsFetched {
+            tripDetailsFetched = true
+            getMoreTripDetails()
+        }*/
+        
     }
     
-    @objc func loadRequestStatus() {
+    @objc func loadRequestStatus(requestStatus: String) {
         
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
         
@@ -611,6 +714,9 @@ public class TripVC: UIViewController {
             }
             
         case "2":
+            if let ed = am.getED(), !ed.isEmpty {
+                self.estimatedDistanceText = String(format: "%@ away".localized, SDKUtils.formatDistance(distance: ed))
+            }
             
             originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
             updateDriverLocation(coordinates: originCoordinate)
@@ -635,6 +741,10 @@ public class TripVC: UIViewController {
                 drawPath()
             }
         case "3":
+            
+            if let ed = am.getED(), !ed.isEmpty {
+                self.estimatedDistanceText = String(format: "%@ away".localized, SDKUtils.formatDistance(distance: ed))
+            }
             
             if btnMuteAudio.isHidden == true {
                 btnMuteAudio.isHidden = false
@@ -665,6 +775,10 @@ public class TripVC: UIViewController {
                 }
             }
         case "4":
+            
+            if let ed = am.getED(), !ed.isEmpty {
+                self.estimatedDistanceText = String(format: "%@ to destination".localized, SDKUtils.formatDistance(distance: ed))
+            }
             
             if btnMuteAudio.isHidden == false {
                 btnMuteAudio.isHidden = true
@@ -793,20 +907,38 @@ public class TripVC: UIViewController {
             popOverVC.didMove(toParent: self)
             
         default:
-            
-            stopCheckingStatusUpdate()
-            am.saveTRIPID(data: "")
-            am.saveOnTrip(data: false)
-            
-            UIView.animate(withDuration: 1, delay:3, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
-            }, completion: { finished in
-                self.removeAllObservers(array: self.observersArray)
-                self.postBackHome()
-            })
-
+            if requestStatus == "091" {
+                stopCheckingStatusUpdate()
+                notificationMessage = "Your trip has been cancelled.".localized
+    //            UNUserNotificationCenter.current().delegate = self
+                scheduleNotifications()
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(loadCancelRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
+                
+                let popOverVC = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+                self.addChild(popOverVC)
+                popOverVC.driverName = am.getDRIVERNAME() ?? ""
+                popOverVC.driverImage = am.getDRIVERPICTURE()
+                popOverVC.view.frame = UIScreen.main.bounds
+                self.view.addSubview(popOverVC.view)
+            }
         }
         
-        removeLoadingPage()
+        if !am.getCallFleet() {
+            removeLoadingPage()
+        }
+    }
+    
+    private func exitScreen() {
+        stopCheckingStatusUpdate()
+        am.saveTRIPID(data: "")
+        am.saveOnTrip(data: false)
+        
+        UIView.animate(withDuration: 1, delay:3, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
+        }, completion: { finished in
+            self.removeAllObservers(array: self.observersArray)
+            self.postBackHome()
+        })
     }
     
     
@@ -1030,6 +1162,9 @@ public class TripVC: UIViewController {
         if originMarker == nil
         {
             originMarker = GMSMarker()
+            originMarker.tracksInfoWindowChanges = true
+            originMarker.tracksViewChanges = true
+            originMarker.infoWindowAnchor = CGPoint(x: 0.5, y: 0.25)
             originMarker.position = coordinates
             if am.getTRIPSTATUS() != "4" {
                 if am.getDRIVERBEARING() != "" {
@@ -1091,8 +1226,27 @@ public class TripVC: UIViewController {
                 originMarker.rotation = CLLocationDegrees(0.0)
                 originMarker.icon = scaleImage(image: image!,size: 0.7)
             }
+            gmsMapView.selectedMarker = originMarker
             originMarker.position =  coordinates
             CATransaction.commit()
+        }
+        
+        originMarker.title = estimatedDistanceText
+        
+        guard let originMarker = originMarker else { return }
+        
+        if am.getTRIPSTATUS() == "4" {
+            let camera = GMSCameraPosition.camera(withLatitude: originMarker.position.latitude,
+                                                  longitude: originMarker.position.longitude,
+                                                  zoom: 18,
+                                                  bearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0,
+                                                  viewingAngle: 60)
+            gmsMapView.animate(to: camera)
+        } else {
+            var bounds = GMSCoordinateBounds()
+            bounds = bounds.includingCoordinate(destinationCoordinate)
+            bounds = bounds.includingCoordinate(coordinates)
+            gmsMapView.animate(with: GMSCameraUpdate.fit(bounds, with: UIEdgeInsets(top: SDKUtils.safeAreaTopInset() + 60, left: 60, bottom: 60, right: 60)))
         }
     }
     
@@ -1444,6 +1598,161 @@ public class TripVC: UIViewController {
     
     func showMessageOTP(title: String, message: String) {
         showWarningAlert(title: title, message: message)
+    }
+    
+    private func getVehicleDetails() {
+        viewModel.getVehicleDetails(vehicleId: am.getAgentUniqueId())
+    }
+    
+    private func getTripDetails() {
+        viewModel.geTripDetails(tripId: am.getTRIPID())
+    }
+    
+    private func processVehicleDetailsResponse(_ data: FleetVehicleDetails) {
+        SDKUtils.printObject("processVehicleDetailsResponse", data)
+        if let attributes = data.attributes {
+            if let tripId = attributes.first(where: { $0.key?.equalsIgnoringCase("TripID") == true })?.stringValue, !tripId.isEmpty && tripId == am.getTRIPID() {
+                SDKUtils.printObject("processVehicleDetailsResponse on Trip", tripId)
+                
+                if let tripStatus = attributes.first(where: { $0.key?.equalsIgnoringCase("TripStatus") == true })?.stringValue, !tripStatus.isEmpty {
+                    am.saveTRIPSTATUS(data: tripStatus)
+                    am.saveDRIVERLATITUDE(data: "\(data.lastLocation?.location?.latitude ?? 0)")
+                    am.saveDRIVERLONGITUDE(data: "\(data.lastLocation?.location?.longitude ?? 0)")
+                    am.saveDRIVERBEARING(data: "\(data.lastLocation?.heading ?? 0)")
+                    let tripDistance = attributes.first(where: { $0.key?.equalsIgnoringCase("TripDistance") == true })?.stringValue ?? "0"
+                    let tripTime = attributes.first(where: { $0.key?.equalsIgnoringCase("TripTime") == true })?.stringValue ?? "0"
+                    let liveFare = attributes.first(where: { $0.key?.equalsIgnoringCase("LiveFare") == true })?.stringValue ?? "0"
+                    am.saveTIME(data: tripTime)
+                    am.saveDISTANCE(data: tripDistance)
+                    am.saveLIVEFARE(data: liveFare)
+                    loadRequestStatus(requestStatus: "000")
+                } else {
+                    am.saveCallFleet(data: false)
+                    getTripStatus()
+                }
+                
+                
+            } else {
+                SDKUtils.printObject("processVehicleDetailsResponse status 000")
+                am.saveCallFleet(data: false)
+                getTripStatus()
+            }
+        }
+    }
+    
+    private func processTripDetailsResponse(_ data: FleetTrip) {
+        if let waypoint = data.remainingWaypoints?.first {
+            if let duration = waypoint.duration {
+                var et = 0.0
+                if duration.containsIgnoringCase("s") {
+                    et = Double(duration.replacingLastOccurrenceOfString("s", with: "", caseInsensitive: true)) ?? 0
+                    et = et / 60
+                } else if duration.containsIgnoringCase("m") {
+                    et = Double(duration.replacingLastOccurrenceOfString("m", with: "", caseInsensitive: true)) ?? 0
+                } else if duration.containsIgnoringCase("h") {
+                    et = Double(duration.replacingLastOccurrenceOfString("h", with: "", caseInsensitive: true)) ?? 0
+                    et = et * 60
+                } else if duration.containsIgnoringCase("d") {
+                    et = Double(duration.replacingLastOccurrenceOfString("d", with: "", caseInsensitive: true)) ?? 0
+                    et = et * 60
+                }
+                
+                am.saveET(data: String(et))
+            }
+            
+            let distanceMeters = waypoint.distanceMeters ?? 0
+            let ed = distanceMeters > 0 ? distanceMeters / 1000 : distanceMeters
+            am.saveED(data: String(ed))
+        }
+        
+        if let dropoffPoint = data.dropoffPoint?.point {
+            if am.getTRIPSTATUS() == "4" {
+                let dropOffCoordinate = CLLocationCoordinate2D(latitude: dropoffPoint.latitude ?? 0, longitude: dropoffPoint.longitude ?? 0)
+                
+                if destinationCoordinate.latitude != dropOffCoordinate.latitude && destinationCoordinate.longitude != dropOffCoordinate.longitude {
+                    destinationCoordinate = dropOffCoordinate
+                    configureMapAndMarkersForRoute()
+                }
+            }
+            
+        }
+        
+        if let route = data.route {
+            drawRoute(coordinates: route)
+        }
+    }
+    
+    private func drawRoute(coordinates: [LocationPoint]) {
+        SDKUtils.printObject("drawRoute coordinates", coordinates.count)
+        guard !coordinates.isEmpty else { return }
+        self.i = 0
+        self.animationPath = GMSMutablePath()
+        self.animationPolyline.map = nil
+        
+        oldPolylineArr.forEach({ $0.map = nil })
+        oldPolylineArr.removeAll()
+        
+        let path = GMSMutablePath()
+        coordinates.forEach({ path.add(CLLocationCoordinate2D(latitude: $0.latitude ?? 0, longitude: $0.longitude ?? 0)) })
+        
+        routePolyline = GMSPolyline(path: path)
+        routePolyline.strokeWidth = 3.5
+        routePolyline.strokeColor = UIColor.systemBlue
+        routePolyline.map = gmsMapView
+        animatePath = path
+        oldPolylineArr.append(routePolyline)
+        
+    }
+    
+    @objc private func getTripCodes() {
+        view.createLoadingNormal()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadGetTripCodes),name:NSNotification.Name(rawValue: "CHECKFORTRIP_V1TripCodesJSONData"), object: nil)
+        
+        let params = SDKUtils.commonJsonTags(formId: "CHECKFORTRIP_V1")
+        
+        SDKHandleCalls().makeServerCall(sb: params.toJsonString(), method: "CHECKFORTRIP_V1TripCodesJSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadGetTripCodes(_ notification: NSNotification) {
+        view.removeAnimation()
+        
+        let data = notification.userInfo?["data"] as? Data
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "CHECKFORTRIP_V1TripCodesJSONData"), object: nil)
+        
+        do {
+                        
+            if let data = data {
+                let results = try JSONDecoder().decode(GetPendingResult.self, from: data)
+                
+                if let tripOtp = results.tripOTP?.first {
+                    am.saveStartTripOTP(data: tripOtp.startTripOTP ?? "")
+                    am.saveEndTripOTP(data: tripOtp.endTripOTP ?? "")
+                    am.saveTollChargeOTP(data: tripOtp.tollChargeOTP ?? "")
+                    am.saveParkingFeeOTP(data: tripOtp.parkingOTP ?? "")
+                }
+                
+                showTripCodes()
+            } else {
+                showGeneralErrorAlert()
+            }
+            
+        } catch {
+            showGeneralErrorAlert()
+        }
+    }
+    
+    private func showTripCodes() {
+        if am.getEndTripOTP().isEmpty && am.getTollChargeOTP().isEmpty && am.getParkingFeeOTP().isEmpty {
+            showAlerts(title: "", message: "Could not find Trip Codes.".localized)
+            return
+        }
+        
+        let vc = TripCodesVC()
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true)
     }
 }
 
