@@ -79,7 +79,7 @@ public class LittleFramework {
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
         navVC.modalPresentationStyle = .overFullScreen
-        viewController.present(navVC, animated: true)
+        vc.present(navVC, animated: true)
                 
         /*let viewController = InitializeSDKVC()
         if let navigator = vc.navigationController {
