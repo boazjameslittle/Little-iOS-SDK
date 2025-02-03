@@ -1369,6 +1369,19 @@ class SDKAllMethods {
         return check ?? ""
     }
     
+    // Mark: - IsFlutter
+    func saveIsFlutter(data:Bool) {
+        wrapper.set(data, forKey: "IsFlutter")
+    }
+    
+    func getIsFlutter() -> Bool! {
+        var check=wrapper.bool(forKey: "IsFlutter")
+        if check == nil {
+            check = true
+        }
+        return check
+    }
+    
     
     // MARK: - Encryption
     

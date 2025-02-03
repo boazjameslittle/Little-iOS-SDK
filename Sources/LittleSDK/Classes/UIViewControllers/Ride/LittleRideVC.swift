@@ -664,7 +664,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     @objc func postBackHome() {
         
-        var isPopped = true
+        /*var isPopped = true
         
         for controller in self.navigationController!.viewControllers as Array {
             if controller == popToRestorationID {
@@ -684,7 +684,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         if !isPopped {
             printVal(object: "ToRoot")
             self.navigationController?.popToRootViewController(animated: true)
-        }
+        }*/
+        
+        navigationController?.dismiss(animated: true)
         
     }
     

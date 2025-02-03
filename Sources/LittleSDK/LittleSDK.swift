@@ -32,6 +32,7 @@ public class LittleFramework {
     var parametersInitialized: Bool?
     var isUAT = false
     var paymentVC: UIViewController?
+    private let am = SDKAllMethods()
     
     public init() {
         IQKeyboardManager.shared.enable = true
@@ -53,20 +54,34 @@ public class LittleFramework {
     public func initializeSDKParameters(accounts: [[String: String]], additionalData: String, mobileNumber: String, packageName: String, APIKey: String, isUAT: Bool, showPaymentAuthorization: Bool, allowPaymentAccountSelection: Bool) {
         self.isUAT = isUAT
         guard let accountsArr = try? SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
-        SDKAllMethods().saveSDKMobileNumber(data: mobileNumber)
-        SDKAllMethods().saveSDKPackageName(data: packageName)
-        SDKAllMethods().saveSDKAccounts(data: accountsArr)
-        SDKAllMethods().saveSDKAdditionalData(data: additionalData)
-        SDKAllMethods().saveSDKAPIKey(data: APIKey)
-        SDKAllMethods().saveIsUAT(data: isUAT)
-        SDKAllMethods().saveShowPaymentAuthorization(data: showPaymentAuthorization)
-        SDKAllMethods().saveAllowAccountSelection(data: allowPaymentAccountSelection)
+        am.saveSDKMobileNumber(data: mobileNumber)
+        am.saveSDKPackageName(data: packageName)
+        am.saveSDKAccounts(data: accountsArr)
+        am.saveSDKAdditionalData(data: additionalData)
+        am.saveSDKAPIKey(data: APIKey)
+        am.saveIsUAT(data: isUAT)
+        am.saveShowPaymentAuthorization(data: showPaymentAuthorization)
+        am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
+//        am.saveIsFlutter(data: isFlutter)
     }
     
     public func initializeToRides(_ vc: UIViewController) {
         printVal(object: "Latest initializeToRides")
         
+        
         let viewController = InitializeSDKVC()
+        viewController.isUAT = self.isUAT
+        viewController.toWhere = .rides
+        viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+        viewController.popToRestorationID = vc
+        viewController.paymentVC = paymentVC
+        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalTransitionStyle = .coverVertical
+        navVC.modalPresentationStyle = .overFullScreen
+        viewController.present(navVC, animated: true)
+                
+        /*let viewController = InitializeSDKVC()
         if let navigator = vc.navigationController {
             viewController.isUAT = self.isUAT
             viewController.toWhere = .rides
@@ -74,7 +89,7 @@ public class LittleFramework {
             viewController.popToRestorationID = vc
             viewController.paymentVC = paymentVC
             navigator.pushViewController(viewController, animated: true)
-        }
+        }*/
     }
     
     public func initializeToLittlePay(_ vc: UIViewController) {
@@ -88,6 +103,7 @@ public class LittleFramework {
             navigator.pushViewController(viewController, animated: true)
         }
     }
+    
     
     public func initializeToDeliveries(_ vc: UIViewController, deliveryType: deliveryTypes) {
         let viewController = InitializeSDKVC()
