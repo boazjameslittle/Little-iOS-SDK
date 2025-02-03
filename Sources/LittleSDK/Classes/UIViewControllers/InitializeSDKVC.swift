@@ -240,27 +240,7 @@ public class InitializeSDKVC: UIViewController {
     }
     
     @objc func backHome() {
-        var isPopped = true
-        
-        for controller in self.navigationController!.viewControllers as Array {
-            if controller == popToRestorationID {
-                printVal(object: "ToView")
-                if self.navShown ?? false {
-                    self.navigationController?.setNavigationBarHidden(false, animated: false)
-                } else {
-                    self.navigationController?.setNavigationBarHidden(true, animated: false)
-                }
-                self.navigationController!.popToViewController(controller, animated: true)
-                break
-            } else {
-                isPopped = false
-            }
-        }
-        
-        if !isPopped {
-            printVal(object: "ToRoot")
-            self.navigationController?.popToRootViewController(animated: true)
-        }
+        navigationController?.dismiss(animated: true)
     }
     
     // MARK: - Server Calls

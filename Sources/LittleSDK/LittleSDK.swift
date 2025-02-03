@@ -62,7 +62,6 @@ public class LittleFramework {
         am.saveIsUAT(data: isUAT)
         am.saveShowPaymentAuthorization(data: showPaymentAuthorization)
         am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
-//        am.saveIsFlutter(data: isFlutter)
     }
     
     public func initializeToRides(_ vc: UIViewController) {
@@ -94,40 +93,46 @@ public class LittleFramework {
     
     public func initializeToLittlePay(_ vc: UIViewController) {
         let viewController = InitializeSDKVC()
-        if let navigator = vc.navigationController {
-            viewController.isUAT = self.isUAT
-            viewController.toWhere = .umi
-            viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
-            viewController.popToRestorationID = vc
-            viewController.paymentVC = paymentVC
-            navigator.pushViewController(viewController, animated: true)
-        }
+        viewController.isUAT = self.isUAT
+        viewController.toWhere = .umi
+        viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+        viewController.popToRestorationID = vc
+        viewController.paymentVC = paymentVC
+        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalTransitionStyle = .coverVertical
+        navVC.modalPresentationStyle = .overFullScreen
+        vc.present(navVC, animated: true)
     }
     
     
     public func initializeToDeliveries(_ vc: UIViewController, deliveryType: deliveryTypes) {
         let viewController = InitializeSDKVC()
-        if let navigator = vc.navigationController {
-            viewController.isUAT = self.isUAT
-            viewController.toWhere = .deliveries
-            viewController.deliveryType = deliveryType
-            viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
-            viewController.popToRestorationID = vc
-            viewController.paymentVC = paymentVC
-            navigator.pushViewController(viewController, animated: true)
-        }
+        viewController.isUAT = self.isUAT
+        viewController.toWhere = .deliveries
+        viewController.deliveryType = deliveryType
+        viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+        viewController.popToRestorationID = vc
+        viewController.paymentVC = paymentVC
+        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalTransitionStyle = .coverVertical
+        navVC.modalPresentationStyle = .overFullScreen
+        vc.present(navVC, animated: true)
     }
     
     public func initializeToMovies(_ vc: UIViewController) {
         let viewController = InitializeSDKVC()
-        if let navigator = vc.navigationController {
-            viewController.isUAT = self.isUAT
-            viewController.toWhere = .movies
-            viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
-            viewController.popToRestorationID = vc
-            viewController.paymentVC = paymentVC
-            navigator.pushViewController(viewController, animated: true)
-        }
+        viewController.isUAT = self.isUAT
+        viewController.toWhere = .movies
+        viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+        viewController.popToRestorationID = vc
+        viewController.paymentVC = paymentVC
+        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalTransitionStyle = .coverVertical
+        navVC.modalPresentationStyle = .overFullScreen
+        vc.present(navVC, animated: true)
     }
     
     /*public func initializeToRideHistory(_ vc: UIViewController) {
