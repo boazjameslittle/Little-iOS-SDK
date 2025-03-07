@@ -82,7 +82,7 @@ public class LittleFramework {
         
         vc.view.addSubview(navVC.view)
         vc.addChild(navVC)
-        navVC.didMove(navVC: self)
+        navVC.didMove(toParent: vc)
         navVC.view.frame = vc.view.frame
                 
         /*let viewController = InitializeSDKVC()
@@ -127,7 +127,7 @@ public class LittleFramework {
         
         vc.view.addSubview(navVC.view)
         vc.addChild(navVC)
-        navVC.didMove(navVC: self)
+        navVC.didMove(toParent: vc)
         navVC.view.frame = vc.view.frame
     }
     
