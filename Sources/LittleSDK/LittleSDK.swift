@@ -78,7 +78,12 @@ public class LittleFramework {
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
         navVC.modalPresentationStyle = .overCurrentContext
-        vc.present(navVC, animated: true)
+        // vc.present(navVC, animated: true)
+        
+        vc.view.addSubview(navVC.view)
+        vc.addChild(navVC)
+        navVC.didMove(navVC: self)
+        navVC.view.frame = vc.view.frame
                 
         /*let viewController = InitializeSDKVC()
         if let navigator = vc.navigationController {
@@ -118,7 +123,12 @@ public class LittleFramework {
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
         navVC.modalPresentationStyle = .overCurrentContext
-        vc.present(navVC, animated: true)
+//        vc.present(navVC, animated: true)
+        
+        vc.view.addSubview(navVC.view)
+        vc.addChild(navVC)
+        navVC.didMove(navVC: self)
+        navVC.view.frame = vc.view.frame
     }
     
     public func initializeToMovies(_ vc: UIViewController) {
