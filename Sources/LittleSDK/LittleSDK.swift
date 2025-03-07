@@ -77,7 +77,7 @@ public class LittleFramework {
         
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
-        navVC.modalPresentationStyle = .overFullScreen
+        navVC.modalPresentationStyle = .overCurrentContext
         vc.present(navVC, animated: true)
                 
         /*let viewController = InitializeSDKVC()
@@ -101,7 +101,7 @@ public class LittleFramework {
         
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
-        navVC.modalPresentationStyle = .overFullScreen
+        navVC.modalPresentationStyle = .overCurrentContext
         vc.present(navVC, animated: true)
     }
     
@@ -117,7 +117,7 @@ public class LittleFramework {
         
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
-        navVC.modalPresentationStyle = .overFullScreen
+        navVC.modalPresentationStyle = .overCurrentContext
         vc.present(navVC, animated: true)
     }
     
@@ -131,7 +131,7 @@ public class LittleFramework {
         
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
-        navVC.modalPresentationStyle = .overFullScreen
+        navVC.modalPresentationStyle = .overCurrentContext
         vc.present(navVC, animated: true)
     }
     
