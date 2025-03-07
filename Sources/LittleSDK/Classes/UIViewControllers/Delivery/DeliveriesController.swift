@@ -163,7 +163,11 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     }
     
     @objc func backHome() {
-        navigationController?.dismiss(animated: true)
+//        navigationController?.dismiss(animated: true)
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
+
     }
     
     // MARK: - Search
