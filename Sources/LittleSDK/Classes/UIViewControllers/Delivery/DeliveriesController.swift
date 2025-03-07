@@ -164,7 +164,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     @objc func backHome() {
 //        navigationController?.dismiss(animated: true)
-        guard let = navigationController = navigationController else { return }
+        guard let navigationController = navigationController else { return }
         navigationController.willMove(toParent: nil)
         navigationController.view.removeFromSuperview()
         navigationController.removeFromParent()
