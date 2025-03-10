@@ -118,12 +118,12 @@ public class LittleFramework {
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
         navVC.modalPresentationStyle = .overCurrentContext
-//        vc.present(navVC, animated: true)
+        vc.present(navVC, animated: true)
         
-        vc.addChild(navVC)
+        /*vc.addChild(navVC)
         vc.view.addSubview(navVC.view)
         navVC.view.frame = vc.view.bounds
-        navVC.didMove(toParent: vc)
+        navVC.didMove(toParent: vc)*/
     }
     
     public func initializeToMovies(_ vc: UIViewController) {
