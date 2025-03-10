@@ -966,7 +966,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         
         let userInfo = [
             "amount": Double(lblTotalCash.text?.filterNumbersOnly() ?? "0") ?? 0,
-            "reference": reference,
+            "reference": paymentUniqueID,
             "additionalData": am.getSDKAdditionalData(),
             "merchantName": merchantName,
             "merchantId": merchantId,

@@ -115,10 +115,12 @@ public class LittleFramework {
         viewController.popToRestorationID = vc
         viewController.paymentVC = paymentVC
         
-        let navVC = UINavigationController(rootViewController: viewController)
+        /*let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical
         navVC.modalPresentationStyle = .overCurrentContext
-        vc.present(navVC, animated: true)
+        vc.present(navVC, animated: true)*/
+        
+        vc.navigationController?.pushViewController(viewController, animated: true)
     }
     
     public func initializeToMovies(_ vc: UIViewController) {
