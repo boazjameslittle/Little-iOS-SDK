@@ -121,7 +121,7 @@
 "Toll Code" = "Toll Code";
 "End Code" = "End Code";
 "Parking" = "Parking";
-"Toll Charge Code:" = "Toll Charge Code:"'
+"Toll Charge Code:" = "Toll Charge Code:";
 "Kindly give the driver this code ONLY if a toll charge was incurred at any particular point during this trip. Also make sure the amount is right." = "Kindly give the driver this code ONLY if a toll charge was incurred at any particular point during this trip. Also make sure the amount is right.";
 "End Trip Code:" = "End Trip Code:";
 "An end trip code will be requested by your driver, in order to successfully END your trip. Please note that this code changes after every KM and only give to driver if he is ending at the right destination." = "An end trip code will be requested by your driver, in order to successfully END your trip. Please note that this code changes after every KM and only give to driver if he is ending at the right destination.";
