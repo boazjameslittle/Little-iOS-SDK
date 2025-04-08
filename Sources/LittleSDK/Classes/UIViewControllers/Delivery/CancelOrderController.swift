@@ -63,7 +63,7 @@ public class CancelOrderController: UIViewController {
                         self.removeAnimate()
                         
                         self.showWarningAlert(title: "", message: message, dismissOnTap: false, showCancel: false) {
-                            self.navigationController?.popViewController(animated: true)
+                            self.parent?.navigationController?.popViewController(animated: true)
                         }
                     } else {
                         self.showAlerts(title: "", message: defaultMessage[safe: 0]?.message ?? "Error occurred cancelling your selected order.")
