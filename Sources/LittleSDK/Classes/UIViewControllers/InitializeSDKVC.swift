@@ -168,60 +168,7 @@ public class InitializeSDKVC: UIViewController {
                             resourceBundle = Bundle(url: bundleURL)
                         }
                         
-                        switch self.toWhere {
-                        case .rides:
-                            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
-                                viewController.isUAT = self.isUAT
-                                viewController.popToRestorationID = self.popToRestorationID
-                                viewController.navShown = self.navShown
-                                viewController.paymentVC = self.paymentVC
-                                if let navigator = self.navigationController {
-                                    navigator.pushViewController(viewController, animated: true)
-                                }
-                            }
-                        case .umi:
-                            if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
-                                viewController.popToRestorationID = self.popToRestorationID
-                                viewController.navShown = self.navShown
-                                viewController.paymentVC = self.paymentVC
-                                if let navigator = self.navigationController {
-                                    navigator.pushViewController(viewController, animated: true)
-                                }
-                            }
-                        case .deliveries:
-                            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
-                                viewController.popToRestorationID = self.popToRestorationID
-                                viewController.navShown = self.navShown
-                                viewController.paymentVC = self.paymentVC
-                                viewController.category = self.deliveryType?.rawValue ?? ""
-                                viewController.title = "\((self.deliveryType?.rawValue ?? "").replacingOccurrences(of: "ORDER", with: "").capitalized) Delivery"
-                                if let navigator = self.navigationController {
-                                    navigator.pushViewController(viewController, animated: true)
-                                }
-                            }
-                        case .rideHistory:
-                            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "MyRidesViewController") as? MyRidesViewController {
-                                viewController.popToRestorationID = self.popToRestorationID
-                                viewController.navShown = self.navShown
-                                if let navigator = self.navigationController {
-                                    navigator.pushViewController(viewController, animated: true)
-                                }
-                            }
-                        case .movies:
-                            if let viewController = UIStoryboard(name: "Movies", bundle: sdkBundle).instantiateViewController(withIdentifier: "MoviesController") as? MoviesController {
-                                viewController.popToRestorationID = self.popToRestorationID
-                                viewController.navShown = self.navShown
-                                if let navigator = self.navigationController {
-                                    navigator.pushViewController(viewController, animated: true)
-                                }
-                            }
-                        case .completeTransaction:
-                            let vc = CompleteTransactionVC()
-                            vc.transactionRef = self.transactionRef
-                            self.navigationController?.pushViewController(vc, animated: true)
-                        default:
-                            self.backHome()
-                        }
+                        self.navigate(toWhere: self.toWhere)
                     } else {
                         self.showError()
                     }
@@ -247,6 +194,68 @@ public class InitializeSDKVC: UIViewController {
     
     @objc func backHome() {
         navigationController?.dismiss(animated: true)
+    }
+    
+    private func navigate(toWhere: ToWhere?) {
+        let sdkBundle = Bundle.module
+        
+        switch toWhere {
+        case .rides:
+            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
+                viewController.isUAT = self.isUAT
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                viewController.paymentVC = self.paymentVC
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        case .umi:
+            if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                viewController.paymentVC = self.paymentVC
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        case .deliveries:
+            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                viewController.paymentVC = self.paymentVC
+                viewController.category = self.deliveryType?.rawValue ?? ""
+                viewController.title = "\((self.deliveryType?.rawValue ?? "").replacingOccurrences(of: "ORDER", with: "").capitalized) Delivery"
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        case .rideHistory:
+            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "MyRidesViewController") as? MyRidesViewController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        case .movies:
+            if let viewController = UIStoryboard(name: "Movies", bundle: sdkBundle).instantiateViewController(withIdentifier: "MoviesController") as? MoviesController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(viewController, animated: true)
+                }
+            }
+        case .completeTransaction:
+            let vc = CompleteTransactionVC()
+            vc.transactionRef = self.transactionRef
+            vc.proceedAction = { toWhere in
+                self.navigate(toWhere: toWhere)
+            }
+            self.navigationController?.pushViewController(vc, animated: true)
+        default:
+            self.backHome()
+        }
     }
     
     // MARK: - Server Calls

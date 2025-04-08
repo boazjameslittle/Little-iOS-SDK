@@ -10,10 +10,15 @@ import UIKit
 class CompleteTransactionVC: BaseVC {
     private let hc = SDKHandleCalls()
     private let littleHandleCalls = LittleHandleCalls()
+    private let am = SDKAllMethods()
     
     var transactionRef = ""
     
     private var isBookMovie = false
+    
+    var proceedAction: ((_ toWhere: ToWhere) -> Void)?
+    
+    private var toWhere: ToWhere = .deliveries
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +90,12 @@ class CompleteTransactionVC: BaseVC {
         
         isBookMovie = requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMSMovies")
         
+        if requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMSMovies") {
+            toWhere = .movies
+        } else if requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMS") {
+            toWhere = .deliveries
+        }
+        
         hc.makeServerCall(sb: requestBody, method: "CompleteTransaction", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
     }
     
@@ -108,7 +119,8 @@ class CompleteTransactionVC: BaseVC {
                     }
                     
                     self.showWarningAlert(message: message, dismissOnTap: false, showCancel: false) {
-                        self.dismissViewController()
+                        self.am.saveFromConfirmOrder(data: true)
+                        self.proceedAction?(self.toWhere)
                     }
                 } else {
                     self.showMessageAlert(message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")

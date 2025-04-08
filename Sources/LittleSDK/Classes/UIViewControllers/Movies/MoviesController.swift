@@ -100,14 +100,19 @@ class MoviesController: UIViewController {
         }
         
         runningCollection.es.startPullToRefresh()
+        
+        if am.getFromConfirmOrder() {
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-        if am.getMESSAGE() == "FromBookingMovie" {
+        if am.getMESSAGE() == "FromBookingMovie" || am.getFromConfirmOrder() {
             am.saveMESSAGE(data: "")
+            am.saveFromConfirmOrder(data: false)
             if let viewController = UIStoryboard(name: "Movies", bundle: .module).instantiateViewController(withIdentifier: "MovieTicketsController") as? MovieTicketsController {
                 viewController.popToRestorationID = self.popToRestorationID
                 viewController.navShown = self.navShown
