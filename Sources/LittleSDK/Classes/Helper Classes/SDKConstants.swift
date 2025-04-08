@@ -16,15 +16,31 @@ class SDKConstants {
     
     var live = "lwCGahusOkXBoFnNKoWjOBPsuG6cAX5Cs5CUstPbKEUNzjKRzPKBQSemVIVw+PIu"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
+    private var littleLive = "lwCGahusOkXBoFnNKoWjOJE8Ov8f7ZY3n8E9smX3HrNjOMqFoPqMKLYPiIx+wDEZVyg0ObXiY0npUfrhp3zrIg=="
+    private var littleUat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlHHdhC/a9bo7MKPUwV/PqKAT/WFmADzLFXvqIGRATN4iZ6DGBfEekMZmCe73VJ3WXY="
     var mapsKey = "vdQEvjOXQir20oZY7ARDCVk/IZ0zf9mJptA3YxtrpEeuwVsYmtgKAKViH6wWYu3H"
     var placesKey = "vdQEvjOXQir20oZY7ARDCVk/IZ0zf9mJptA3YxtrpEeuwVsYmtgKAKViH6wWYu3H"
     var littleMapKey = "/iPGWhGGttczgqTb/ZAXW8KcCKzPlbe259mm7o2VnHAuzftRz+s6VHkH5LguC1WK"
+    
+    private var testYek = ""
+    private var testYekVal = ""
+    private var yek = ""
+    private var yekVal = ""
     
     init(){
         let _key1:String="X0MZL&sHwmxbtA"
         let _key2:String="A29C333B-2C77-4094-A1D3-856BA52C"
         chainkey = _key1.hash256() as NSString
         headerkey = _key2 as NSString
+        
+        let _key3:String="KBSB&er3bflx9%"
+        let _key4:String="JBPB&er3fapl9$"
+        var _key5: String="84jfkfndl3ybdfkf"
+        var _key6: String="28hsnfsco3ybdfkf"
+        yek = _key3.hash256()
+        testYek = _key4.hash256()
+        yekVal = _key5
+        testYekVal = _key6
     }
     
     func link() -> String {
@@ -33,6 +49,30 @@ class SDKConstants {
         }
         
         return live
+    }
+    
+    func littleLink() -> String {
+        if SDKAllMethods().getIsUAT() {
+            return littleUat
+        }
+        
+        return littleLive
+    }
+    
+    func getYek() -> String {
+        if SDKAllMethods().getIsUAT() {
+            return testYek
+        }
+        
+        return yek
+    }
+    
+    func getYekVal() -> String {
+        if SDKAllMethods().getIsUAT() {
+            return testYekVal
+        }
+        
+        return yekVal
     }
     
     static let testDriverEmail = "og12@gmail.com"

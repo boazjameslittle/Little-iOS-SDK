@@ -27,6 +27,8 @@ public class InitializeSDKVC: UIViewController {
     
     var isUAT = false
     
+    var transactionRef = ""
+    
     // MARK: - Init
     
     public override func viewDidLoad() {
@@ -213,6 +215,10 @@ public class InitializeSDKVC: UIViewController {
                                     navigator.pushViewController(viewController, animated: true)
                                 }
                             }
+                        case .completeTransaction:
+                            let vc = CompleteTransactionVC()
+                            vc.transactionRef = self.transactionRef
+                            self.navigationController?.pushViewController(vc, animated: true)
                         default:
                             self.backHome()
                         }

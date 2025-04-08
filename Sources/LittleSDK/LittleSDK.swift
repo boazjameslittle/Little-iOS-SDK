@@ -15,6 +15,7 @@ public enum ToWhere {
     case deliveries
     case rideHistory
     case movies
+    case completeTransaction
 }
 
 public enum deliveryTypes: String {
@@ -62,6 +63,23 @@ public class LittleFramework {
         am.saveIsUAT(data: isUAT)
         am.saveShowPaymentAuthorization(data: showPaymentAuthorization)
         am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
+    }
+    
+    public func initializeSDKParameters(accounts: [[String: String]], additionalData: String, mobileNumber: String, packageName: String, APIKey: String, isUAT: Bool, showPaymentAuthorization: Bool, allowPaymentAccountSelection: Bool, notificationPhoneNumber: String, fullName: String) {
+        self.isUAT = isUAT
+        guard let accountsArr = try? SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
+        am.saveSDKMobileNumber(data: mobileNumber)
+        am.saveSDKPackageName(data: packageName)
+        am.saveSDKAccounts(data: accountsArr)
+        am.saveSDKAdditionalData(data: additionalData)
+        am.saveSDKAPIKey(data: APIKey)
+        am.saveIsUAT(data: isUAT)
+        am.saveShowPaymentAuthorization(data: showPaymentAuthorization)
+        am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
+        am.saveSDKNotificationPhoneNo(data: notificationPhoneNumber)
+        am.saveFullName(data: fullName)
+        
+        
     }
     
     public func initializeToRides(_ vc: UIViewController) {
@@ -133,6 +151,21 @@ public class LittleFramework {
         viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
         viewController.popToRestorationID = vc
         viewController.paymentVC = paymentVC
+        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalTransitionStyle = .coverVertical
+        navVC.modalPresentationStyle = .overCurrentContext
+        vc.present(navVC, animated: true)
+    }
+    
+    public func initializeToCompleteTransaction(_ vc: UIViewController, transactionRef: String) {
+        let viewController = InitializeSDKVC()
+        viewController.isUAT = self.isUAT
+        viewController.toWhere = .completeTransaction
+        viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+        viewController.popToRestorationID = vc
+        viewController.paymentVC = paymentVC
+        viewController.transactionRef = transactionRef
         
         let navVC = UINavigationController(rootViewController: viewController)
         navVC.modalTransitionStyle = .coverVertical

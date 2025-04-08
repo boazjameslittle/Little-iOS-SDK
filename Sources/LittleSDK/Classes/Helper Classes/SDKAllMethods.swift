@@ -1382,6 +1382,16 @@ class SDKAllMethods {
         return check
     }
     
+    // Mark: - SDKNotificationPhoneNo
+    func saveSDKNotificationPhoneNo(data:String) {
+        wrapper.set(data, forKey: "SDKNotificationPhoneNo")
+    }
+    
+    func getSDKNotificationPhoneNo() -> String{
+        let check = wrapper.string(forKey: "SDKNotificationPhoneNo")
+        return check ?? ""
+    }
+    
     
     // MARK: - Encryption
     
@@ -1414,6 +1424,16 @@ class SDKAllMethods {
     
     func EncryptDataAES(DataToSend:String)->String{
         let aes = LittleSDKAES(key: am.getMyEncryptionKey() ?? "", iv: am.getMyEncryptionIV() ?? "")
+        if let encrypteddata = aes?.encrypt(string: DataToSend) {
+            let encryptedstr = encrypteddata.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            return encryptedstr
+        }
+        return ""
+    }
+    
+    func EncryptDataAESLittle(DataToSend:String)->String{
+        let aes = LittleSDKAES(key: cn.getYek(), iv: cn.getYekVal())
+        printVal(object: "yek: \(cn.getYek()), val: \(cn.getYekVal()), aes: \(aes)")
         if let encrypteddata = aes?.encrypt(string: DataToSend) {
             let encryptedstr = encrypteddata.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
             return encryptedstr
@@ -1455,6 +1475,15 @@ class SDKAllMethods {
     
     func DecryptDataAES(DataToSend:String)->NSString{
         let aes = LittleSDKAES(key: am.getMyEncryptionKey() ?? "", iv: am.getMyEncryptionIV() ?? "")
+        if let b64encdata1 = Data(base64Encoded: DataToSend, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+            let decryptedstr = aes?.decrypt(data: b64encdata1)
+            return (decryptedstr ?? "") as NSString
+        }
+        return ""
+    }
+    
+    func DecryptDataAESLittle(DataToSend:String)->NSString{
+        let aes = LittleSDKAES(key: cn.getYek(), iv: cn.getYekVal())
         if let b64encdata1 = Data(base64Encoded: DataToSend, options: NSData.Base64DecodingOptions(rawValue: 0)) {
             let decryptedstr = aes?.decrypt(data: b64encdata1)
             return (decryptedstr ?? "") as NSString

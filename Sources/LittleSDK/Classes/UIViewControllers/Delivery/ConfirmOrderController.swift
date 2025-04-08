@@ -13,6 +13,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
+    let littleHandleCalls = LittleHandleCalls()
     
     var sdkBundle: Bundle?
     
@@ -101,6 +102,8 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
     
     private var selectedTimeRow = -1
     private var selectedDateRow = -1
+    
+    private var transactionRef = ""
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -342,110 +345,12 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         
     }
     
-    func placeFoodOrder() {
+    private func placeFoodOrder() {
+        printVal(object: "placeFoodOrder")
         
         self.view.createLoadingNormal()
         
-        var orderString = ""
-        
-        var restaurantID = ""
-        
-        if selectedTheatre != nil {
-            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSMovies"), object: nil)
-            restaurantID = selectedTheatre?.restaurantID ?? ""
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSFoodDelivery"), object: nil)
-            restaurantID = selectedRestaurant?.restaurantID ?? ""
-        }
-                
-        for _ in cartItems {
-            let index = cartItems.firstIndex(where: { $0.number == 0 })
-            if index != nil {
-                cartItems.remove(at: index!)
-            }
-        }
-        for i in (0..<cartItems.count) {
-            let result = menuArr.compactMap { $0 }.first(where: { $0.addonID == cartItems[i].addonID })
-            var extraString = ""
-            if result != nil {
-                if result?.extraItems?.count ?? 0 > 0 {
-                    extraString = ",\"ExtraItems\":["
-                    for j in (0..<(result?.extraItems ?? []).count) {
-                        let each = result?.extraItems?[j]
-                        extraString = extraString + "{\"ExtraItemID\":\"\(each?.extraItemID ?? "")\",\"ExtraItemName\":\"\(each?.extraItemName ?? "")\",\"ExtraItemDescription\":\"\(each?.extraItemDescription ?? "")\",\"SpecialPrice\":\"\(each?.specialPrice ?? 0.0)\"}"
-                        if j < ((result?.extraItems ?? []).count-1) {
-                            extraString = extraString + ","
-                        }
-                    }
-                    extraString = extraString + "]"
-                } else {
-                    extraString = ",\"ExtraItems\":\"\""
-                }
-                orderString = orderString + "{\"RestaurantID\":\"\(restaurantID)\",\"MenuID\":\"\(cartItems[i].itemID ?? "")\",\"Quantity\":\(Int(cartItems[i].number ?? 0.0))\(extraString)}"
-                if i != (cartItems.count-1) {
-                    orderString = orderString + ","
-                }
-            } else {
-                extraString = ",\"ExtraItems\":[]"
-            }
-        }
-        
-        let specialRequest = txtExtraDetails.text ?? ""
-        let deliveryDetails = txtDeliveryDetails.text ?? ""
-        
-        
-        var deliveryMode = ""
-        var moviesString = ""
-        var dataToSend = ""
-        
-        var amountMovies = 0.0
-        
-        if selectedTheatre != nil {
-            deliveryMode = ""
-            var screenId = ""
-            var screenDate = ""
-            var screenTime = ""
-            var seatsArr = ""
-            for each in selectedSeats {
-                seatsArr = seatsArr + "{\"SeatNumber\":\"\(each.seatNumber ?? "")\",\"SeatPrice\":\"\(each.seatPrice ?? 0)\",\"TicketCode\":\"\(each.ticketCode ?? "")\"},"
-            }
-            seatsArr = String(seatsArr.dropLast())
-            
-            if selectedMovie?.movieTimeings != nil {
-                screenId = selectedMovie?.movieTimeings?[selectedTime].screenID ?? ""
-                screenDate = selectedMovie?.movieTimeings?[selectedTime].showTime ?? ""
-                screenTime = selectedMovie?.movieTimeings?[selectedTime].showID ?? ""
-            } else {
-                screenId = selectedMovie?.showTimes?[selectedTime].screenID ?? ""
-                screenDate = selectedMovie?.showTimes?[selectedTime].showTime ?? ""
-                screenTime = selectedMovie?.showTimes?[selectedTime].showID ?? ""
-            }
-            
-            amountMovies = seatTotalPrice //(getMoviePrice() * Double(selectedTicketNo ?? 0))
-            
-            moviesString = ",\"GetPrice\":\"Y\",\"ShowDate\": \"\(screenDate)\",\"ShowID\": \"\(screenTime)\",\"MovieDetails\":{\"MovieProviderID\":\"\(selectedTheatre?.movieProviderID ?? "")\",\"MovieID\":\"\(selectedMovie?.movieID ?? "")\",\"Quantity\":\(selectedTicketNo ?? 0),\"ScreenID\": \"\(screenId)\",\"MovieTicketCost\":\"\(amountMovies)\",\"Markup\":\"\(markup)\",\"Amount\":\"\(amountMovies)\",\"PromoCode\":\"\(promoIs)\",\"PromoAmount\":\"\((lblPromoCodeCash.text ?? "").filterNumbersOnly())\",\"Seats\":[\(seatsArr)]}"
-            
-            let amountRestaurant = Double((lblProductsCash.text ?? "0").filterNumbersOnly())! - amountMovies
-            
-            var restaurantDeliveryItems = ",\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(specialRequest)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantCost\":\"\(amountRestaurant)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}"
-            
-            if orderString == "" {
-                restaurantDeliveryItems = ""
-            }
-            
-            dataToSend = "{\"FormID\":\"MOVIETICKETS\",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(commonWalletUniqueID.isEmpty ? (am.getMyCodeBase() ?? "") : "ANDROID")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(SDKUtils.getPhoneType())\",\"SOFTWAREVERSION\":\"\(SDKUtils.getAppVersion())\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(paymentUniqueID)\",\"NetworkCountry\":\"\(am.getCountry() ?? "")\",\"CarrierName\":\"\(SDKUtils.getCarrierName() ?? "")\",\"MovieTickets\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(deliveryDetails)\",\"DeliveryMode\":\"\(deliveryMode)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"FinalNotes\":\"\(specialRequest)\"\(moviesString)\(restaurantDeliveryItems)}}"
-            
-        } else {
-            
-            deliveryMode = selectedRestaurant?.deliveryModes?[deliveryIndex].deliveryModes ?? ""
-            let delivery = Double(lblDeliveryCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
-            
-            let amountRestaurant = Double((lblTotalCash.text ?? "0").filterNumbersOnly())! - amountMovies
-            
-            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"DeliveryDate\":\"\(deliveryDate)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
-            
-            printVal(object: "delivery fee: \(delivery), data: \(dataToSend)")
-        }
+        let dataToSend = getPlaceOrderJsonString()
         
         if selectedTheatre != nil {
             hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSMovies", switchnum: 0)
@@ -455,7 +360,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         
     }
     
-    @objc func loadPlaceFoodOrder(_ notification: NSNotification) {
+    @objc private func loadPlaceFoodOrder(_ notification: NSNotification) {
         
         self.view.removeAnimation()
         
@@ -511,7 +416,12 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                          }
                     }*/
                     
-                    if self.selectedTheatre != nil {
+                    self.showWarningAlert(message: orderSuccessMessage, dismissOnTap: false, showCancel: false) {
+                        self.am.saveFromConfirmOrder(data: true)
+                        self.popToHomeScreen()
+                    }
+                    
+                    /*if self.selectedTheatre != nil {
                         self.am.saveMESSAGE(data: "FromBookingMovie")
                         #warning("check removeAndUpdateCart")
     //                    self.removeAndUpdateCart()
@@ -525,19 +435,19 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
                                 self.navigationController?.popToViewController(desiredViewController, animated: true)
                             }
                         }
-                    }
-                } else if orderResponse[0].status == "091" {
+                    }*/
+                } else if orderResponse.first?.status == "091" {
                     DispatchQueue.main.async(execute: {
-                        self.showAlerts(title: "", message: orderResponse[0].message ?? "Error occured creating your order. Kindly retry.")
+                        self.showAlerts(title: "", message: orderResponse.first?.message ?? "Error occured creating your order. Kindly retry.")
                     })
-                } else if orderResponse[0].status == "092" {
+                } else if orderResponse.first?.status == "092" {
                     
                     var MESSAGE = ""
                     
-                    if orderResponse[0].message == "" {
+                    if orderResponse.first?.message == "" {
                         MESSAGE = "Your Little Wallet has insuffecient funds. Do you wish to proceed to load cash?"
                     } else {
-                        MESSAGE = orderResponse[0].message ?? ""
+                        MESSAGE = orderResponse.first?.message ?? ""
                     }
                     
                     let restaurantName = self.selectedRestaurant?.restaurantName ?? ""
@@ -776,8 +686,18 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
         printVal(object: "paymentResultReceived: \(String(describing: notification.userInfo))")
         
         let success = notification.userInfo?["success"] as? Bool
+        let status = notification.userInfo?["status"] as? String
+        let transactionRef = notification.userInfo?["transactionRef"] as? String
+        
+        self.transactionRef = transactionRef ?? ""
+        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
-        if let success = success {
+        
+        if status == "094" {
+            addPendingTransaction(transactionRef: transactionRef ?? "")
+        } else if status == "000" {
+            self.placeFoodOrder()
+        } else if let success = success {
             if success {
                 self.placeFoodOrder()
             } else {
@@ -937,10 +857,8 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             generateUniqueId()
             postPaymentRequestNotification()
             
-            /*DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-             let userInfo = ["success": true] as [String : Any]
-             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
-             }*/
+            // TODO: Comment
+//            simulateSuccessfulTransaction()
         } else if shouldOpenPaymentPopup() {
             let amount = Double(lblTotalCash.text?.filterNumbersOnly() ?? "") ?? 0
             openPaymentPopUp(amount: amount)
@@ -948,6 +866,17 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             generateUniqueId()
             placeFoodOrder()
         }
+    }
+    
+    private func simulateSuccessfulTransaction() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+         let userInfo = [
+            "success": true,
+            "status": "094",
+            "transactionRef": UUID().uuidString
+         ] as [String : Any]
+         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
+         }
     }
     
     private func postPaymentRequestNotification() {
@@ -1051,6 +980,226 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             }
         }
         
+    }
+    
+    private func popToHomeScreen() {
+        if selectedTheatre == nil {
+            popToDeliveries()
+        } else {
+            popToMovies()
+        }
+    }
+    
+    private func popToDeliveries() {
+        if let vc = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
+            self.navigationController?.popToViewController(vc, animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func popToMovies() {
+        if let vc = self.navigationController?.viewControllers.filter({ $0 is MoviesController }).first {
+            self.navigationController?.popToViewController(vc, animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func addPendingTransaction(transactionRef: String) {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadAddPendingTransaction),name:NSNotification.Name(rawValue: "CreateSDKPendingTransactionSimple"), object: nil)
+        
+        self.view.createLoadingNormal()
+        
+        printVal(object: "addPendingTransaction transactionRef: \(transactionRef)")
+        
+        var params = SDKUtils.commonJsonTags(formId: "CreateSDKPendingTransaction")
+        params["TrxInfo"] = [
+            "TrxRef": transactionRef,
+            "TransactionRequest": getPlaceOrderJsonString(),
+            "BankId": "",
+            "ModuleId": selectedTheatre == nil ? "ORDERFOOD" : "MOVIES",
+            "Notes": ""
+        ]
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        littleHandleCalls.makeServerCall(sb: dataToSend, method: "CreateSDKPendingTransactionSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadAddPendingTransaction(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "CreateSDKPendingTransactionSimple"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(AddPendingRequestResponse.self, from: data)
+                if response.status == "000" {
+                    sendSmsNotification()
+                } else {
+                    self.view.removeAnimation()
+                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                }
+                
+            } catch (let error) {
+                self.view.removeAnimation()
+                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        } else {
+            self.view.removeAnimation()
+            showGeneralErrorAlert()
+        }
+        
+    }
+    
+    private func sendSmsNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSendSmsNotification),name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+        
+        let message = String(format: "You have a new %@ aprroval request from %@ from %@ app".localized, selectedTheatre == nil ? "Food".localized : "Movie".localized, am.getFullName(), Bundle.getAppDisplayName())
+        
+        
+        var params = SDKUtils.commonJsonTags(formId: "SendNotification")
+        params["SendNotification"] = [
+            "NotificationType": "SMS",
+            "MobileNumber": am.getSDKNotificationPhoneNo(),
+            "NotificationText": message
+        ]
+        params["MobileNumber"] = "0"
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        littleHandleCalls.makeServerCall(sb: dataToSend, method: "SendNotificationSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadSendSmsNotification(_ notification: Notification) {
+        self.view.removeAnimation()
+        
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
+                if response.status == "000" {
+                    showWarningAlert(title: "Pending Authorizations".localized, message: String(format: "SMS notification has been sent to your parent's mobile number(+%@).", am.getSDKNotificationPhoneNo()), dismissOnTap: false, showCancel: false) {
+                        self.popToHomeScreen()
+                    }
+                } else {
+                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                }
+                
+            } catch (let error) {
+                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        } else {
+            showGeneralErrorAlert()
+        }
+        
+    }
+    
+    private func getPlaceOrderJsonString() -> String {
+        var orderString = ""
+        
+        var restaurantID = ""
+        
+        if selectedTheatre != nil {
+            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSMovies"), object: nil)
+            restaurantID = selectedTheatre?.restaurantID ?? ""
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSFoodDelivery"), object: nil)
+            restaurantID = selectedRestaurant?.restaurantID ?? ""
+        }
+                
+        for _ in cartItems {
+            let index = cartItems.firstIndex(where: { $0.number == 0 })
+            if index != nil {
+                cartItems.remove(at: index!)
+            }
+        }
+        for i in (0..<cartItems.count) {
+            let result = menuArr.compactMap { $0 }.first(where: { $0.addonID == cartItems[i].addonID })
+            var extraString = ""
+            if result != nil {
+                if result?.extraItems?.count ?? 0 > 0 {
+                    extraString = ",\"ExtraItems\":["
+                    for j in (0..<(result?.extraItems ?? []).count) {
+                        let each = result?.extraItems?[j]
+                        extraString = extraString + "{\"ExtraItemID\":\"\(each?.extraItemID ?? "")\",\"ExtraItemName\":\"\(each?.extraItemName ?? "")\",\"ExtraItemDescription\":\"\(each?.extraItemDescription ?? "")\",\"SpecialPrice\":\"\(each?.specialPrice ?? 0.0)\"}"
+                        if j < ((result?.extraItems ?? []).count-1) {
+                            extraString = extraString + ","
+                        }
+                    }
+                    extraString = extraString + "]"
+                } else {
+                    extraString = ",\"ExtraItems\":\"\""
+                }
+                orderString = orderString + "{\"RestaurantID\":\"\(restaurantID)\",\"MenuID\":\"\(cartItems[i].itemID ?? "")\",\"Quantity\":\(Int(cartItems[i].number ?? 0.0))\(extraString)}"
+                if i != (cartItems.count-1) {
+                    orderString = orderString + ","
+                }
+            } else {
+                extraString = ",\"ExtraItems\":[]"
+            }
+        }
+        
+        let specialRequest = txtExtraDetails.text ?? ""
+        let deliveryDetails = txtDeliveryDetails.text ?? ""
+        
+        
+        var deliveryMode = ""
+        var moviesString = ""
+        var dataToSend = ""
+        
+        var amountMovies = 0.0
+        
+        if selectedTheatre != nil {
+            deliveryMode = ""
+            var screenId = ""
+            var screenDate = ""
+            var screenTime = ""
+            var seatsArr = ""
+            for each in selectedSeats {
+                seatsArr = seatsArr + "{\"SeatNumber\":\"\(each.seatNumber ?? "")\",\"SeatPrice\":\"\(each.seatPrice ?? 0)\",\"TicketCode\":\"\(each.ticketCode ?? "")\"},"
+            }
+            seatsArr = String(seatsArr.dropLast())
+            
+            if selectedMovie?.movieTimeings != nil {
+                screenId = selectedMovie?.movieTimeings?[selectedTime].screenID ?? ""
+                screenDate = selectedMovie?.movieTimeings?[selectedTime].showTime ?? ""
+                screenTime = selectedMovie?.movieTimeings?[selectedTime].showID ?? ""
+            } else {
+                screenId = selectedMovie?.showTimes?[selectedTime].screenID ?? ""
+                screenDate = selectedMovie?.showTimes?[selectedTime].showTime ?? ""
+                screenTime = selectedMovie?.showTimes?[selectedTime].showID ?? ""
+            }
+            
+            amountMovies = seatTotalPrice //(getMoviePrice() * Double(selectedTicketNo ?? 0))
+            
+            moviesString = ",\"GetPrice\":\"Y\",\"ShowDate\": \"\(screenDate)\",\"ShowID\": \"\(screenTime)\",\"MovieDetails\":{\"MovieProviderID\":\"\(selectedTheatre?.movieProviderID ?? "")\",\"MovieID\":\"\(selectedMovie?.movieID ?? "")\",\"Quantity\":\(selectedTicketNo ?? 0),\"ScreenID\": \"\(screenId)\",\"MovieTicketCost\":\"\(amountMovies)\",\"Markup\":\"\(markup)\",\"Amount\":\"\(amountMovies)\",\"PromoCode\":\"\(promoIs)\",\"PromoAmount\":\"\((lblPromoCodeCash.text ?? "").filterNumbersOnly())\",\"Seats\":[\(seatsArr)]}"
+            
+            let amountRestaurant = Double((lblProductsCash.text ?? "0").filterNumbersOnly())! - amountMovies
+            
+            var restaurantDeliveryItems = ",\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(specialRequest)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantCost\":\"\(amountRestaurant)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}"
+            
+            if orderString == "" {
+                restaurantDeliveryItems = ""
+            }
+            
+            dataToSend = "{\"FormID\":\"MOVIETICKETS\",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(commonWalletUniqueID.isEmpty ? (am.getMyCodeBase() ?? "") : "ANDROID")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(SDKUtils.getPhoneType())\",\"SOFTWAREVERSION\":\"\(SDKUtils.getAppVersion())\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(paymentUniqueID)\",\"NetworkCountry\":\"\(am.getCountry() ?? "")\",\"CarrierName\":\"\(SDKUtils.getCarrierName() ?? "")\",\"MovieTickets\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(deliveryDetails)\",\"DeliveryMode\":\"\(deliveryMode)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"FinalNotes\":\"\(specialRequest)\"\(moviesString)\(restaurantDeliveryItems)}}"
+            
+        } else {
+            
+            deliveryMode = selectedRestaurant?.deliveryModes?[deliveryIndex].deliveryModes ?? ""
+            let delivery = Double(lblDeliveryCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
+            
+            let amountRestaurant = Double((lblTotalCash.text ?? "0").filterNumbersOnly())! - amountMovies
+            
+            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(mySelectedWallet?.walletName ?? "")\",\"WalletID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"WalletUniqueID\":\"\(commonWalletUniqueID.isEmpty ? (mySelectedWallet?.walletUniqueID ?? "") : commonWalletUniqueID)\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"DeliveryDate\":\"\(deliveryDate)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+            
+            printVal(object: "delivery fee: \(delivery), data: \(dataToSend)")
+        }
+        
+        return dataToSend
     }
     
     // MARK: - TableView DataSource & Delegates

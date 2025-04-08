@@ -129,3 +129,12 @@
 "Kindly give the driver this code ONLY if a parking fee charge was incurred at any particular point during this trip. Also make sure the amount is right." = "Kindly give the driver this code ONLY if a parking fee charge was incurred at any particular point during this trip. Also make sure the amount is right.";
 "Show Trip Codes" = "Show Trip Codes";
 "Could not find Trip Codes." = "Could not find Trip Codes.";
+"You have a new %@ aprroval request from %@ from %@ app" = "You have a new %@ aprroval request from %@ from %@ app";
+"Movie" = "Movie";
+"Food" = "Food";
+"Pending Authorizations" = "Pending Authorizations";
+"SMS notification has been sent to your parent's mobile number(+%@)." = "SMS notification has been sent to your parent's mobile number(+%@).";
+"Order placed successfully" = "Order placed successfully";
+"Ticket(s) booked successfully" = "Ticket(s) booked successfully";
+"No pending transaction" = "No pending transaction";
+"Please wait…" = "Please wait…";
