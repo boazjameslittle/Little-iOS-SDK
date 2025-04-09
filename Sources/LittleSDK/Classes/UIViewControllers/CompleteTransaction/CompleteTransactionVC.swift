@@ -13,9 +13,7 @@ class CompleteTransactionVC: BaseVC {
     private let am = SDKAllMethods()
     
     var transactionRef = ""
-    
-    private var isBookMovie = false
-    
+        
     var proceedAction: ((_ toWhere: ToWhere) -> Void)?
     
     private var toWhere: ToWhere = .deliveries
@@ -87,15 +85,13 @@ class CompleteTransactionVC: BaseVC {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCompleteTransaction),name:NSNotification.Name(rawValue: "CompleteTransaction"), object: nil)
         
         printVal(object: "CompleteTransaction request: \(requestBody)")
-        
-        isBookMovie = requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMSMovies")
-        
-        if requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMSMovies") {
+                
+        if requestBody.containsIgnoringCase("MOVIETICKETS") {
             toWhere = .movies
         } else if requestBody.containsIgnoringCase("RESTAURANTDELIVERYITEMS") {
             toWhere = .deliveries
         }
-        
+                
         hc.makeServerCall(sb: requestBody, method: "CompleteTransaction", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
     }
     
@@ -111,7 +107,7 @@ class CompleteTransactionVC: BaseVC {
                     var message = response.message ?? ""
                     
                     if message.isEmpty {
-                        if !isBookMovie {
+                        if toWhere == .deliveries {
                             message = "Order placed successfully".localized
                         } else {
                             message = "Ticket(s) booked successfully".localized
