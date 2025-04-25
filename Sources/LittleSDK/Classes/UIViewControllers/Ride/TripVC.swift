@@ -195,7 +195,7 @@ public class TripVC: BaseVC {
         am.saveFromTrip(data: true)
         am.saveOnTrip(data: true)
         
-        self.view.layoutIfNeeded()
+//        self.view.layoutIfNeeded()
         
         // Setup Map
         
