@@ -575,7 +575,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     func initAppMap() {
         // Setup Map
         
-        view.layoutIfNeeded()
+//        view.layoutIfNeeded()
         
         gmsMapView = GMSMapView(frame: CGRect.zero)
         gmsMapView.showMapStyleForView()
