@@ -86,40 +86,64 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     @objc func paymentResultReceived(_ notification: Notification) {
         
-        let success = notification.userInfo?["success"] as? Bool
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         
-        if let success = success {
+        let success = notification.userInfo?["success"] as? Bool
+        let status = notification.userInfo?["status"] as? String
+        
+        if status == "000" {
+            proceedToRating()
+        } else if let success = success {
             if success {
-                if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
-                    if let navigator = self.navigationController {
-                        viewController.popToRestorationID = self.popToRestorationID
-                        viewController.navShown = self.navShown
-                        navigator.pushViewController(viewController, animated: true)
-                    }
-                }
-//                self.showAlerts(title: "", message: "Payment Confirmed.")
+                proceedToRating()
             } else {
-                self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
+                self.showAlerts(title: "", message: "Error occured completing payment. Please retry.".localized)
             }
+        } else if status == "091" {
+            showAlerts(title: "", message: "Error occured completing payment. Please retry.".localized)
         } else {
             printVal(object: "Include a success boolean value with the PAYMENT_RESULT Notification Post")
         }
         
-        
+    }
+    
+    private func simulateSuccessfulTransaction() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+         let userInfo = [
+            "success": true,
+            "status": "000",
+            "transactionRef": UUID().uuidString
+         ] as [String : Any]
+         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
+         }
+    }
+    
+    private func proceedToRating() {
+        if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
+            if let navigator = self.navigationController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
     }
     
     // MARK: - IBOutlet Actions
     
     @IBAction func makePaymentPressed(_ sender: UIButton) {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
+        /*NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         
         
         let reference = am.getTRIPID() ?? ""
         
         let userInfo = ["amount":Double(am.getLIVEFARE() ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)*/
+        
+        postPaymentRequestNotification()
+        
+        // TODO: Comment
+//            simulateSuccessfulTransaction()
         
         #warning("remove post order notification")
         if SDKConstants.SDK_CLIENT == .VOOMA {
@@ -137,6 +161,27 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             }
         }*/
         
+    }
+    
+    private func postPaymentRequestNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
+        
+        let amount = Double(am.getLIVEFARE() ?? "0") ?? 0
+        
+        let merchantId = "LITTLE"
+        let merchantName = "Little"
+        
+        let userInfo = [
+            "amount": amount,
+            "reference": am.getTRIPID() ?? "",
+            "additionalData": am.getSDKAdditionalData(),
+            "merchantName": merchantName,
+            "merchantId": merchantId,
+            "accountNumber": "",
+            "module": "ORDERRIDE"
+        ] as [String : Any]
+                
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
     }
     
     // MARK: - Table Delegates & Data Sources
@@ -334,6 +379,123 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             
         } catch {}
     }
+    
+    /*private func getTripCost() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadTripCost),name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_REDISJSONData"), object: nil)
+        
+        view.createLoadingNormal()
+                
+        var params = SDKUtils.commonJsonTags(formId: "GETREQUESTSTATUS_REDIS_NEW")
+        params["GETET"] = "Y"
+        params["GetET"] = "Y"
+        params["GetEt"] = "Y"
+        params["TripID"] = am.getTRIPID() ?? ""
+        params["AgentUniqueID"] = ""
+        params["FleetEngine"] = ""
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+        
+        hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUS_REDISJSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+        
+    }
+    
+    @objc private func loadTripCost(_ notification: Notification) {
+        let data = notification.userInfo?["data"] as? Data
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_REDISJSONData"), object: nil)
+        
+        view.removeAnimation()
+        
+        if data != nil {
+            var STATUS = ""
+            var TRIPSTATUS = ""
+            var DROP_OFF_LL = ""
+            var LIVEFARE: Double = 0
+            var DISTANCE = ""
+            var TIME = ""
+            var ENDOTP = ""
+            var ET = ""
+            var ED = ""
+            
+            var PAYMENTCODES = ""
+            var PAYMENTCOSTS = ""
+            var DISTANCETOTALCOST: Double = 0
+            var TIMETOTALCOST: Double = 0
+            var MESSAGE = ""
+            var PERMIN : Double = 0
+            var PERKM: Double = 0
+            var BASEPRICE: Double = 0
+            var PAYMENT_MODE = ""
+            var BASEFARE: Double = 0
+                        
+            am.saveTRIPSTATUS(data: "")
+            am.saveLIVEFARE(data: "")
+            am.saveDISTANCE(data: "")
+            am.saveTIME(data: "")
+            am.saveED(data: "")
+            am.saveET(data: "")
+            
+            do {
+                let response = try JSONDecoder().decode(RedisTripStatus.self, from: data!)
+                
+                STATUS = response.status ?? ""
+                TRIPSTATUS = response.tripStatus ?? ""
+                DROP_OFF_LL = response.dropOffLL ?? ""
+                LIVEFARE = response.liveFare ?? 0
+                DISTANCE = response.distance ?? ""
+                TIME = response.time ?? ""
+                ET = response.et ?? ""
+                ED = response.ed ?? ""
+                
+                PAYMENTCODES = response.paymentCodes ?? ""
+                PAYMENTCOSTS = response.paymentCosts ?? ""
+                DISTANCETOTALCOST = response.distanceTotalCost ?? 0
+                TIMETOTALCOST = response.timeTotalCost ?? 0
+                MESSAGE = response.message ?? ""
+                PERMIN = response.perMin ?? 0
+                PERKM = response.perKM ?? 0
+                BASEPRICE = response.minimumFare ?? 0
+                BASEFARE = response.basePrice ?? 0
+                PAYMENT_MODE = response.paymentMode ?? ""
+                
+                am.saveTRIPSTATUS(data: TRIPSTATUS)
+                am.saveLIVEFARE(data: String(LIVEFARE))
+                am.saveDISTANCE(data: DISTANCE)
+                am.saveTIME(data: TIME)
+                am.saveEndTripOTP(data: ENDOTP)
+                am.saveED(data: ED)
+                am.saveET(data: ET)
+                                
+                am.saveDISTANCETOTALCOST(data: String(DISTANCETOTALCOST))
+                am.saveTIMETOTALCOST(data: String(TIMETOTALCOST))
+                am.saveBASEPRICE(data: String(BASEPRICE))
+                am.saveBASEFARE(data: String(BASEFARE))
+//                am.savePERKM(data: String(PERKM))
+                am.savePERMIN(data: String(PERMIN))
+                
+                if !PAYMENTCODES.isEmpty {
+                    am.savePAYMENTCODES(data: PAYMENTCODES)
+                }
+                
+                if !PAYMENTCOSTS.isEmpty {
+                    am.savePAYMENTCOSTS(data: PAYMENTCOSTS)
+                }
+                
+                if !MESSAGE.isEmpty {
+                    am.saveMESSAGE(data: MESSAGE)
+                }
+                
+                if !PAYMENT_MODE.isEmpty {
+                    am.savePaymentMode(data: PAYMENT_MODE)
+                }
+                
+                setupData()
+                
+            } catch {
+                showGeneralErrorAlert()
+            }
+        }
+        
+    }*/
     
     private func setupData() {
         var amount = Double(am.getLIVEFARE())

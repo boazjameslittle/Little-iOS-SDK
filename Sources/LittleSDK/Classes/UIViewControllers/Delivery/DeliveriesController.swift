@@ -326,7 +326,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                     categoryCollection.reloadData()
                     
                     adjustOffersView()
-                    
+                                        
                     if myRestaurantID != "" {
                         let index = sortedArr.firstIndex(where: { $0.restaurantID == myRestaurantID })
                         if index != nil {

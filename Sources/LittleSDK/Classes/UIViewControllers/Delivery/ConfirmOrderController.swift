@@ -900,6 +900,7 @@ public class ConfirmOrderController: PaymentBaseVC, UITableViewDataSource, UITab
             "merchantName": merchantName,
             "merchantId": merchantId,
             "accountNumber": mySelectedWallet?.walletAccountID ?? "",
+            "module": selectedTheatre != nil ? "MOVIES" : "ORDERFOOD",
         ] as [String : Any]
                 
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
