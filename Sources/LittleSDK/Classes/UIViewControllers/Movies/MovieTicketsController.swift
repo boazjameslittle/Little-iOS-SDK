@@ -317,7 +317,10 @@ class MovieTicketsController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadMovies),name:NSNotification.Name(rawValue: "MYTICKETSMovies"), object: nil)
         
-        let params = SDKUtils.commonJsonTags(formId: "MYTICKETS")
+        var params = SDKUtils.commonJsonTags(formId: "MYTICKETS")
+        params["MovieTickets"] = [
+            "ModuleID": "MOVIE"
+        ]
         
         let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
        
