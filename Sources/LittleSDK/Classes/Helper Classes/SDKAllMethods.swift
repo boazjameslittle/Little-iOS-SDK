@@ -1392,6 +1392,15 @@ class SDKAllMethods {
         return check ?? ""
     }
     
+    // Mark: - RideOTPRequired
+    func saveRideOTPRequired(data: Bool) {
+        wrapper.set(data, forKey: "RideOTPRequired")
+    }
+    
+    func getRideOTPRequired() -> Bool {
+        return wrapper.bool(forKey: "RideOTPRequired") ?? false
+    }
+    
     
     // MARK: - Encryption
     

@@ -65,7 +65,7 @@ public class LittleFramework {
         am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
     }
     
-    public func initializeSDKParameters(accounts: [[String: String]], additionalData: String, mobileNumber: String, packageName: String, APIKey: String, isUAT: Bool, showPaymentAuthorization: Bool, allowPaymentAccountSelection: Bool, notificationPhoneNumber: String, fullName: String) {
+    public func initializeSDKParameters(accounts: [[String: String]], additionalData: String, mobileNumber: String, packageName: String, APIKey: String, isUAT: Bool, showPaymentAuthorization: Bool, allowPaymentAccountSelection: Bool, notificationPhoneNumber: String, fullName: String, rideOTPRequired: Bool) {
         self.isUAT = isUAT
         guard let accountsArr = try? SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
         am.saveSDKMobileNumber(data: mobileNumber)
@@ -78,6 +78,7 @@ public class LittleFramework {
         am.saveAllowAccountSelection(data: allowPaymentAccountSelection)
         am.saveSDKNotificationPhoneNo(data: notificationPhoneNumber)
         am.saveFullName(data: fullName)
+        am.saveRideOTPRequired(data: rideOTPRequired)
         
         
     }

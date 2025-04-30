@@ -351,4 +351,17 @@ class SDKUtils {
     static func round(_ value: Double, toNearest: Double) -> Double {
         return _math.round(value / toNearest) * toNearest
     }
+    
+    static func randomInt(ofLength length: Int) -> Int {
+        guard length > 0 else { return 0 }
+        
+        let lowerBound = Int(pow(10.0, Double(length - 1)))
+        let upperBound = Int(pow(10.0, Double(length))) - 1
+        
+        return Int.random(in: lowerBound...upperBound)
+    }
+    
+    static func cleanAddress(address: String) -> String {
+        return address.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: ",").first ?? ""
+    }
 }

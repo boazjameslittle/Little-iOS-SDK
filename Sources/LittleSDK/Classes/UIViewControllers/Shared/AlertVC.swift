@@ -12,6 +12,7 @@ class AlertVC: BaseVC {
     var cancelAction: (() -> Void)?
     var actionButtonClosure: (() -> Void)?
     var textSubmissionAction: ((_ text: String) -> Void)?
+    var textValidationAction: ((_ text: String) -> Bool)?
     var message: String!
     var messageTitle: String!
     var actionButtonText: String?
@@ -20,7 +21,9 @@ class AlertVC: BaseVC {
     var image: String!
     var dismissText: String!
     var placeholderText = ""
+    var emptyTextValidationMessage: String? = nil
     var reasonRequired = false
+    var keyboardType: UIKeyboardType = .default
     
     private let containerView: UIView = {
         let view = CardView()
@@ -34,7 +37,7 @@ class AlertVC: BaseVC {
     private var lblTitle: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 18, weight: .bold)
         label.textColor = .littleLabelColor
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -76,7 +79,7 @@ class AlertVC: BaseVC {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitleColor(.littleLabelColor, for: .normal)
         view.setTitleColor(.gray, for: .highlighted)
-        view.titleLabel?.font = .systemFont(ofSize: 15)
+        view.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         view.backgroundColor = .clear
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
@@ -89,7 +92,7 @@ class AlertVC: BaseVC {
             
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 15)
+                outgoing.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
                 return outgoing
             }
             
@@ -107,12 +110,12 @@ class AlertVC: BaseVC {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitleColor(.systemBlue, for: .normal)
         view.setTitleColor(.gray, for: .highlighted)
-        view.titleLabel?.font = .systemFont(ofSize: 14)
+        view.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         view.backgroundColor = .clear
         
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8)
+            config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
             
             var backgroundConfig = UIBackgroundConfiguration.clear()
             backgroundConfig.backgroundColor = .clear
@@ -121,13 +124,13 @@ class AlertVC: BaseVC {
             
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 14)
+                outgoing.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
                 return outgoing
             }
             
             view.configuration = config
         } else {
-            view.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+            view.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         }
         
         return view
@@ -164,6 +167,7 @@ class AlertVC: BaseVC {
         
         textfield.placeholder = placeholderText
         textfield.isHidden = placeholderText.isEmpty
+        textfield.keyboardType = keyboardType
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -220,7 +224,7 @@ class AlertVC: BaseVC {
         NSLayoutConstraint.activate([
             textfield.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             textfield.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            textfield.topAnchor.constraint(equalTo: imgView.bottomAnchor, constant: placeholderText.isEmpty ? 0 : 10),
+            textfield.topAnchor.constraint(equalTo: imgView.bottomAnchor, constant: placeholderText.isEmpty ? 0 : 20),
             textfield.heightAnchor.constraint(equalToConstant: placeholderText.isEmpty ? 0 : 44)
         ])
         
@@ -284,8 +288,16 @@ class AlertVC: BaseVC {
         guard let text = textfield.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         
         if reasonRequired && !placeholderText.isEmpty && text.isEmpty {
-            showAlerts(title: "", message: String(format: "%@ is required".localized, placeholderText))
+            showAlerts(title: "", message: emptyTextValidationMessage ?? String(format: "%@ is required".localized, placeholderText))
             return
+        }
+        
+        if !text.isEmpty {
+            if let textValidationAction = textValidationAction {
+                if !textValidationAction(text) {
+                    return
+                }
+            }
         }
         
         self.dismiss(animated: true) {

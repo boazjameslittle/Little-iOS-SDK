@@ -140,3 +140,10 @@
 "Please wait…" = "Please wait…";
 "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@" = "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@";
 "Error occured completing payment. Please retry." = "Error occured completing payment. Please retry.";
+"%@ is requesting for ride approval from %@ app. Trip Approval Code: %@. Pickup: %@. Dropoff: %@. Vehicle: %@. Cost: %@ (Cost may vary on routes taken and traffic changes)" = "%@ is requesting for ride approval from %@ app. Trip Approval Code: %@. Pickup: %@. Dropoff: %@. Vehicle: %@. Cost: %@ (Cost may vary on routes taken and traffic changes)";
+"Proceed" = "Proceed";
+"OTP Required" = "OTP Required";
+"Trip Approval OTP has been sent to your Parent Mobile number (+%@). Type it below to proceed requesting a driver." = "Trip Approval OTP has been sent to your Parent Mobile number (+%@). Type it below to proceed requesting a driver.";
+"Enter the OTP" = "Enter the OTP";
+"Please enter OTP" = "Please enter OTP";
+"Please enter a valid OTP" = "Please enter a valid OTP";

@@ -1211,7 +1211,7 @@ extension UIViewController {
         self.present(vc, animated: true)
     }
     
-    func showWarningAlertWithTextfield(title: String = "", message: String, dismissOnTap: Bool = true, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", placeholderText: String = "", reasonRequired: Bool = true, showCancel: Bool = true, textSubmissionAction: @escaping ((_ text: String) -> Void), cancelAction:  (() -> Void)? = nil) {
+    func showWarningAlertWithTextfield(title: String = "", message: String, dismissOnTap: Bool = true, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", placeholderText: String = "", emptyTextValidationMessage: String? = nil, keyboardType: UIKeyboardType = .default, reasonRequired: Bool = true, showCancel: Bool = true, textSubmissionAction: @escaping ((_ text: String) -> Void), cancelAction:  (() -> Void)? = nil) {
         let vc = AlertVC()
         vc.actionButtonText = actionButtonText
         vc.messageTitle = title
@@ -1225,6 +1225,30 @@ extension UIViewController {
         vc.placeholderText = placeholderText
         vc.cancelAction = cancelAction
         vc.reasonRequired = reasonRequired
+        vc.emptyTextValidationMessage = emptyTextValidationMessage
+        vc.keyboardType = keyboardType
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true)
+    }
+    
+    func showWarningAlertWithTextfield(title: String = "", message: String, dismissOnTap: Bool = true, actionButtonText: String = "Ok".localized.localizedUppercase, dismissText: String = "Dismiss".localized, image: String = "", placeholderText: String = "", emptyTextValidationMessage: String? = nil, keyboardType: UIKeyboardType = .default, reasonRequired: Bool = true, showCancel: Bool = true, textSubmissionAction: @escaping ((_ text: String) -> Void), textValidationAction: ((_ text: String) -> Bool)? = nil, cancelAction:  (() -> Void)? = nil) {
+        let vc = AlertVC()
+        vc.actionButtonText = actionButtonText
+        vc.messageTitle = title
+        vc.message = message
+        vc.actionButtonClosure = nil
+        vc.textSubmissionAction = textSubmissionAction
+        vc.textValidationAction = textValidationAction
+        vc.showCancel = showCancel
+        vc.dismissOnTap = dismissOnTap
+        vc.image = image
+        vc.dismissText = dismissText
+        vc.placeholderText = placeholderText
+        vc.cancelAction = cancelAction
+        vc.reasonRequired = reasonRequired
+        vc.emptyTextValidationMessage = emptyTextValidationMessage
+        vc.keyboardType = keyboardType
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .overCurrentContext
         self.present(vc, animated: true)

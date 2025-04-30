@@ -267,8 +267,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
     
-    private var shouldSendSMSNotification = false
-    
+    private var otp = ""
+        
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -2600,7 +2600,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         informationTopView.isUserInteractionEnabled = false
         
-        makeRideRequestNew()
+        if am.getRideOTPRequired() {
+            sendOtp()
+        } else {
+            makeRideRequestNew()
+        }
         
     }
     
@@ -3162,7 +3166,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func getPendingRequests() {
-        shouldSendSMSNotification = false
         NotificationCenter.default.addObserver(self, selector: #selector(loadPendingRequests),name:NSNotification.Name(rawValue: "CHECKFORTRIPJSONData"), object: nil)
         
         am.saveStillRequesting(data: false)
@@ -4326,7 +4329,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func makeRideRequestNew() {
-        shouldSendSMSNotification = true
         
         if PaymentModes.count <= selectedPaymentMode {
             showAlerts(title: "", message: "Select payment mode".localized)
@@ -4770,10 +4772,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         if timer != nil {
                             timer.invalidate()
                         }
-                        
-                        if shouldSendSMSNotification {
-                            sendSmsNotification()
-                        }
                                                 
                         if carActiveIcons.count > selectedCarIndex {
                             am.saveVEHICLEIMAGE(data: carActiveIcons[selectedCarIndex])
@@ -5077,15 +5075,15 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    private func sendSmsNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadSendSmsNotification),name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+    private func sendOtp() {
+        otp = String(SDKUtils.randomInt(ofLength: 4))
+        
+        view.createLoadingNormal()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSendOtp),name:NSNotification.Name(rawValue: "SendRideOtpSimple"), object: nil)
         
         let name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
-        
-        let tripId = am.getTRIPID() ?? ""
-        let viewTripId = String(tripId.prefix(8))
-                
-        let message = String(format: "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@".localized, name, viewTripId, viewTripId)
+                        
+        let message = String(format: "%@ is requesting for ride approval from %@ app. Trip Approval Code: %@. Pickup: %@. Dropoff: %@. Vehicle: %@. Cost: %@ (Cost may vary on routes taken and traffic changes)".localized, name, Bundle.getAppDisplayName(), otp, SDKUtils.cleanAddress(address: pickupName), SDKUtils.cleanAddress(address: dropOffName), CarTypes[selectedCarIndex], carCostEstimate[selectedCarIndex])
         
         
         var params = SDKUtils.commonJsonTags(formId: "SendNotification")
@@ -5098,30 +5096,54 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
                 
-        littleHandleCalls.makeServerCall(sb: dataToSend, method: "SendNotificationSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+        littleHandleCalls.makeServerCall(sb: dataToSend, method: "SendRideOtpSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
     }
     
-    @objc private func loadSendSmsNotification(_ notification: Notification) {
+    @objc private func loadSendOtp(_ notification: Notification) {
+        view.removeAnimation()
         
-        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendRideOtpSimple"), object: nil)
         
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
             do {
                 let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
                 if response.status == "000" {
-                    
+                    showOtpAlert()
                 } else {
-//                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
                 }
                 
             } catch (let error) {
-//                showGeneralErrorAlert()
+                showGeneralErrorAlert()
                 printVal(object: "error: \(error.localizedDescription)")
             }
         } else {
-//            showGeneralErrorAlert()
+            showGeneralErrorAlert()
         }
         
+    }
+    
+    private func showOtpAlert() {
+        let message = String(format: "Trip Approval OTP has been sent to your Parent Mobile number (+%@). Type it below to proceed requesting a driver.".localized, am.getSDKNotificationPhoneNo())
+        showWarningAlertWithTextfield(title: "OTP Required".localized, message: message, actionButtonText: "Proceed".localized, placeholderText: "Enter the OTP".localized, emptyTextValidationMessage: "Please enter OTP".localized, keyboardType: .numberPad, textSubmissionAction: { text in
+            self.makeRideRequestNew()
+        }, textValidationAction: validateOtp(_:))
+    }
+    
+    private func validateOtp(_ otp: String) -> Bool {
+        let isValid = self.otp == otp
+        
+        if !isValid {
+            let message = "Please enter a valid OTP".localized
+            
+            if let presentedViewController = presentedViewController {
+                presentedViewController.showAlerts(title: "", message: message)
+            } else {
+                showAlerts(title: "", message: message)
+            }
+        }
+        
+        return isValid
     }
 }
 
