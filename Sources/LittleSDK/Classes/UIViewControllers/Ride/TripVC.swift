@@ -199,15 +199,17 @@ public class TripVC: BaseVC {
         
         // Setup Map
         
-        gmsMapView = GMSMapView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: mapContainerView.bounds.height))
+        gmsMapView = GMSMapView(frame: .zero)
         gmsMapView.showMapStyleForView()
         gmsMapView.delegate = self
         gmsMapView.isMyLocationEnabled = true
         gmsMapView.isBuildingsEnabled = true
-        let padding = UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0)
+        let padding = UIEdgeInsets(top: 30, left: 0, bottom: 40, right: 0)
         gmsMapView.padding = padding
         
         mapContainerView.addSubview(gmsMapView)
+        
+        gmsMapView.pinToView(parentView: mapContainerView)
         
         destinationCoordinate = SDKUtils.extractCoordinate(string: am.getCurrentLocation() ?? "")
         
