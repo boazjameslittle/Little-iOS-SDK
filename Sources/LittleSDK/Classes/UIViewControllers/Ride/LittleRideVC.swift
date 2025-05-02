@@ -268,6 +268,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     var animationProgressWhenInterrupted:CGFloat = 0
     
     private var otp = ""
+    
+    private var shouldSendSMSNotification = false
         
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -3166,6 +3168,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func getPendingRequests() {
+        shouldSendSMSNotification = false
         NotificationCenter.default.addObserver(self, selector: #selector(loadPendingRequests),name:NSNotification.Name(rawValue: "CHECKFORTRIPJSONData"), object: nil)
         
         am.saveStillRequesting(data: false)
@@ -4335,6 +4338,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             return
         }
         
+        shouldSendSMSNotification = true
+        
         if cardViewController.requestingLoadingView.isHidden {
             cardViewController.requestingLoadingView.isUserInteractionEnabled = false
             cardViewController.lblRequestingText.text = ""
@@ -4772,6 +4777,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         if timer != nil {
                             timer.invalidate()
                         }
+                        
+                        if shouldSendSMSNotification {
+                            sendTripSmsNotification()
+                        }
                                                 
                         if carActiveIcons.count > selectedCarIndex {
                             am.saveVEHICLEIMAGE(data: carActiveIcons[selectedCarIndex])
@@ -5119,6 +5128,53 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
         } else {
             showGeneralErrorAlert()
+        }
+        
+    }
+    
+    private func sendTripSmsNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSendTripSmsNotification),name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+        
+        let name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
+        
+        let tripId = am.getTRIPID() ?? ""
+        let viewTripId = String(tripId.prefix(8))
+                
+        let message = String(format: "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@".localized, name, viewTripId, viewTripId)
+        
+        
+        var params = SDKUtils.commonJsonTags(formId: "SendNotification")
+        params["SendNotification"] = [
+            "NotificationType": "SMS",
+            "MobileNumber": am.getSDKNotificationPhoneNo(),
+            "NotificationText": message
+        ]
+        params["MobileNumber"] = "0"
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        littleHandleCalls.makeServerCall(sb: dataToSend, method: "SendNotificationSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadSendTripSmsNotification(_ notification: Notification) {
+        
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
+                if response.status == "000" {
+                    
+                } else {
+//                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                }
+                
+            } catch (let error) {
+//                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        } else {
+//            showGeneralErrorAlert()
         }
         
     }
