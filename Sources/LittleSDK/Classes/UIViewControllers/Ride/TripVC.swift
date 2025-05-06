@@ -785,11 +785,12 @@ public class TripVC: BaseVC {
                 
                 destinationChange = Double(am.getDISTANCE() ?? "0") ?? 0
                 if am.getPANICBUTTONSHOW() == "1" {
-                    if am.getSOSMESSAGE() != "" {
+                    /*if am.getSOSMESSAGE() != "" {
                         panicBtnTxt.text = am.getSOSMESSAGE()
                         showPanicBtn()
                         panicBtnInfoBtn.setImage(getImage(named: "info", bundle: sdkBundle!), for: .normal)
-                    }
+                    }*/
+                    showPanicBtn()
                 }
                 
             }

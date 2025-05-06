@@ -3231,6 +3231,12 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         am.savePaymentModes(data: paymentModesString)
         am.savePaymentModeIDs(data: paymentModeIDsString)
+        
+        if results.panicButton == nil && am.getCountry().equalsIgnoringCase("kenya") {
+            am.savePANICBUTTONSHOW(data: "1")
+        } else {
+            am.savePANICBUTTONSHOW(data: results.panicButton ?? "0")
+        }
 
         if results.recentTrips != nil {
             for each in results.recentTrips! {

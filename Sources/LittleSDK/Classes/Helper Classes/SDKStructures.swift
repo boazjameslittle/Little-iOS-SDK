@@ -124,6 +124,7 @@ struct GetPendingResult: Codable {
     let tripDropOffDetails: [TripDropOffDetail]?
     let pickupAddress: String?
     let tripStatus: String?
+    let panicButton: String?
     
     enum CodingKeys: String, CodingKey {
         case status = "Status"
@@ -164,6 +165,7 @@ struct GetPendingResult: Codable {
         case tripDropOffDetails = "TripDropOffDetails"
         case pickupAddress = "PickupAddress"
         case tripStatus = "TripStatus"
+        case panicButton = "PanicButton"
     }
 }
 
