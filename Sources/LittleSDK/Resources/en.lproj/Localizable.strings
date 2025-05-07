@@ -138,7 +138,7 @@
 "Ticket(s) booked successfully" = "Ticket(s) booked successfully";
 "No pending transaction" = "No pending transaction";
 "Please wait…" = "Please wait…";
-"Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@" = "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@";
+"Take a look at %@ ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@" = "Take a look at %@ ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@";
 "Error occured completing payment. Please retry." = "Error occured completing payment. Please retry.";
 "%@ is requesting for ride approval from %@ app. Trip Approval Code: %@. Pickup: %@. Dropoff: %@. Vehicle: %@. Cost: %@ (Cost may vary on routes taken and traffic changes)" = "%@ is requesting for ride approval from %@ app. Trip Approval Code: %@. Pickup: %@. Dropoff: %@. Vehicle: %@. Cost: %@ (Cost may vary on routes taken and traffic changes)";
 "Proceed" = "Proceed";
@@ -147,3 +147,4 @@
 "Enter the OTP" = "Enter the OTP";
 "Please enter OTP" = "Please enter OTP";
 "Please enter a valid OTP" = "Please enter a valid OTP";
+"%@ ride with Little has ended. Thank you for choosing us." = "%@ ride with Little has ended. Thank you for choosing us.";

@@ -14,6 +14,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
+    let littleHandleCalls = LittleHandleCalls()
     
     // Variables
     
@@ -66,6 +67,10 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         sdkBundle = Bundle.module
         
         setupData()
+        
+        if am.getSDKLastEndTripNotificationTripID() != am.getTRIPID() {
+            sendEndTripSmsNotification()
+        }
         
         getTripCost()
         
@@ -543,5 +548,56 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         extraChargesTable.dataSource = self
         finishedLoadingInitialTableCells = false
         extraChargesTable.reloadData()
+    }
+    
+    private func sendEndTripSmsNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSendEndTripSmsNotification),name:NSNotification.Name(rawValue: "SendEndTripNotificationSimple"), object: nil)
+        
+        var name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
+        
+        if name.hasSuffix("s") {
+            name += "'"
+        } else {
+            name += "'s"
+        }
+                
+        let message = String(format: "%@ ride with Little has ended. Thank you for choosing us.".localized, name)
+        
+        printVal(object: "SendNotification message: \(message)")
+        
+        var params = SDKUtils.commonJsonTags(formId: "SendNotification")
+        params["SendNotification"] = [
+            "NotificationType": "SMS",
+            "MobileNumber": am.getSDKNotificationPhoneNo(),
+            "NotificationText": message
+        ]
+        params["MobileNumber"] = "0"
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        littleHandleCalls.makeServerCall(sb: dataToSend, method: "SendEndTripNotificationSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadSendEndTripSmsNotification(_ notification: Notification) {
+        
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendEndTripNotificationSimple"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
+                if response.status == "000" {
+                    am.saveSDKLastEndTripNotificationTripID(data: am.getTRIPID())
+                } else {
+//                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                }
+                
+            } catch (let error) {
+//                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        } else {
+//            showGeneralErrorAlert()
+        }
+        
     }
 }

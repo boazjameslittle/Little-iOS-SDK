@@ -5141,13 +5141,18 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     private func sendTripSmsNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadSendTripSmsNotification),name:NSNotification.Name(rawValue: "SendNotificationSimple"), object: nil)
         
-        let name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
+        var name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
+        
+        if name.hasSuffix("s") {
+            name += "'"
+        } else {
+            name += "'s"
+        }
         
         let tripId = am.getTRIPID() ?? ""
         let viewTripId = String(tripId.prefix(8))
                 
-        let message = String(format: "Take a look at %@'s ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@".localized, name, viewTripId, viewTripId)
-        
+        let message = String(format: "Take a look at %@ ride with Little https://little.africa/app/route/?id=%@ OR view the trip on your Little App by selecting View Trips Module and use Trip ID %@".localized, name, viewTripId, viewTripId)
         
         var params = SDKUtils.commonJsonTags(formId: "SendNotification")
         params["SendNotification"] = [

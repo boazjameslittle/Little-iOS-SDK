@@ -1401,6 +1401,16 @@ class SDKAllMethods {
         return wrapper.bool(forKey: "RideOTPRequired") ?? false
     }
     
+    // Mark: - SDKLastEndTripNotificationTripID
+    func saveSDKLastEndTripNotificationTripID(data:String) {
+        wrapper.set(data, forKey: "SDKLastEndTripNotificationTripID")
+    }
+    
+    func getSDKLastEndTripNotificationTripID() -> String{
+        let check = wrapper.string(forKey: "SDKLastEndTripNotificationTripID")
+        return check ?? ""
+    }
+    
     
     // MARK: - Encryption
     
