@@ -1803,7 +1803,7 @@ extension TripVC: CLLocationManagerDelegate {
             self.destinationCoordinate = manager.location!.coordinate
             // let camera = GMSCameraPosition.camera(withLatitude: locValue.latitude, longitude: locValue.longitude, zoom: 16)
             self.gmsMapView.isTrafficEnabled=true
-            self.gmsMapView.settings.compassButton = true
+//            self.gmsMapView.settings.compassButton = true
             
             self.showDriverDetails()
             self.getTripStatus()
