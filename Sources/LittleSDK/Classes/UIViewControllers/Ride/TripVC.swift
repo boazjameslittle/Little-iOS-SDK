@@ -21,6 +21,7 @@ public class TripVC: BaseVC {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
+    let littleHandleCalls = LittleHandleCalls()
     let cn = SDKConstants()
     let locationManager = CLLocationManager()
     
@@ -121,9 +122,21 @@ public class TripVC: BaseVC {
     @IBOutlet weak var lblCorporatePromoName: UILabel!
     @IBOutlet weak var lblCorporatePromoName2: UILabel!
     
-    @IBOutlet weak var panicBtnInfoView: UIView!
-    @IBOutlet weak var panicBtnTxt: UILabel!
-    @IBOutlet weak var panicBtnInfoBtn: UIButton!
+    @IBOutlet weak var panicBtnInfoView: UIView! {
+        didSet {
+            panicBtnInfoView.isHidden = true
+        }
+    }
+    @IBOutlet weak var panicBtnTxt: UILabel! {
+        didSet {
+            panicBtnTxt.isHidden = true
+        }
+    }
+    @IBOutlet weak var panicBtnInfoBtn: UIButton! {
+        didSet {
+            panicBtnInfoBtn.isHidden = true
+        }
+    }
     @IBOutlet weak var panicButton: UIButton!
     
     @IBOutlet weak var btnMuteAudio: UIButton!
@@ -380,7 +393,7 @@ public class TripVC: BaseVC {
     @objc func showPanicBtn() {
         DispatchQueue.main.async {
             self.panicButton.isHidden = false
-            self.panicBtnInfoBtn.isHidden = false
+            self.panicBtnInfoBtn.isHidden = true
             self.panicBtnInfoView.isHidden = true
         }
         printVal(object: "show")
@@ -425,9 +438,9 @@ public class TripVC: BaseVC {
         
         if userLoc != nil {
             
-            let datatosend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail() ?? "")|TRIPID|\(am.getTRIPID() ?? "")|"
+            let dataToSend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail() ?? "")|TRIPID|\(am.getTRIPID() ?? "")|"
             
-            hc.makeServerCall(sb: datatosend, method: "PANICBUTTON", switchnum: 0)
+            littleHandleCalls.makeServerCall(sb: dataToSend, method: "PANICBUTTON", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
             
         } else {
             allowLocationAccessMessage()
