@@ -440,11 +440,56 @@ public class TripVC: BaseVC {
             
             let dataToSend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail() ?? "")|TRIPID|\(am.getTRIPID() ?? "")|"
             
-            littleHandleCalls.makeServerCall(sb: dataToSend, method: "PANICBUTTON", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+            LittleHandleCalls().makeServerCall(sb: dataToSend, method: "PANICBUTTON", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+            
+            sendSosSmsNotification()
             
         } else {
             allowLocationAccessMessage()
         }
+    }
+    
+    private func sendSosSmsNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSendTripSmsNotification),name:NSNotification.Name(rawValue: "SendSosNotificationSimple"), object: nil)
+        
+        let name = am.getFullName().trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ").first ?? ""
+                
+        let message = String(format: "%@ has tapped on SOS button on Little Ride".localized, name)
+        
+        var params = SDKUtils.commonJsonTags(formId: "SendNotification")
+        params["SendNotification"] = [
+            "NotificationType": "SMS",
+            "MobileNumber": am.getSDKNotificationPhoneNo(),
+            "NotificationText": message
+        ]
+        params["MobileNumber"] = "0"
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        LittleHandleCalls().makeServerCall(sb: dataToSend, method: "SendSosNotificationSimple", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+    }
+    
+    @objc private func loadSendTripSmsNotification(_ notification: Notification) {
+        
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "SendSosNotificationSimple"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponseData.self, from: data)
+                if response.status == "000" {
+                    
+                } else {
+//                    self.showAlerts(title: "", message: response.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                }
+                
+            } catch (let error) {
+//                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        } else {
+//            showGeneralErrorAlert()
+        }
+        
     }
     
     func scheduleNotifications() {
