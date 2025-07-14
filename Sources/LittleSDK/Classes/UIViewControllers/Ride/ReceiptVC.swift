@@ -85,6 +85,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Functions
 
     @objc func postBackHome() {
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LITTLE_SDK_CLOSED"), object: nil, userInfo: nil)
+        
         navigationController?.dismiss(animated: true)
         
     }

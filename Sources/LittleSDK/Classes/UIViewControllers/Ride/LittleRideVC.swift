@@ -691,6 +691,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             self.navigationController?.popToRootViewController(animated: true)
         }*/
         
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LITTLE_SDK_CLOSED"), object: nil, userInfo: nil)
+        
         navigationController?.dismiss(animated: true)
         
     }
