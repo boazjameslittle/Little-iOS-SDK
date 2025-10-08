@@ -188,6 +188,8 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             "accountNumber": "",
             "module": "ORDERRIDE"
         ] as [String : Any]
+        
+        printVal(object: "postPaymentRequestNotification: \(userInfo)")
                 
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
     }
@@ -243,7 +245,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    private func getTripCost() {
+    /*private func getTripCost() {
         view.createLoadingNormal()
         NotificationCenter.default.addObserver(self, selector: #selector(loadTripCost),name:NSNotification.Name(rawValue: "GETREQUESTSTATUSTripCostJSONData"), object: nil)
                 
@@ -253,7 +255,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             "TripID": am.getTRIPID() ?? ""
         ]
         
-        hc.makeServerCall(sb: params.toJsonString(), method: "GETREQUESTSTATUSTripCostJSONData", switchnum: 0)
+        SDKHandleCalls().makeServerCall(sb: params.toJsonString(), method: "GETREQUESTSTATUSTripCostJSONData", switchnum: 0)
         
     }
     
@@ -386,9 +388,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             setupData()
             
         } catch {}
-    }
+    }*/
     
-    /*private func getTripCost() {
+    private func getTripCost() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadTripCost),name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_REDISJSONData"), object: nil)
         
         view.createLoadingNormal()
@@ -403,7 +405,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
         
-        hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUS_REDISJSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
+        LittleHandleCalls().makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUS_REDISJSONData", switchnum: SDKConstants.REMOVEARRAYRESPONSE)
         
     }
     
@@ -503,7 +505,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             }
         }
         
-    }*/
+    }
     
     private func setupData() {
         var amount = Double(am.getLIVEFARE())
