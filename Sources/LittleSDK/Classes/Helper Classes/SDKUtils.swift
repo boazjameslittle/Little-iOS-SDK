@@ -309,10 +309,10 @@ class SDKUtils {
             
             var rounded: Int {
                 if distanceInMetres > 50 {
-                    return Int(round(distanceInMetres, toNearest: 100))
+                    return Int(roundedToNearest(distanceInMetres, toNearest: 100))
                 }
                 
-                return Int(round(distanceInMetres, toNearest: 50))
+                return Int(roundedToNearest(distanceInMetres, toNearest: 50))
             }
             
             if rounded >= 1000 {
@@ -332,10 +332,10 @@ class SDKUtils {
             
             var rounded: Int {
                 if distanceInMetres > 50 {
-                    return Int(round(distanceInMetres, toNearest: 100))
+                    return Int(roundedToNearest(distanceInMetres, toNearest: 100))
                 }
                 
-                return Int(round(distanceInMetres, toNearest: 50))
+                return Int(roundedToNearest(distanceInMetres, toNearest: 50))
             }
             
             if rounded >= 1000 {
@@ -348,8 +348,8 @@ class SDKUtils {
         return String(format: "%.1f km".localized, distance)
     }
     
-    static func round(_ value: Double, toNearest: Double) -> Double {
-        return _math.round(value / toNearest) * toNearest
+    static func roundedToNearest(_ value: Double, toNearest: Double) -> Double {
+        return round(value / toNearest) * toNearest
     }
     
     static func randomInt(ofLength length: Int) -> Int {
